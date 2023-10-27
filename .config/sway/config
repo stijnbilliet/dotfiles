@@ -124,6 +124,11 @@ mode "resize" {
 }
 bindsym $mod+r mode "resize"
 
+# Audio control
+    bindsym XF86AudioMute exec pactl set-sink-mute @DEFAULT_SINK@ toggle
+    bindsym XF86AudioRaiseVolume exec pactl set-sink-volume @DEFAULT_SINK@ +5%
+    bindsym XF86AudioLowerVolume exec pactl set-sink-volume @DEFAULT_SINK@ -5%
+
 ### Status Bar:
 bar swaybar_command waybar
 
