@@ -1,6 +1,6 @@
 * {
     /* `otf-font-awesome` is required to be installed for icons */
-    font-family: Agave, "Font Awesome 5 Free";
+    font-family: Agave, Material Design Icons, "Font Awesome 5 Free";
     font-size: 16px;
 }
 

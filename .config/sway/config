@@ -10,7 +10,6 @@ set $filemanager $term -e ranger
 set $menu wofi --show run
 set $laptopscreen eDP-1
 
-
 ### Output configuration
 output * bg ~/Nextcloud/Photos/Wallpapers/CygnusMosaicFull.jpg fill
 output HDMI-A-1 resolution 2560x1440
@@ -47,12 +46,6 @@ exec swayidle -w \
 
 # Reload the configuration file
     bindsym $mod+Shift+c reload
-
-# Exit sway (logs you out of your Wayland session)
-    bindsym $mod+Shift+e exec swaynag -t warning -m 'You pressed the exit shortcut. Do you really want to exit sway? This will end your Wayland session.' -B 'Yes, exit sway' 'swaymsg exit'
-
-# Lock screen
-    bindsym $mod+Shift+l exec swaylock -f -c 000000
 
 # Move your focus around
     bindsym $mod+$left focus left
@@ -128,6 +121,24 @@ bindsym $mod+r mode "resize"
     bindsym XF86AudioMute exec pactl set-sink-mute @DEFAULT_SINK@ toggle
     bindsym XF86AudioRaiseVolume exec pactl set-sink-volume @DEFAULT_SINK@ +5%
     bindsym XF86AudioLowerVolume exec pactl set-sink-volume @DEFAULT_SINK@ -5%
+
+# Exit mode
+set $exit " [s]     [p]      [r]     [l]     [L]"
+mode $exit {
+    bindsym --to-code {
+        s exec systemctl suspend, mode "default"
+        p exec systemctl poweroff
+        r exec systemctl reboot
+	l exec swaylock -f -c 000000, mode "default"
+        Shift+l exec swaymsg exit
+    
+        Return mode "default"
+        Escape mode "default"
+        $mod+x mode "default"
+    }
+}
+
+bindsym --to-code $mod+x mode $exit
 
 ### Status Bar:
 bar swaybar_command waybar
