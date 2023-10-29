@@ -5,33 +5,14 @@
 }
 
 window#waybar {
-    background-color: rgba(43, 48, 59, 0.5);
-    border-bottom: 3px solid rgba(100, 114, 125, 0.5);
-    color: #ffffff;
+    background-color: #1d2021;
+    color: #fbf1c7;
     transition-property: background-color;
     transition-duration: .5s;
 }
 
 window#waybar.hidden {
     opacity: 0.2;
-}
-
-/*
-window#waybar.empty {
-    background-color: transparent;
-}
-window#waybar.solo {
-    background-color: #FFFFFF;
-}
-*/
-
-window#waybar.termite {
-    background-color: #3F3F3F;
-}
-
-window#waybar.chromium {
-    background-color: #000000;
-    border: none;
 }
 
 button {
@@ -68,7 +49,7 @@ button:hover {
 }
 
 #mode {
-    background-color: #64727D;
+    background-color: #a89984;
     border-bottom: 3px solid #ffffff;
 }
 
@@ -89,7 +70,6 @@ button:hover {
 #scratchpad,
 #mpd {
     padding: 0 10px;
-    color: #ffffff;
 }
 
 #window,
@@ -107,13 +87,8 @@ button:hover {
     margin-right: 0;
 }
 
-#clock {
-    background-color: #64727D;
-}
-
 #battery {
-    background-color: #ffffff;
-    color: #000000;
+    box-shadow: inset 0 -3px #b16286;
 }
 
 #battery.charging, #battery.plugged {
@@ -160,7 +135,7 @@ label:focus {
 }
 
 #network {
-    background-color: #2980b9;
+    box-shadow: inset 0 -3px #458588;
 }
 
 #network.disconnected {
@@ -168,8 +143,7 @@ label:focus {
 }
 
 #pulseaudio {
-    background-color: #f1c40f;
-    color: #000000;
+    box-shadow: inset 0 -3px #fabd2f;
 }
 
 #pulseaudio.muted {
@@ -248,8 +222,7 @@ label:focus {
 }
 
 #language {
-    background: #00b093;
-    color: #740864;
+    box-shadow: inset 0 -3px #689d6a;
     padding: 0 5px;
     margin: 0 5px;
     min-width: 16px;
