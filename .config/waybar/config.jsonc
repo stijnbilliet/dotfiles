@@ -60,7 +60,8 @@
         "format-icons": ["", "", ""]
     },
     "backlight": {
-        "format": "{percent}% {icon}",
+	"format": "{icon} ",
+        "tooltip-format": "{percent}%",
         "format-icons": ["", "", "", "", "", "", "", "", ""]
     },
     "battery": {
