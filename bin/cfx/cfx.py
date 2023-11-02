@@ -5,6 +5,7 @@ import argparse
 import inspect
 import re
 import yaml
+import shutil
 
 def type_dir_path(argstring):
     if os.path.isdir(argstring):
@@ -104,9 +105,14 @@ def color_format_exchanger(theme_path: os.PathLike, template_dir: os.PathLike, o
     # Get theme colors from yaml dictionary
     theme_colors = yaml_to_colors(theme_yaml, is_light_theme);
 
+    # Grep the templates for color tags and write them out
     for template in os.scandir(template_dir):
         if template.is_file():
             template_file_export(theme_colors, template, output_dir);
+
+    theme_copy_path = os.path.join(output_dir, "colors.yml");
+    print(theme_copy_path);
+    shutil.copy(theme_path, theme_copy_path);
 
 
 def main():
