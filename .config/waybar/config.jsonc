@@ -104,7 +104,7 @@
             "headphone": "",
             "default": ["", "", ""]
         },
-        "on-click": "pavucontrol"
+        "on-click": "alacritty -e alsamixer"
     },
     "custom/media": {
         "format": "{icon} {}",
