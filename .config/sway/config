@@ -7,7 +7,7 @@ set $right l
 set $term alacritty
 set $browser librewolf
 set $filemanager $term -e ranger
-set $menu wofi --show run
+set $menu wofi --show run --color ~/.config/cfx/colors.wofi
 set $laptopscreen eDP-1
 
 ### Output configuration
