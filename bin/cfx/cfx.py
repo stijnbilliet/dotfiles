@@ -15,10 +15,9 @@ def type_dir_path(argstring):
 
 def type_dir_path_new(argstring):
     if os.path.exists(os.path.dirname(argstring)):
-        if os.path.isdir(argstring):
-            return argstring
-        else:
+        if not os.path.isdir(argstring):
             os.makedirs(os.path.normpath(argstring));
+        return os.path.abspath(argstring);
     else:
         raise argparse.ArgumentTypeError(f"Path specified seems malformed {argstring}");
 
@@ -33,21 +32,27 @@ def col(key: str, is_light_theme: bool) -> str:
         return key;
     else:
         if is_light_theme:
-            return "0x000000";
-    return "0xffffff";
-    
+            return "000000";
+    return "ffffff";
 
 def yaml_to_colors(in_yaml: dict, is_light_theme: bool) -> dict:
     # Base-16 encoding, alacritty flavour if you will
     out_col_dict = {};
 
-    # Parent node
-    in_col_dict = in_yaml['colors'];
-
-    # Dict parent groups
+    # Parent nodes
+    in_col_dict = in_yaml['colors'].copy();
     primary_colors = in_col_dict['primary'];
     normal_colors = in_col_dict['normal'];
     accent_colors = in_col_dict['bright'];
+
+    # Drop prefixes
+    def drop_hex_prefix_yml(in_dict: dict):
+        for k, v in in_dict.items():
+            in_dict[k] = v.replace("0x", "");
+
+    drop_hex_prefix_yml(primary_colors);
+    drop_hex_prefix_yml(normal_colors);
+    drop_hex_prefix_yml(accent_colors);
 
     # Primaries
     out_col_dict['background'] = primary_colors['background'];
@@ -69,11 +74,11 @@ def yaml_to_colors(in_yaml: dict, is_light_theme: bool) -> dict:
     
     return out_col_dict;
 
-def template_line_replace_token(line: str, in_colors: dict):
+def template_line_replace_token(line: str, in_colors: dict, out_prefix: str):
     # Assume they are defined in order, but don't assert it
     for n, t in in_colors.items():
         needle = "{" + n + "}";
-        sub_result = re.subn(needle, t, line, 1);
+        sub_result = re.subn(needle, out_prefix+t, line, 1);
         if sub_result[1] != 0: # A replacement was made
             in_colors.pop(n);
             # TODO(stijn): in case I want to write out replacements found, print sub_results to the correct bus;
@@ -86,8 +91,9 @@ def template_file_export(in_colors: dict, in_template_file, output_directory):
         # Split to list based on line-ending
         lines = file.read().splitlines(True);
         colors_sewing_kit = in_colors.copy();
+        out_prefix = "#"; # NOTE(stijn): we can templatize the prefix if need be, not required for now
         for line in lines:
-            output_stream.write(template_line_replace_token(line, colors_sewing_kit));
+            output_stream.write(template_line_replace_token(line, colors_sewing_kit, out_prefix));
 
     # Export to output directory
     in_template_file_name = os.path.basename(in_template_file).split('/')[-1];
@@ -111,7 +117,6 @@ def color_format_exchanger(theme_path: os.PathLike, template_dir: os.PathLike, o
             template_file_export(theme_colors, template, output_dir);
 
     theme_copy_path = os.path.join(output_dir, "colors.yml");
-    print(theme_copy_path);
     shutil.copy(theme_path, theme_copy_path);
 
 
