@@ -90,6 +90,7 @@
         "format-linked": "{ifname} (No IP) ",
         "format-disconnected": "",
         // "format-alt": "{ifname}: {ipaddr}/{cidr}"
+        "on-click": "alacritty -e nmtui"
     },
     "pulseaudio": {
         // "scroll-step": 1, // %, can be a float
