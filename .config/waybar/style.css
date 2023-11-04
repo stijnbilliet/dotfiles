@@ -34,7 +34,7 @@ button:hover {
 #workspaces button {
     padding: 0 5px;
     background-color: transparent;
-    color: @color15;
+    color: @color7;
 }
 
 #workspaces button:hover {
@@ -43,6 +43,7 @@ button:hover {
 
 #workspaces button.focused {
     background-color: @color8;
+    color: @color15;
     box-shadow: inset 0 -3px @color3;
 }
 
