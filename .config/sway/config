@@ -11,7 +11,7 @@ set $menu wofi --show run --color ~/.config/cfx/colors.wofi
 set $laptopscreen eDP-1
 
 ### Output configuration
-output * bg ~/Nextcloud/Photos/Wallpapers/CygnusMosaicFull.jpg fill
+output * bg ~/.config/wallpapers/dark_cygnus.jpg fill
 output HDMI-A-1 resolution 2560x1440
 
 # Handle lid closed action
