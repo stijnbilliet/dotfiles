@@ -102,6 +102,7 @@ exec swayidle -w \
 # Move focus to the parent container
     bindsym $mod+a focus parent
 
+### Modes
 # Resizing windows
 mode "resize" {
     bindsym $left resize shrink width 10px
@@ -116,11 +117,6 @@ mode "resize" {
     bindsym Escape mode "default"
 }
 bindsym $mod+r mode "resize"
-
-# Audio control
-    bindsym XF86AudioMute exec pactl set-sink-mute @DEFAULT_SINK@ toggle
-    bindsym XF86AudioRaiseVolume exec pactl set-sink-volume @DEFAULT_SINK@ +5%
-    bindsym XF86AudioLowerVolume exec pactl set-sink-volume @DEFAULT_SINK@ -5%
 
 # Exit mode
 set $exit " [s]     [p]      [r]     [l]     [L]"
@@ -140,12 +136,53 @@ mode $exit {
 
 bindsym --to-code $mod+x mode $exit
 
+#
+# Screenshots
+#
+set $screenshot_disk "To   - [s]election    [f]ull" 
+set $screenshot_clip "To   - [s]election    [f]ull"
+# To Disk
+mode $screenshot_disk {
+    bindsym --to-code {
+    	# Selection
+        s exec 'grim -g "$(slurp)" ~/Pictures/screenshots/ps_$(date +"%Y%m%d%H%M%S").png', mode "default"
+	# Full
+        f exec 'grim ~/Pictures/screenshots/ps_$(date +"%Y%m%d%H%M%S").png', mode "default"
+
+        Return mode "default"
+        Escape mode "default"
+        $mod+Print mode "default"
+    }
+}
+bindsym --to-code $mod+Print mode $screenshot_disk
+
+# To Clipboard
+mode $screenshot_clip {
+    bindsym --to-code {
+	# Selection
+	s exec 'grim -g "$(slurp)" - | wl-copy', mode "default"
+	# Full
+	f exec 'grim - | wl-copy', mode "default"
+
+        Return mode "default"
+        Escape mode "default"
+        $mod+Shift+Print mode "default"
+    }
+}
+bindsym --to-code $mod+Shift+Print mode $screenshot_clip
+
 ### Status Bar:
 bar swaybar_command waybar
 
 ### Misc:
 # gaps
 gaps inner 10
+
+# Audio control
+    bindsym XF86AudioMute exec pactl set-sink-mute @DEFAULT_SINK@ toggle
+    bindsym XF86AudioRaiseVolume exec pactl set-sink-volume @DEFAULT_SINK@ +5%
+    bindsym XF86AudioLowerVolume exec pactl set-sink-volume @DEFAULT_SINK@ -5%
+
 
 # no titlebar
 default_border none
