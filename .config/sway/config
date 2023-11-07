@@ -104,7 +104,8 @@ exec swayidle -w \
 
 ### Modes
 # Resizing windows
-mode "resize" {
+set $resize ""
+mode $resize {
     bindsym $left resize shrink width 10px
     bindsym $down resize grow height 10px
     bindsym $up resize shrink height 10px
@@ -116,17 +117,17 @@ mode "resize" {
     bindsym Return mode "default"
     bindsym Escape mode "default"
 }
-bindsym $mod+r mode "resize"
+bindsym $mod+r mode $resize
 
 # Exit mode
-set $exit " [s]     [p]      [r]     [l]     [L]"
+set $exit " ₛ     ₚ     ᵣ     ₗ    ₑ"
 mode $exit {
     bindsym --to-code {
         s exec systemctl suspend, mode "default"
         p exec systemctl poweroff
         r exec systemctl reboot
 	l exec swaylock -f -c 000000, mode "default"
-        Shift+l exec swaymsg exit
+        e exec swaymsg exit
     
         Return mode "default"
         Escape mode "default"
@@ -139,8 +140,8 @@ bindsym --to-code $mod+x mode $exit
 #
 # Screenshots
 #
-set $screenshot_disk "To   - [s]election    [f]ull" 
-set $screenshot_clip "To   - [s]election    [f]ull"
+set $screenshot_disk "File |  ᵣ      ₛ" 
+set $screenshot_clip "  |  ᵣ      ₛ"
 # To Disk
 mode $screenshot_disk {
     bindsym --to-code {
@@ -187,5 +188,4 @@ gaps inner 10
 # no titlebar
 default_border none
 
-include /etc/sway/config.d/*
 include ~/.config/sway/config.d/*
