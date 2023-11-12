@@ -1,3 +1,3 @@
 live_config_reload: true
 import:
-  - ~/.config/cfx/colors.yml
+  - ~/.config/cfx/colors.dir.lnk/colors.yml

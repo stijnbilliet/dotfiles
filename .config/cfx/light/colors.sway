@@ -1,0 +1,21 @@
+### Theme Colors
+set $background #eeeeee
+set $foreground #444444
+
+set $color0 #eeeeee
+set $color1 #af0000
+set $color2 #008700
+set $color3 #5f8700
+set $color4 #0087af
+set $color5 #878787
+set $color6 #005f87
+set $color7 #444444
+set $color8 #bcbcbc
+set $color9 #d70000
+set $color10 #d70087
+set $color11 #8700af
+set $color12 #d75f00
+set $color13 #d75f00
+set $color14 #005faf
+set $color15 #005f87
+###
