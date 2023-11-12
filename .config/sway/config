@@ -9,6 +9,7 @@ set $browser librewolf
 set $filemanager $term -e ranger
 set $menu wofi --show run --color ~/.config/cfx/colors.wofi
 set $laptopscreen eDP-1
+set $exec exec --no-startup-id exec fish
 
 ### Output configuration
 output * bg ~/.config/wallpapers/dark_cygnus.jpg fill
@@ -138,21 +139,20 @@ mode $exit {
 bindsym --to-code $mod+x mode $exit
 
 #
-# Screenshots
+# Screenshot modes
 #
-set $screenshot_disk "File |  ᵣ      ₛ" 
-set $screenshot_clip "  |  ᵣ      ₛ"
+set $screenshot_disk "PrintScreen File" 
+set $screenshot_clip "PrintScreen "
 # To Disk
 mode $screenshot_disk {
     bindsym --to-code {
     	# Selection
-        s exec 'grim -g "$(slurp)" ~/Pictures/screenshots/ps_$(date +"%Y%m%d%H%M%S").png', mode "default"
+        --whole-window BTN_LEFT exec 'grim -g "$(~/.config/sway/scripts/slurp_bind.fish | tail -n 1)" ~/ps_$(date +"%Y%m%d%H%M%S").png', mode "default"
 	# Full
-        f exec 'grim ~/Pictures/screenshots/ps_$(date +"%Y%m%d%H%M%S").png', mode "default"
+        Print exec 'grim ~ps_$(date +"%Y%m%d%H%M%S").png', mode "default"
 
         Return mode "default"
         Escape mode "default"
-        $mod+Print mode "default"
     }
 }
 bindsym --to-code $mod+Print mode $screenshot_disk
@@ -161,16 +161,15 @@ bindsym --to-code $mod+Print mode $screenshot_disk
 mode $screenshot_clip {
     bindsym --to-code {
 	# Selection
-	s exec 'grim -g "$(slurp)" - | wl-copy', mode "default"
+	--whole-window BTN_LEFT exec 'grim -g "$(~/.config/sway/scripts/slurp_bind.fish | tail -n 1)" - | wl-copy', mode "default"
 	# Full
-	f exec 'grim - | wl-copy', mode "default"
+	Print exec 'grim - | wl-copy', mode "default"
 
         Return mode "default"
         Escape mode "default"
-        $mod+Shift+Print mode "default"
     }
 }
-bindsym --to-code $mod+Shift+Print mode $screenshot_clip
+bindsym --to-code Print mode $screenshot_clip
 
 ### Status Bar:
 bar swaybar_command waybar
@@ -180,10 +179,17 @@ bar swaybar_command waybar
 gaps inner 10
 
 # Audio control
-    bindsym XF86AudioMute exec pactl set-sink-mute @DEFAULT_SINK@ toggle
-    bindsym XF86AudioRaiseVolume exec pactl set-sink-volume @DEFAULT_SINK@ +5%
-    bindsym XF86AudioLowerVolume exec pactl set-sink-volume @DEFAULT_SINK@ -5%
+bindsym XF86AudioRaiseVolume exec pactl set-sink-volume @DEFAULT_SINK@ +5%
+bindsym XF86AudioLowerVolume exec pactl set-sink-volume @DEFAULT_SINK@ -5%
+bindsym XF86AudioMute exec pactl set-sink-mute @DEFAULT_SINK@ toggle
+bindsym XF86AudioMicMute exec pactl set-source-mute @DEFAULT_SOURCE@ toggle
+bindsym XF86AudioPlay exec playerctl play-pause
+bindsym XF86AudioNext exec playerctl next
+bindsym XF86AudioPrev exec playerctl previous
 
+# Screen brightness
+bindsym XF86MonBrightnessDown exec brightnessctl set 5%-
+bindsym XF86MonBrightnessUp exec brightnessctl set 5%+
 
 # no titlebar
 default_border none
