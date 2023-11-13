@@ -141,8 +141,8 @@ bindsym --to-code $mod+x mode $exit
 #
 # Screenshot modes
 #
-set $screenshot_disk "PrintScreen File" 
-set $screenshot_clip "PrintScreen "
+set $screenshot_disk "PrintScr to " 
+set $screenshot_clip "PrintScr to "
 # To Disk
 mode $screenshot_disk {
     bindsym --to-code {
