@@ -1,8 +1,7 @@
 @import "../cfx/colors.dir.lnk/colors.waybar.css";
 
 * {
-    /* `otf-font-awesome` is required to be installed for icons */
-    font-family: Agave, Material Design Icons, "Font Awesome 5 Free";
+    font-family: Noto Sans, "Font Awesome 5 Free";
     font-size: 1rem;
 }
 
