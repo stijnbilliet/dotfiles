@@ -1,3 +1,3 @@
 #!/usr/bin/fish
 
-ln -sf ~/.config/wallpapers/dark_cygnus.jpg ~/.config/wallpapers/wallpaper.lnk
+ln -sf ~/.local/share/wallpapers/dark_cygnus.jpg ~/.wallpaper

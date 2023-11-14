@@ -1,3 +1,3 @@
 #!/usr/bin/fish
 
-ln -sfn ~/.config/cfx/light/ ~/.config/cfx/colors.dir.lnk
+ln -sfn ~/.config/cfx/light/ ~/.color.d

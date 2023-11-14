@@ -1,3 +1,3 @@
 #!/usr/bin/fish
 
-ln -sf ~/.config/wallpapers/dusk_light.jpg ~/.config/wallpapers/wallpaper.lnk
+ln -sf ~/.local/share/wallpapers/dusk_light.jpg ~/.wallpaper
