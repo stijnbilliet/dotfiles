@@ -1,4 +1,4 @@
-@import "../cfx/colors.dir.lnk/colors.waybar.css";
+@import "../../.color.d/colors.waybar.css";
 
 * {
     font-family: Noto Sans, "Font Awesome 5 Free";

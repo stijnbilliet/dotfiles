@@ -7,12 +7,12 @@ set $right l
 set $term alacritty
 set $browser librewolf
 set $filemanager $term -e ranger
-set $menu wofi --show run --color ~/.config/cfx/colors.dir.lnk/colors.wofi
+set $menu wofi --show run --color ~/.color.d/colors.wofi
 set $laptopscreen eDP-1
 set $exec exec --no-startup-id exec fish
 
 ### Output configuration
-output * bg ~/.config/wallpapers/wallpaper.lnk fill
+output * bg ~/.wallpaper fill
 output eDP-1 resolution 2560x1440 scale 1.25
 output HDMI-A-1 resolution 2560x1440
 
