@@ -41,6 +41,9 @@ exec swayidle -w \
 # Start your launcher
     bindsym $mod+d exec $menu
 
+# Exit options menu
+    bindsym $mod+x exec .config/wofi/scripts/powermenu.sh
+
 # Drag floating windows by holding down $mod and left mouse button.
     # Resize them with right mouse button + $mod.
     # Change normal to inverse left and right mouse button
@@ -121,23 +124,6 @@ mode $resize {
 }
 bindsym $mod+r mode $resize
 
-# Exit mode
-set $exit " ₛ     ₚ     ᵣ     ₗ    ₑ"
-mode $exit {
-    bindsym --to-code {
-        s exec systemctl suspend, mode "default"
-        p exec systemctl poweroff
-        r exec systemctl reboot
-	l exec swaylock -f -c 000000, mode "default"
-        e exec swaymsg exit
-    
-        Return mode "default"
-        Escape mode "default"
-        $mod+x mode "default"
-    }
-}
-
-bindsym --to-code $mod+x mode $exit
 
 #
 # Screenshot modes
