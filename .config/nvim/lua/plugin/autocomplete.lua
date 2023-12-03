@@ -1,4 +1,17 @@
 -- Autocompletion
+local function cmp_generate_mapping()
+    local keymap = require 'keymaps'
+    local luacmpmapping = {}
+    for _, v in ipairs(keymap.mapping.luacmp) do
+        if type(v.opts) ~= "table" or next(v.opts) ~= nil then
+            luacmpmapping[v.key] = v.func(v.opts);
+        else
+            luacmpmapping[v.key] = v.func();
+        end
+    end
+    return luacmpmapping;
+end
+
 return {
   {
     'hrsh7th/nvim-cmp',
@@ -32,6 +45,7 @@ return {
             { name = 'nvim_lsp' },
             { name = 'luasnip' },
           },
+          mapping = cmp.mapping.preset.insert(cmp_generate_mapping()),
         }
     end
   },

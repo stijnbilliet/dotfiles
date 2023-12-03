@@ -45,20 +45,18 @@
 
             --  Gets run when an LSP connects to a particular buffer, set the mode, buffer and description
             local on_attach = function(_, bufnr)
-              local nmap = function(keys, func, desc)
-                if desc then
-                  desc = 'LSP: ' .. desc
+                local keymap = require('keymaps')
+
+                local lsp_key_set = function(mode, keys, func, desc)
+                    if desc then
+                        desc = 'LSP: ' .. desc
+                    end
+                    vim.keymap.set(mode, keys, func, { buffer = bufnr, desc = desc })
                 end
-                vim.keymap.set('n', keys, func, { buffer = bufnr, desc = desc })
-              end
 
-              -- TODO(stijn): move these remaps to keymaps.lua
-              nmap('<leader>rn', vim.lsp.buf.rename, '[R]e[n]ame')
-
-              nmap('gd', require('telescope.builtin').lsp_definitions, '[G]oto [D]efinition')
-              nmap('gD', vim.lsp.buf.declaration, '[G]oto [D]eclaration')
-              nmap('gr', require('telescope.builtin').lsp_references, '[G]oto [R]eferences')
-              nmap('gI', require('telescope.builtin').lsp_implementations, '[G]oto [I]mplementation')
+                for _, v in ipairs(keymap.mapping.lsp) do
+                    lsp_key_set(v.mode, v.key, v.func, v.opts.desc)
+                end  
             end
 
             -- Ensure the servers above are installed

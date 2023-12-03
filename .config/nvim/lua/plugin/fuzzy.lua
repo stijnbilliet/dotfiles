@@ -7,9 +7,12 @@ return {
       'nvim-lua/plenary.nvim',
     },
     config = function()
-        require("telescope").setup({})
+        local telescope = require("telescope");
+        telescope.setup({})
         -- Enable telescope fzf native, if installed
-        pcall(require('telescope').load_extension, 'fzf')
+        pcall(telescope.load_extension, 'fzf')
+
     end
   },
 }
+

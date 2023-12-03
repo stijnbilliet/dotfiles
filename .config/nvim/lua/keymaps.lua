@@ -27,43 +27,38 @@ local function cmp_luasnip_select_prev_item()
 end
 
 local telescopekeys = {
-    { key ='<leader>?',     mode='n',       func=telescope_ns.oldfiles,             opts={ desc = '[?] Find recently opened files' } },
-    { key ='<leader>?',     mode='n',       func=telescope_ns.buffers,              opts={ desc = '[ ] Find existing buffers' } },
-    { key ='<leader>?',     mode='n',       func=telescope_ns.find_files,           opts={ desc = '[S]earch [F]iles' } },
-    { key ='<leader>?',     mode='n',       func=telescope_ns.help_tags,            opts={ desc = '[S]earch [H]elp' } },
-    { key ='<leader>?',     mode='n',       func=telescope_ns.grep_string,          opts={ desc = '[S]earch current [W]ord' } },
-    { key ='<leader>?',     mode='n',       func=telescope_ns.live_grep,            opts={ desc = '[S]earch by [G]rep' } },
+    { key='<leader>?',         mode='n',        func=telescope_ns.oldfiles,                 opts={ desc='[?] Find recently opened files' } },
+    { key='<leader><space>',   mode='n',        func=telescope_ns.buffers,                  opts={ desc='[ ] Find existing buffers' } },
+    { key='<leader>sf',        mode='n',        func=telescope_ns.find_files,               opts={ desc='[S]earch [F]iles' } },
+    { key='<leader>sh',        mode='n',        func=telescope_ns.help_tags,                opts={ desc='[S]earch [H]elp' } },
+    { key='<leader>sw',        mode='n',        func=telescope_ns.grep_string,              opts={ desc='[S]earch current [W]ord' } },
+    { key='<leader>sg',        mode='n',        func=telescope_ns.live_grep,                opts={ desc='[S]earch by [G]rep' } },
 }
 
 local cmpkeys = {
-    { key = '<C-n>',        mode='n',       func=cmp.mapping.select_next_item,      opts={} },
-    { key = '<C-p>',        mode='n',       func=cmp.mapping.select_prev_item,      opts={} },
-    { key = '<C-d>',        mode='n',       func=cmp.mapping.scroll_docs,           opts=-4 },
-    { key = '<C-f>',        mode='n',       func=cmp.mapping.scroll_docs,           opts= 4 },
-    { key = '<C-Space>',    mode='n',       func=cmp.mapping.complete,              opts={} },
-    { key = '<CR>',         mode='n',       func=cmp.mapping.confirm,               opts={ behavior = cmp.ConfirmBehavior.Replace, select = true } },
-    { key = '<Tab>',        mode='n',       func=cmp_luasnip_select_next_item,      opts={} },
-    { key = '<S-Tab>',      mode='n',       func=cmp_luasnip_select_prev_item,      opts={} }
+    { key='<C-n>',             mode='n',        func=cmp.mapping.select_next_item,          opts={} },
+    { key='<C-p>',             mode='n',        func=cmp.mapping.select_prev_item,          opts={} },
+    { key='<C-d>',             mode='n',        func=cmp.mapping.scroll_docs,               opts=-4 },
+    { key='<C-f>',             mode='n',        func=cmp.mapping.scroll_docs,               opts= 4 },
+    { key='<C-Space>',         mode='n',        func=cmp.mapping.complete,                  opts={} },
+    { key='<CR>',              mode='n',        func=cmp.mapping.confirm,                   opts={ behavior = cmp.ConfirmBehavior.Replace, select = true } },
+    { key='<Tab>',             mode='n',        func=cmp_luasnip_select_next_item,          opts={} },
+    { key='<S-Tab>',           mode='n',        func=cmp_luasnip_select_prev_item,          opts={} }
 }
 
-local function cmp_generate_mapping()
-    local luacmpkeys = {}
-    for _, v in ipairs(cmpkeys) do
-        if type(v.opts) ~= "table" or next(v.opts) ~= nil then
-            luacmpkeys[v.key] = v.func(v.opts);
-        else
-            luacmpkeys[v.key] = v.func();
-        end
-    end
-    return luacmpkeys;
-end
+local lspkeys = {
+    { key='<leader>rn',        mode='n',        func=vim.lsp.buf.rename,                    opts={ desc='[R]e[n]ame'} },
+    { key='gd',                mode='n',        func=telescope_ns.lsp_definitions,          opts={ desc='[G]oto [D]efinition'} },
+    { key='gD',                mode='n',        func=vim.lsp.buf.declaration,               opts={ desc='[G]oto [D]eclaration'} },
+    { key='gr',                mode='n',        func=telescope_ns.lsp_references,           opts={ desc='[G]oto [R]eferences'} },
+    { key='gI',                mode='n',        func=telescope_ns.lsp_implementations,      opts={ desc='[G]oto [I]mplementation'} },
+}
 
--- Set telescope keys
-for _, v in ipairs(telescopekeys) do
-    vim.keymap.set(v.mode, v.key, v.func, v.opts)
-end
+return {
+    mapping = {
+        telescope   = telescopekeys,
+        luacmp      = cmpkeys,
+        lsp         = lspkeys,
+    }
+}
 
--- Set Lua Cmp keys
-cmp.setup({
-    mapping = cmp.mapping.preset.insert(cmp_generate_mapping())
-})

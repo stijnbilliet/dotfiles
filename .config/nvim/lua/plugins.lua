@@ -14,8 +14,6 @@ vim.opt.rtp:prepend(lazypath)
 
 -- Include plugins directory and set up plugins within
 require('lazy').setup({
-  -- Useful plugin to show you pending keybinds.
-  { 'folke/which-key.nvim', opts = {} },
   -- Include directory
   { import = 'plugin' },
 }, {})
