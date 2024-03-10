@@ -1,10 +1,18 @@
-local function gen_keys()
+local function getdapfromkeymap(index)
   local keymap = require 'keymaps'
   local dap_mapping = {}
-  for k, v in ipairs(keymap.mapping.dbg) do
+  for k, v in ipairs(keymap.mapping.dbg[index]) do
     dap_mapping[k] = {v.key, v.func, v.opts.desc, v.mode};
   end
   return dap_mapping;
+end
+
+local function getdapkeys()
+    return getdapfromkeymap(1);
+end
+
+local function getdapuikeys()
+    return getdapfromkeymap(2);
 end
 
 return {
@@ -16,10 +24,7 @@ return {
     {
       "rcarriga/nvim-dap-ui",
       -- stylua: ignore
-      keys = {
-        { "<leader>du", function() require("dapui").toggle({ }) end, desc = "Dap UI" },
-        { "<leader>de", function() require("dapui").eval() end, desc = "Eval", mode = {"n", "v"} },
-      },
+      keys = getdapuikeys,
       opts = {},
       config = function(_, opts)
         -- setup dap config by VsCode launch.json file
@@ -68,7 +73,7 @@ return {
     },
   },
 
-  keys = gen_keys;
+  keys = getdapkeys,
 
   --TODO(stijn): Need to debug, but this possibly needs to be moved to after.lua to ensure lazyvim.config is properly defined at this point in time
   --[[
