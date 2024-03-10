@@ -50,31 +50,33 @@ local cmpkeys = {
 }
 
 local lspkeys = {
-    { key='<leader>rn',        mode='n',            func=vim.lsp.buf.rename,                                                           opts={ desc='[R]e[n]ame'} },
-    { key='gd',                mode='n',            func=telescope_ns.lsp_definitions,                                                 opts={ desc='[G]oto [D]efinition'} },
-    { key='gD',                mode='n',            func=vim.lsp.buf.declaration,                                                      opts={ desc='[G]oto [D]eclaration'} },
-    { key='gr',                mode='n',            func=telescope_ns.lsp_references,                                                  opts={ desc='[G]oto [R]eferences'} },
-    { key='gI',                mode='n',            func=telescope_ns.lsp_implementations,                                             opts={ desc='[G]oto [I]mplementation'} },
+    { key='<F2>',              mode='n',            func=vim.lsp.buf.rename,                                                           opts={ desc='[R]e[n]ame'} },
+    { key='<F12>',             mode='n',            func=telescope_ns.lsp_definitions,                                                 opts={ desc='[G]oto [D]efinition'} },
+    { key='<C-F12>',           mode='n',            func=vim.lsp.buf.declaration,                                                      opts={ desc='[G]oto [D]eclaration'} },
+    { key='<S-F12>',           mode='n',            func=telescope_ns.lsp_references,                                                  opts={ desc='[G]oto [R]eferences'} },
+    { key='<C-F12>',           mode='n',            func=telescope_ns.lsp_implementations,                                             opts={ desc='[G]oto [I]mplementation'} },
+    { key='<C-,>',             mode='n',            func=telescope_ns.lsp_dynamic_workspace_symbols,                                             opts={ desc='[G]oto [I]mplementation'} },
 }
 
 local dapkeys = {
+    { key='<F5>',              mode='n',            func=dap.continue,                                                                 opts={ desc = "Continue" } },
+    { key='<F10>',             mode='n',            func=dap.step_over,                                                                opts={ desc = "Step Over" } },
+    { key='<F11>',             mode='n',            func=dap.step_into,                                                                opts={ desc = "Step Into" } },
+    { key='<F9>',              mode='n',            func=dap.toggle_breakpoint,                                                        opts={ desc = "Toggle Breakpoint" } },
+    { key='<C-F10>',           mode='n',            func=dap.run_to_cursor,                                                            opts={ desc = "Run to Cursor" } },
+    { key='<S-F11>',           mode='n',            func=dap.step_out,                                                                 opts={ desc = "Step Out" } },
+    { key='<S-F5>',            mode='n',            func=dap.terminate,                                                                opts={ desc = "Terminate" } },
+
     { key='<leader>dB',        mode='n',            func=function() dap.set_breakpoint(vim.fn.input('Breakpoint condition: ')) end,    opts={ desc = "Breakpoint Condition" } },
-    { key='<leader>da',        mode='n',            func=function() dap.continue({ before = get_args }) end,                           opts={ desc = "Run with Args" } },
-    { key='<leader>db',        mode='n',            func=dap.toggle_breakpoint,                                                        opts={ desc = "Toggle Breakpoint" } },
-    { key='<leader>dc',        mode='n',            func=dap.continue,                                                                 opts={ desc = "Continue" } },
-    { key='<leader>dC',        mode='n',            func=dap.run_to_cursor,                                                            opts={ desc = "Run to Cursor" } },
     { key='<leader>dg',        mode='n',            func=dap.goto_,                                                                    opts={ desc = "Go to line (no execute)" } },
-    { key='<leader>di',        mode='n',            func=dap.step_into,                                                                opts={ desc = "Step Into" } },
     { key='<leader>dj',        mode='n',            func=dap.down,                                                                     opts={ desc = "Down" } },
     { key='<leader>dk',        mode='n',            func=dap.up,                                                                       opts={ desc = "Up" } },
     { key='<leader>dl',        mode='n',            func=dap.run_last,                                                                 opts={ desc = "Run Last" } },
-    { key='<leader>do',        mode='n',            func=dap.step_out,                                                                 opts={ desc = "Step Out" } },
-    { key='<leader>dO',        mode='n',            func=dap.step_over,                                                                opts={ desc = "Step Over" } },
     { key='<leader>dp',        mode='n',            func=dap.pause,                                                                    opts={ desc = "Pause" } },
     { key='<leader>dr',        mode='n',            func=dap.repl.toggle,                                                              opts={ desc = "Toggle REPL" } },
     { key='<leader>ds',        mode='n',            func=dap.session,                                                                  opts={ desc = "Session" } },
-    { key='<leader>dt',        mode='n',            func=dap.terminate,                                                                opts={ desc = "Terminate" } },
     { key='<leader>dw',        mode='n',            func=dap_ui_widgets.hover,                                                         opts={ desc = "Widgets" } },
+    --{ key='<leader>da',        mode='n',            func=function() dap.continue({ before = get_args }) end,                           opts={ desc = "Run with Args" } },
 }
 
 local dapuikeys = {
