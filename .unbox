@@ -17,3 +17,5 @@ fi
 echo -e "\n -- Installing ansible requirements \n"
 export PATH="$PATH:~/.local/bin"
 ansible-galaxy install -r ~/.config/ansible/requirements.yml
+
+# TODO(stijn) run ansible playbook here
