@@ -13,12 +13,13 @@
         "spacing": 10
     },
     "clock": {
-	"format": "{:%a %b %H:%M}",
+        "format": "{:%a %b %H:%M}",
+        "on-click": "alacritty -e khal list now 7days"
 	//"tooltip-format": "{:%A %b %Y}",
         //"tooltip-format": "<big>{:%Y %B}</big>\n<tt><small>{calendar}</small></tt>",
     },
     "backlight": {
-	"format": "{icon} ",
+        "format": "{icon} ",
         "tooltip-format": "{percent}%",
         "format-icons": ["", "", "", "", "", "", "", "", ""]
     },
@@ -30,7 +31,7 @@
         },
         "format": "{icon}",
         "format-charging": "{capacity}% ",
-	"tooltip-format": "{time} {capacity}%",
+        "tooltip-format": "{time} {capacity}%",
         "format-icons": ["", "", "", "", ""]
         // "format-alt": "{time} {icon}",
         // "format-good": "", // An empty format will hide the module
@@ -55,7 +56,7 @@
         "format": "{icon}{format_source}",
         "format-bluetooth": " {icon}{format_source}",
         "format-bluetooth-muted": " {format_source}",
-	"tooltip-format": "{desc} {volume}%",
+        "tooltip-format": "{desc} {volume}%",
         "format-muted": "",
         "format-source": "",
         "format-source-muted": " ",
