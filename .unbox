@@ -1,4 +1,5 @@
 #!/bin/bash
+export PATH="$PATH:~/.local/bin"
 
 set -e # Exit immediately on command failures
 
@@ -14,8 +15,12 @@ if [ $? != 0 ]; then
     pip3 install ansible
 fi
 
-echo -e "\n -- Installing ansible requirements \n"
-export PATH="$PATH:~/.local/bin"
-ansible-galaxy install -r ~/.config/ansible/requirements.yml
+# Note(stijn): no active requirements for now, reinstate this when we need it
+# echo -e "\n -- Installing ansible requirements \n"
+# ansible-galaxy install -r ~/.config/ansible/requirements.yml
 
-# TODO(stijn) run ansible playbook here
+echo -e "\n -- Running ansible playbook for this user \n"
+ansible-playbook -i ~/.config/ansible/inventory.ini ~/.config/ansible/dotfiles.yml --ask-become-pass
+
+echo -e "\n -- Done setting up your environment. Enjoy! \n"
+exit 0

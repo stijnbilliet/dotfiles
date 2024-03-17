@@ -1,0 +1,33 @@
+---
+# Install sway
+- name: Deploy dev environment
+  hosts: local
+  tasks:
+    - name: Installing required packages
+      become: true
+      package:
+        name: "{{packages}}"
+        state: present
+
+    # Set up dotfiles alias (git)
+    # i.e. git df status
+    - name: Set up git dotfiles alias
+      git_config:
+        name: alias.df
+        scope: global
+        value: "!git --git-dir=$HOME/dotfiles.git/ --work-tree=$HOME"
+    
+    # Set showUntrackedFiles to no
+    - name: Set up showUntrackedFiles to false (git)
+      git_config:
+        repo: $HOME/dotfiles.git/
+        name: status.showUntrackedFiles
+        scope: local
+        value: "no"
+
+    # Change to the fish shell by default
+    - name: Change default shell to fish
+      become: yes
+      user:
+        name: sbilliet
+        shell: /usr/bin/fish
