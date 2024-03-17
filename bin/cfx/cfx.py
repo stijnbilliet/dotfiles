@@ -80,7 +80,6 @@ def template_line_replace_token(line: str, in_colors: dict, out_prefix: str):
         needle = "{" + n + "}";
         sub_result = re.subn(needle, out_prefix+t, line, 1);
         if sub_result[1] != 0: # A replacement was made
-            in_colors.pop(n);
             # TODO(stijn): in case I want to write out replacements found, print sub_results to the correct bus;
             return sub_result[0];
     return line;
@@ -104,6 +103,10 @@ def template_file_export(in_colors: dict, in_template_file, output_directory):
 
 
 def color_format_exchanger(theme_path: os.PathLike, template_dir: os.PathLike, output_dir: os.PathLike, is_light_theme : bool = False):
+    # Ensure path to output exists
+    if not os.path.exists(output_dir):
+        os.makedirs(output_dir);
+
     # Get yaml dictionary from theme file
     with open(theme_path, 'r') as file:
         theme_yaml = yaml.safe_load(file);
@@ -132,8 +135,6 @@ def main():
     light_theme_def = args['light'];
     output_directory = args['outdir'] if args['outdir'] else output_directory_default;
 
-    if not os.path.exists(output_directory):
-        os.makedirs(output_directory);
     
     script_path = os.path.dirname(os.path.abspath(__file__));
     templates_def_dir = os.path.join(script_path, "templates");
@@ -141,11 +142,11 @@ def main():
         raise NotADirectoryError("Template directory could not be found, should be next to cfx.py file.")
 
     # Read dark theme
-    color_format_exchanger(dark_theme_def, templates_def_dir, output_directory);
+    color_format_exchanger(dark_theme_def, templates_def_dir, output_directory + "dark");
 
     # Read light theme (if specified)
     if light_theme_def:
-        color_format_exchanger(light_theme_def, templates_def_dir, output_directory, True);
+        color_format_exchanger(light_theme_def, templates_def_dir, output_directory + "light", True);
 
 if __name__ == "__main__":
     main()

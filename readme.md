@@ -1,5 +1,8 @@
 # Cloning this repository
+I am using a bare style git repo that stores the git files in a seperate directory from the actual repositories content.
+We will be cloning directly in the home directory:
 ```
+cd ~
 git clone --bare https://github.com/stijnbilliet/dotfiles.git $HOME/dotfiles.git/
 ```
 

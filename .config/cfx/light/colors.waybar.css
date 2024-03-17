@@ -1,7 +1,7 @@
 /* Theme Colors */
 @define-color foreground #444444;
 @define-color background #eeeeee;
-@define-color cursor #ffffff;
+@define-color cursor #000000;
 
 @define-color color0 #eeeeee;
 @define-color color1 #af0000;

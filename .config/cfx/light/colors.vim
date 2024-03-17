@@ -1,7 +1,7 @@
 " Special
 let background = "#eeeeee"
 let foreground = "#444444"
-let cursor     = "#ffffff"
+let cursor     = "#000000"
 
 " Colors
 let color0  = "#eeeeee"

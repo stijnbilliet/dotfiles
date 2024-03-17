@@ -1,3 +1,0 @@
-live_config_reload: true
-import:
-  - ~/.color.d/colors.yml

@@ -3,7 +3,7 @@
     "special": {{
         "background": "#eeeeee",
         "foreground": "#444444",
-        "cursor": "#ffffff"
+        "cursor": "#000000"
     }},
     "colors": {{
         "color0": "#eeeeee",
