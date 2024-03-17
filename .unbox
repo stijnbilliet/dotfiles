@@ -6,12 +6,14 @@ set -e # Exit immediately on command failures
 echo -e "-- Checking if python is installed \n"
 python3 --version
 if [ $? != 0 ]; then # Check return value of last statement
+    echo -e "-- Python was missing, installing it now"
     dnf install python3
 fi
 
 echo -e "\n -- Checking if Ansible is installed \n"
 pip3 show ansible
 if [ $? != 0 ]; then 
+    echo -e "-- Ansible was missing, installing it now"
     pip3 install ansible
 fi
 
