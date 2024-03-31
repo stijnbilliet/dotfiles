@@ -45,18 +45,18 @@
 
             --  Gets run when an LSP connects to a particular buffer, set the mode, buffer and description
             local on_attach = function(_, bufnr)
-                local keymap = require('keymaps')
+                --local keymap = require('keymaps')
 
-                local lsp_key_set = function(mode, keys, func, desc)
-                    if desc then
-                        desc = 'LSP: ' .. desc
-                    end
-                    vim.keymap.set(mode, keys, func, { buffer = bufnr, desc = desc })
-                end
+                --local lsp_key_set = function(mode, keys, func, desc)
+                --    if desc then
+                --        desc = 'LSP: ' .. desc
+                --    end
+                --    vim.keymap.set(mode, keys, func, { buffer = bufnr, desc = desc })
+                --end
 
-                for _, v in ipairs(keymap.mapping.lsp) do
-                    lsp_key_set(v.mode, v.key, v.func, v.opts.desc)
-                end  
+                --for _, v in ipairs(keymap.mapping.lsp) do
+                --    lsp_key_set(v.mode, v.key, v.func, v.opts.desc)
+                --end  
             end
 
             -- Ensure the servers above are installed
