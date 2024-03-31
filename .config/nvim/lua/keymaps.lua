@@ -107,8 +107,8 @@ local dapkeys = {
 }
 
 local dapuikeys = {
-    { key='<leader>du',         mode = 'n',             func=dap_ui.toggle,                    pts={desc = "Dap UI" }},
-    { key='<leader>de',         mode = {'n', 'v'},      func=dap_ui.eval,                      pts={desc = "Eval"} },
+    { key='<leader>du',         mode = 'n',             func=dap_ui.toggle,                 opts={desc = "Dap UI" }},
+    { key='<leader>de',         mode = {'n', 'v'},      func=dap_ui.eval,                   opts={desc = "Eval"} },
 }
 
 -- Auto bind lspkeys on lspattach
