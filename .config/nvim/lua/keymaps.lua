@@ -68,50 +68,51 @@ end
 local telescopekeys = {
     --TODO(stijn): Consolidate the next two entries and check if it's git repo first and then check files (Control - Shift - F)
     -- Additionally we don't want to error out if this is not a git repo
-    { key='<S-f>',              mode='n',           func=telescope_ns.find_files,           opts={ desc='Search Files' } },
-    { key='<C-f>',              mode='n',           func=telescope_ns.git_files,            opts={ desc='Search Git Files' } },
-    { key='<C-Tab>',            mode='n',           func=telescope_ns.oldfiles,             opts={ desc='[?] Find recently opened files' } },
-    { key='<F1>',               mode='n',           func=telescope_ns.help_tags,            opts={ desc='Search Help' } },
-    { key='<leader>sw',         mode='n',           func=telescope_ns.grep_string,          opts={ desc='[S]earch current [W]ord' } },
-    { key='<leader>sg',         mode='n',           func=telescope_ns.live_grep,            opts={ desc='[S]earch by [G]rep' } },
-    { key='<leader><space>',    mode='n',           func=telescope_ns.buffers,              opts={ desc='[ ] Find existing buffers' } },
+    { key='<S-f>',              mode='n',           func=telescope_ns.find_files,                       opts={ desc='Search Files' } },
+    { key='<C-f>',              mode='n',           func=telescope_ns.git_files,                        opts={ desc='Search Git Files' } },
+    { key='<C-Tab>',            mode='n',           func=telescope_ns.oldfiles,                         opts={ desc='[?] Find recently opened files' } },
+    { key='<F1>',               mode='n',           func=telescope_ns.help_tags,                        opts={ desc='Search Help' } },
+    { key='<leader>sw',         mode='n',           func=telescope_ns.grep_string,                      opts={ desc='[S]earch current [W]ord' } },
+    { key='<leader>sg',         mode='n',           func=telescope_ns.live_grep,                        opts={ desc='[S]earch by [G]rep' } },
+    { key='<leader><space>',    mode='n',           func=telescope_ns.buffers,                          opts={ desc='[ ] Find existing buffers' } },
 }
 
 local cmpkeys = {
-    { key='<C-d>',              mode='i',           func=cmp.mapping.scroll_docs(-4),       opts={} },
-    { key='<C-f>',              mode='i',           func=cmp.mapping.scroll_docs(4),        opts={} },
-    { key='<C-Space>',          mode={'i', 'v'},    func=cmp.mapping.complete,              opts={} },
-    { key='<CR>',               mode={'i', 'v'},    func=cmp_try_confirm,                   opts={} },
-    { key='<Tab>',              mode={'i', 'v'},    func=cmp_luasnip_select_next_item,      opts={} },
-    { key='<Down>',             mode={'i', 'v'},    func=cmp_luasnip_select_next_item,      opts={} },
-    { key='<S-Tab>',            mode={'i', 'v'},    func=cmp_luasnip_select_prev_item,      opts={} },
-    { key='<Up>',               mode={'i', 'v'},    func=cmp_luasnip_select_prev_item,      opts={} },
+    { key='<C-d>',              mode='i',           func=cmp.mapping.scroll_docs(-4),                   opts={} },
+    { key='<C-f>',              mode='i',           func=cmp.mapping.scroll_docs(4),                    opts={} },
+    { key='<C-Space>',          mode={'i', 'v'},    func=cmp.mapping.complete,                          opts={} },
+    { key='<CR>',               mode={'i', 'v'},    func=cmp_try_confirm,                               opts={} },
+    { key='<Tab>',              mode={'i', 'v'},    func=cmp_luasnip_select_next_item,                  opts={} },
+    { key='<Down>',             mode={'i', 'v'},    func=cmp_luasnip_select_next_item,                  opts={} },
+    { key='<S-Tab>',            mode={'i', 'v'},    func=cmp_luasnip_select_prev_item,                  opts={} },
+    { key='<Up>',               mode={'i', 'v'},    func=cmp_luasnip_select_prev_item,                  opts={} },
 }
 
 local lspkeys = {
-    { key='<F2>',               mode='n',           func=vim.lsp.buf.rename,                opts={ desc='Rename'} },
-    { key='<C-F12>',            mode='n',           func=vim.lsp.buf.declaration,           opts={ desc='Goto declaration'} },
-    { key='<F12>',              mode='n',           func=telescope_ns.lsp_definitions,      opts={ desc='Goto definition'} },
-    { key='<S-F12>',            mode='n',           func=telescope_ns.lsp_references,       opts={ desc='Goto references'} },
-    { key='<C-F12>',            mode='n',           func=telescope_ns.lsp_implementations,  opts={ desc='Goto implementations'} },
+    { key='<F2>',               mode='n',           func=vim.lsp.buf.rename,                            opts={ desc='Rename'} },
+    { key='<C-F12>',            mode='n',           func=vim.lsp.buf.declaration,                       opts={ desc='Goto declaration'} },
+    { key='<F12>',              mode='n',           func=telescope_ns.lsp_definitions,                  opts={ desc='Goto definition'} },
+    { key='<S-F12>',            mode='n',           func=telescope_ns.lsp_references,                   opts={ desc='Goto references'} },
+    { key='<C-F12>',            mode='n',           func=telescope_ns.lsp_implementations,              opts={ desc='Goto implementations'} },
+    { key='<C-,>',              mode='n',           func=telescope_ns.lsp_dynamic_workspace_symbols,    opts={ desc='Search Symbols' } },
 }
 
 local dapkeys = {
-    { key='<F5>',               mode='n',           func=dap_launch,                        opts={ desc = "Continue" } },
-    { key='<F10>',              mode='n',           func=dap.step_over,                     opts={ desc = "Step Over" } },
-    { key='<F11>',              mode='n',           func=dap.step_into,                     opts={ desc = "Step Into" } },
-    { key='<F9>',               mode='n',           func=dap.toggle_breakpoint,             opts={ desc = "Toggle Breakpoint" } },
-    { key='<C-F10>',            mode='n',           func=dap.run_to_cursor,                 opts={ desc = "Run to Cursor" } },
-    { key='<S-F11>',            mode='n',           func=dap.step_out,                      opts={ desc = "Step Out" } },
-    { key='<S-F5>',             mode='n',           func=dap.terminate,                     opts={ desc = "Terminate" } },
-    { key='<leader>dl',         mode='n',           func=dap.run_last,                      opts={ desc = "Run Last" } },
-    { key='<leader>dp',         mode='n',           func=dap.pause,                         opts={ desc = "Pause" } },
-    { key='<leader>dw',         mode='n',           func=dap_ui_widgets.hover,              opts={ desc = "Widgets" } },
+    { key='<F5>',               mode='n',           func=dap_launch,                                    opts={ desc = "Continue" } },
+    { key='<F10>',              mode='n',           func=dap.step_over,                                 opts={ desc = "Step Over" } },
+    { key='<F11>',              mode='n',           func=dap.step_into,                                 opts={ desc = "Step Into" } },
+    { key='<F9>',               mode='n',           func=dap.toggle_breakpoint,                         opts={ desc = "Toggle Breakpoint" } },
+    { key='<C-F10>',            mode='n',           func=dap.run_to_cursor,                             opts={ desc = "Run to Cursor" } },
+    { key='<S-F11>',            mode='n',           func=dap.step_out,                                  opts={ desc = "Step Out" } },
+    { key='<S-F5>',             mode='n',           func=dap.terminate,                                 opts={ desc = "Terminate" } },
+    { key='<leader>dl',         mode='n',           func=dap.run_last,                                  opts={ desc = "Run Last" } },
+    { key='<leader>dp',         mode='n',           func=dap.pause,                                     opts={ desc = "Pause" } },
+    { key='<leader>dw',         mode='n',           func=dap_ui_widgets.hover,                          opts={ desc = "Widgets" } },
 }
 
 local dapuikeys = {
-    { key='<leader>du',         mode = 'n',             func=dap_ui.toggle,                 opts={desc = "Dap UI" }},
-    { key='<leader>de',         mode = {'n', 'v'},      func=dap_ui.eval,                   opts={desc = "Eval"} },
+    { key='<leader>du',         mode = 'n',             func=dap_ui.toggle,                             opts={desc = "Dap UI" }},
+    { key='<leader>de',         mode = {'n', 'v'},      func=dap_ui.eval,                               opts={desc = "Eval"} },
 }
 
 -- Auto bind lspkeys on lspattach
