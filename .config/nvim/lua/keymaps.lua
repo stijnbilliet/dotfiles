@@ -66,12 +66,15 @@ end
 -- Lists of keys for all plugins that we're using
 --
 local telescopekeys = {
-    { key='<leader>?',          mode='n',           func=telescope_ns.oldfiles,             opts={ desc='[?] Find recently opened files' } },
-    { key='<leader><space>',    mode='n',           func=telescope_ns.buffers,              opts={ desc='[ ] Find existing buffers' } },
-    { key='<leader>sf',         mode='n',           func=telescope_ns.find_files,           opts={ desc='[S]earch [F]iles' } },
-    { key='<leader>sh',         mode='n',           func=telescope_ns.help_tags,            opts={ desc='[S]earch [H]elp' } },
+    --TODO(stijn): Consolidate the next two entries and check if it's git repo first and then check files (Control - Shift - F)
+    -- Additionally we don't want to error out if this is not a git repo
+    { key='<S-f>',              mode='n',           func=telescope_ns.find_files,           opts={ desc='Search Files' } },
+    { key='<C-f>',              mode='n',           func=telescope_ns.git_files,            opts={ desc='Search Git Files' } },
+    { key='<C-Tab>',            mode='n',           func=telescope_ns.oldfiles,             opts={ desc='[?] Find recently opened files' } },
+    { key='<F1>',               mode='n',           func=telescope_ns.help_tags,            opts={ desc='Search Help' } },
     { key='<leader>sw',         mode='n',           func=telescope_ns.grep_string,          opts={ desc='[S]earch current [W]ord' } },
     { key='<leader>sg',         mode='n',           func=telescope_ns.live_grep,            opts={ desc='[S]earch by [G]rep' } },
+    { key='<leader><space>',    mode='n',           func=telescope_ns.buffers,              opts={ desc='[ ] Find existing buffers' } },
 }
 
 local cmpkeys = {
