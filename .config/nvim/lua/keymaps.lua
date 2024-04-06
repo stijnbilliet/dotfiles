@@ -5,7 +5,7 @@ local dap_ui = require 'dapui'
 local dap_ui_widgets = require 'dap.ui.widgets'
 
 -- Helper functions for key binding
--- TODO(stijn): some of these would be candidates to move to a util.lua
+-- TODO(stijn): some of these would be candidates to move to a utils.lua
 local function bind_keyset(keyset)
     for _, entry in ipairs(keyset) do
         vim.keymap.set(entry.mode, entry.key, entry.func, entry.opts)
@@ -63,17 +63,25 @@ local function cmp_try_confirm()
     end
 end
 
+local function quick_open()
+    local builtin = require('telescope.builtin')
+    local utils = require('telescope.utils')
+
+    local _, ret, _ = utils.get_os_command_output({ 'git', 'rev-parse', '--is-inside-work-tree' })
+    if ret == 0 then
+        builtin.git_files()
+    else
+        builtin.find_files()
+    end
+end
+
 -- Lists of keys for all plugins that we're using
 --
 local telescopekeys = {
-    --TODO(stijn): Consolidate the next two entries and check if it's git repo first and then check files (Control - Shift - F)
-    -- Additionally we don't want to error out if this is not a git repo
-    { key='<S-f>',              mode='n',           func=telescope_ns.find_files,                       opts={ desc='Search Files' } },
-    { key='<C-f>',              mode='n',           func=telescope_ns.git_files,                        opts={ desc='Search Git Files' } },
+    { key='<C-F>',              mode='n',           func=telescope_ns.live_grep,                        opts={ desc='Search Project Files' } },
+    { key='<C-;>',              mode='n',           func=quick_open,                                    opts={ desc='Search Project Files' } },
     { key='<C-Tab>',            mode='n',           func=telescope_ns.oldfiles,                         opts={ desc='[?] Find recently opened files' } },
     { key='<F1>',               mode='n',           func=telescope_ns.help_tags,                        opts={ desc='Search Help' } },
-    { key='<leader>sw',         mode='n',           func=telescope_ns.grep_string,                      opts={ desc='[S]earch current [W]ord' } },
-    { key='<leader>sg',         mode='n',           func=telescope_ns.live_grep,                        opts={ desc='[S]earch by [G]rep' } },
     { key='<leader><space>',    mode='n',           func=telescope_ns.buffers,                          opts={ desc='[ ] Find existing buffers' } },
 }
 
