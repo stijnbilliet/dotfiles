@@ -75,6 +75,27 @@ local function quick_open()
     end
 end
 
+vim.g.terminal_window = nil
+
+function _G.toggle_terminal()
+    if vim.g.terminal_window and vim.api.nvim_win_is_valid(vim.g.terminal_window) then
+        vim.api.nvim_win_close(vim.g.terminal_window, true)
+        vim.g.terminal_window = nil
+    else
+        local term_bufs = vim.api.nvim_list_bufs()
+        for _, buf in ipairs(term_bufs) do
+            if vim.bo[buf].buftype == 'terminal' then
+                vim.api.nvim_command('bel 10sp')
+                vim.api.nvim_win_set_buf(0, buf)
+                vim.g.terminal_window = vim.api.nvim_get_current_win()
+                return
+            end
+        end
+        vim.api.nvim_command('botright split | terminal')
+        vim.g.terminal_window = vim.api.nvim_get_current_win()
+    end
+end
+
 -- Lists of keys for all plugins that we're using
 --
 local telescopekeys = {
@@ -119,8 +140,12 @@ local dapkeys = {
 }
 
 local dapuikeys = {
-    { key='<leader>du',         mode = 'n',             func=dap_ui.toggle,                             opts={desc = "Dap UI" }},
-    { key='<leader>de',         mode = {'n', 'v'},      func=dap_ui.eval,                               opts={desc = "Eval"} },
+    { key='<leader>du',         mode = 'n',         func=dap_ui.toggle,                             opts={desc = "Dap UI" }},
+    { key='<leader>de',         mode = {'n', 'v'},  func=dap_ui.eval,                               opts={desc = "Eval"} },
+}
+
+local nvimkeys = {
+    { key='<C-`>',              mode = 'n',         func=toggle_terminal,                           opts={desc = "Toggle terminal/buffer." }},
 }
 
 -- Auto bind lspkeys on lspattach
@@ -137,3 +162,4 @@ bind_keyset(telescopekeys);
 bind_keyset(cmpkeys);
 bind_keyset(dapkeys);
 bind_keyset(dapuikeys);
+bind_keyset(nvimkeys);
