@@ -8,6 +8,9 @@ require('sets')
 -- Install plugins
 require('plugins')
 
+-- Enable utils
+require('utils')
+
 -- Set up key binds
 require('keymaps')
 
