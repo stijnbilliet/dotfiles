@@ -1,3 +1,11 @@
+-- set up globals to detect operating system
+local uname = vim.loop.os_uname()
+_G.OS = uname.sysname
+_G.IS_MAC = OS == 'Darwin'
+_G.IS_LINUX = OS == 'Linux'
+_G.IS_WINDOWS = OS:find 'Windows' and true or false
+_G.IS_WSL = IS_LINUX and uname.release:find 'Microsoft' and true or false
+
 -- Don't highlight everything on search & visual incremental search
 vim.o.hlsearch = false
 vim.opt.incsearch = true
@@ -38,3 +46,8 @@ vim.o.completeopt = 'menuone,noselect'
 -- Nice colors
 vim.o.termguicolors = true
 
+-- Set up WSL as shell for nvim terminal
+if IS_WINDOWS then
+    vim.opt.shell='wsl.exe'
+    vim.cmd('set shellcmdflag="-c"')
+end

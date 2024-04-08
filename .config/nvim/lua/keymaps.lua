@@ -88,11 +88,13 @@ function _G.toggle_terminal()
                 vim.api.nvim_command('bel 10sp')
                 vim.api.nvim_win_set_buf(0, buf)
                 vim.g.terminal_window = vim.api.nvim_get_current_win()
+                vim.cmd(":startinsert")
                 return
             end
         end
         vim.api.nvim_command('botright split | terminal')
         vim.g.terminal_window = vim.api.nvim_get_current_win()
+        vim.cmd(":startinsert")
     end
 end
 
@@ -145,7 +147,7 @@ local dapuikeys = {
 }
 
 local nvimkeys = {
-    { key='<C-`>',              mode = 'n',         func=toggle_terminal,                           opts={desc = "Toggle terminal/buffer." }},
+    { key='<C-`>',              mode = {'n', 't'},         func=toggle_terminal,                           opts={desc = "Toggle terminal/buffer." }},
 }
 
 -- Auto bind lspkeys on lspattach
