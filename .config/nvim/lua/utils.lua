@@ -16,6 +16,7 @@ function _G.toggle_terminal()
                 return
             end
         end
+        vim.api.nvim_command('terminal')
         vim.g.terminal_window = vim.api.nvim_get_current_win()
     end
 end
