@@ -7,19 +7,16 @@ function _G.toggle_terminal()
         vim.api.nvim_win_close(vim.g.terminal_window, true)
         vim.g.terminal_window = nil
     else
+        vim.api.nvim_command('bel 10sp')
         local term_bufs = vim.api.nvim_list_bufs()
         for _, buf in ipairs(term_bufs) do
             if vim.bo[buf].buftype == 'terminal' then
-                vim.api.nvim_command('bel 10sp')
                 vim.api.nvim_win_set_buf(0, buf)
                 vim.g.terminal_window = vim.api.nvim_get_current_win()
-                vim.cmd(":startinsert")
                 return
             end
         end
-        vim.api.nvim_command('botright split | terminal')
         vim.g.terminal_window = vim.api.nvim_get_current_win()
-        vim.cmd(":startinsert")
     end
 end
 
