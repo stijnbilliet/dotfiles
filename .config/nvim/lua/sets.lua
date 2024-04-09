@@ -46,6 +46,12 @@ vim.o.completeopt = 'menuone,noselect'
 -- Nice colors
 vim.o.termguicolors = true
 
+-- On scroll always keep 'x' lines of text below/above visible on screen
+vim.opt.scrolloff = 8
+
+-- Add horizontal line at 'x' characters
+vim.opt.colorcolumn = "120"
+
 -- Set up WSL as shell for nvim terminal
 if IS_WINDOWS then
     vim.opt.shell='wsl.exe'
