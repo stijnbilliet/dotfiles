@@ -28,6 +28,7 @@ local cmpkeys = {
 local lspkeys = {
     { key='<F2>',       mode='n',       func=vim.lsp.buf.rename,                   opts={desc='Rename'}},
     { key='<C-F12>',    mode='n',       func=vim.lsp.buf.declaration,              opts={desc='Goto declaration'}},
+    { key='<C-h>',      mode='n',       func=vim.lsp.buf.hover,                    opts={desc='Hover'}},
     { key='<F12>',      mode='n',       func=tscope.lsp_definitions,               opts={desc='Goto definition'}},
     { key='<S-F12>',    mode='n',       func=tscope.lsp_references,                opts={desc='Goto references'}},
     { key='<C-F12>',    mode='n',       func=tscope.lsp_implementations,           opts={desc='Goto implementations'}},

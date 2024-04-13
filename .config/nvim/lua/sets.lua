@@ -51,8 +51,10 @@ vim.opt.scrolloff = 8
 -- Add horizontal line at 'x' characters
 vim.opt.colorcolumn = "120"
 
+-- Allow execution of !commands in shell (i.e. :!ls runs ls in shell)
+vim.cmd('set shellcmdflag="-c"')
+
 -- Set up WSL as shell for nvim terminal
 if IS_WINDOWS then
     vim.opt.shell='wsl.exe'
-    vim.cmd('set shellcmdflag="-c"')
 end
