@@ -2,6 +2,8 @@
   return {
       {
         'neovim/nvim-lspconfig',
+        event = { "BufReadPost", "BufNewFile" },
+        cmd = { "LspInfo", "LspInstall", "LspUninstall" },
         dependencies = {
           -- Use mason to automically install LSPs
           'williamboman/mason.nvim',

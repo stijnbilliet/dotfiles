@@ -14,6 +14,23 @@ vim.opt.rtp:prepend(lazypath)
 
 -- Include plugins directory and set up plugins within
 require('lazy').setup({
-  -- Include directory
-  { import = 'plugin' },
+    spec = {
+        -- Include directory
+        { import = 'plugin' },
+    },
+    performance = {
+        rtp = {
+            -- disable some rtp plugins
+            disabled_plugins = {
+              "gzip",
+              "matchit",
+              "matchparen",
+              "netrwPlugin",
+              "tarPlugin",
+              "tohtml",
+              "tutor",
+              "zipPlugin",
+            },
+        },
+    },
 }, {})
