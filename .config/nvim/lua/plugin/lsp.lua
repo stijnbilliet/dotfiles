@@ -30,18 +30,16 @@
 
             -- Enable the following language servers
             local servers = {
-              clangd = {},
-              rust_analyzer = {},
-              -- gopls = {},
-              -- tsserver = {},
-              -- html = { filetypes = { 'html', 'twig', 'hbs'} },
-
-              lua_ls = {
-                Lua = {
-                  workspace = { checkThirdParty = false },
-                  telemetry = { enable = false },
+                clangd = {
+                    cmd = { "clangd", "--background-index", "--suggest-missing-includes", "--clang-tidy", "--header-insertion=iwyu" },
                 },
-              },
+                rust_analyzer = {},
+                lua_ls = {
+                  Lua = {
+                    workspace = { checkThirdParty = false },
+                    telemetry = { enable = false },
+                  },
+                },
             }
 
             -- Ensure the servers above are installed

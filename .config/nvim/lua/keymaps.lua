@@ -33,6 +33,8 @@ local lspkeys = {
     { key='<S-F12>',    mode='n',       func=tscope.lsp_references,                opts={desc='Goto references'}},
     { key='<C-F12>',    mode='n',       func=tscope.lsp_implementations,           opts={desc='Goto implementations'}},
     { key='<C-,>',      mode='n',       func=tscope.lsp_dynamic_workspace_symbols, opts={desc='Search Symbols'}},
+    { key='<F8>',       mode='n',       func=vim.diagnostic.goto_next,             opts={desc='Goto next error'}},
+    { key='<S-F8>',     mode='n',       func=vim.diagnostic.goto_prev,             opts={desc='Goto prev error'}},
 }
 
 local dapkeys = {
@@ -57,6 +59,11 @@ local nvimkeys = {
     { key='<C-`>',      mode={'n','t'}, func=toggle_terminal,                      opts={desc="Toggle terminal"}},
     { key='n',          mode={'n'},     func="nzz",                                opts={desc="Goto next occurence"}},
     { key='N',          mode={'n'},     func="Nzz",                                opts={desc="Goto prev occurence"}},
+}
+
+local nvidekeys = {
+    { key='<C-=>',      mode={'n'},     func=scale_text_up,                       opts={desc="Scale text up"}},
+    { key='<C-->',      mode={'n'},     func=scale_text_down,                     opts={desc="Scale text down"}},
 }
 
 -- Helper functions for keyset (table of keys) bulk binding
@@ -88,3 +95,6 @@ bind_keyset(cmpkeys);
 bind_keyset(dapkeys);
 bind_keyset(dapuikeys);
 bind_keyset(nvimkeys);
+if vim.g.neovide then
+    bind_keyset(nvidekeys);
+end

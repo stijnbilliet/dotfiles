@@ -89,3 +89,20 @@ function _G.cmp_try_confirm()
     end
 end
 
+
+-- Change scale factor of editor
+-- Only used when running through neovide
+vim.g.neovide_scale_factor = 1.0
+local function change_scale_factor(delta)
+    if vim.g.neovide then
+      vim.g.neovide_scale_factor = vim.g.neovide_scale_factor * delta
+    end
+end
+
+function _G.scale_text_up()
+    change_scale_factor(1.25)
+end
+
+function _G.scale_text_down()
+    change_scale_factor(1/1.25)
+end
