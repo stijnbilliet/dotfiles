@@ -1,15 +1,13 @@
--- Colorscheme
 return {
-  {
-    'ellisonleao/gruvbox.nvim',
-    priority = 1000,
-  },
-  {
-    "catppuccin/nvim",
-    name = "catppuccin",
-    priority = 1000,
-    config = function()
-        vim.cmd.colorscheme 'catppuccin'
-    end,
-  }
+    {
+        'echasnovski/mini.base16',
+        version = '*',
+        config = function()
+            local cfx = require('colors');
+            require('mini.base16').setup({
+                palette = cfx,
+            })
+        end
+    },
 }
+

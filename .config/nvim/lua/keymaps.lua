@@ -59,6 +59,7 @@ local nvimkeys = {
     { key='<C-`>',      mode={'n','t'}, func=toggle_terminal,                      opts={desc="Toggle terminal"}},
     { key='n',          mode={'n'},     func="nzz",                                opts={desc="Goto next occurence"}},
     { key='N',          mode={'n'},     func="Nzz",                                opts={desc="Goto prev occurence"}},
+    { key='J',          mode={'n'},     func="mzJ`z",                              opts={desc="Join with line below"}},
 }
 
 local nvidekeys = {
