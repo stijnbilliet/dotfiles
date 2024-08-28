@@ -4,6 +4,7 @@ We will be cloning directly in the home directory:
 ```
 cd ~
 git clone --bare https://github.com/stijnbilliet/dotfiles.git $HOME/dotfiles.git/
+git --git-dir=$HOME/dotfiles.git/ --work-tree=$HOME checkout
 ```
 
 # Setting up the desktop
