@@ -1,13 +1,19 @@
 #!/bin/bash
 export PATH="$PATH:~/.local/bin"
 
-set -e # Exit immediately on command failures
-
 echo -e "-- Checking if python is installed \n"
 python3 --version
 if [ $? != 0 ]; then # Check return value of last statement
     echo -e "-- Python was missing, installing it now"
     dnf install python3
+fi
+
+echo -e "-- Checking if pip3 is installed \n"
+pip --version
+if [ $? != 0 ]; then # Check return value of last statement
+    echo -e "-- Pip was missing, installing it now"
+    wget https://bootstrap.pypa.io/get-pip.py
+    python3 ./get-pip.py
 fi
 
 echo -e "\n -- Checking if Ansible is installed \n"
