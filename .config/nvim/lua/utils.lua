@@ -89,6 +89,84 @@ function _G.cmp_try_confirm()
     end
 end
 
+vim.cmd([[
+  command! Todo lua create_todo_file()
+]])
+
+function prep_todo_path()
+    -- Get home dir to get to todo path
+    local homedir = os.getenv('HOME')
+    local todopath = homedir .. "/.todo/"
+
+    -- Create it if it doesn't exist already
+    if vim.fn.isdirectory(todopath) == false then
+        vim.fn.mkdir(todopath, "p")
+    end
+
+    vim.api.nvim_set_current_dir(todopath)
+
+    return todopath
+end
+
+function _G.create_todo_file()
+    local todopath = prep_todo_path()
+    local date = os.date("%Y-%m-%d")
+    local time = os.date("%H:%M:%S")
+    local newentry = "- [ ]  "
+
+    -- Edit todo if already exists, otherwise creates new buffer
+    local todofn = date..'.md'
+    local todoexists = vim.fn.filereadable(todofn) 
+    vim.api.nvim_command('edit '..todofn)
+
+    if todoexists == 0 then
+        -- Insert the date and time at the first two lines
+        vim.api.nvim_buf_set_lines(0, 0, -1, false, {date, time, "***", newentry})
+        vim.api.nvim_command('normal! GA')
+    else
+        vim.api.nvim_command('normal! Go'..newentry)
+    end
+
+    vim.api.nvim_command('startinsert')
+end
+
+vim.api.nvim_create_user_command(
+    'Lstodo',
+    function(opts)
+        list_todos(opts.args or nil)
+    end,
+    { nargs='?' }
+)
+
+local function is_file_loaded(filename)
+  for _, buf in ipairs(vim.api.nvim_list_bufs()) do
+    if vim.api.nvim_buf_is_loaded(buf) and vim.api.nvim_buf_get_name(buf) == filename then
+      return true
+    end
+  end
+  return false
+end
+
+function _G.list_todos(maxdays)
+    local todopath = prep_todo_path()
+    local files = vim.fn.globpath(todopath, '*.md', false, true)
+
+    if maxdays then
+        files = vim.list_slice(files, 1, tonumber(maxdays))
+    end
+
+    for _, file in ipairs(files) do
+        if not is_file_loaded(file) then
+            -- Check if any open todos in file
+            local file_contents = vim.fn.readfile(file)
+            local match_results = vim.fn.match(table.concat(file_contents, "\n"), "\\[ \\]")
+            local anyopens = tonumber(match_results) ~= -1
+            if anyopens then
+                vim.cmd('split ' .. file)
+            end
+        end
+    end
+end
 
 -- Change scale factor of editor
 -- Only used when running through neovide
