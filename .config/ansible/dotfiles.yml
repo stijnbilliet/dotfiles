@@ -29,5 +29,19 @@
     - name: Change default shell to fish
       become: yes
       user:
-        name: sbilliet
+        name: "{{ansible_user_id}}"
         shell: /usr/bin/fish
+
+    # Create symlink to prefered light mode wallpaper
+    - name: Symlink current wallpaper
+      file:
+        path: "~/.local/share/wallpapers/dusk_light.jpg"
+        src: "~/.wallpaper"
+        state: link
+
+    # Create symlink to prefered light mode colorscheme
+    - name: Symlink current colors
+      file:
+        path: "~/.config/cfx/light"
+        src: "~/.color.d"
+        state: link

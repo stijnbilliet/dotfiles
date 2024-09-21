@@ -36,42 +36,14 @@ def col(key: str, is_light_theme: bool) -> str:
     return "ffffff";
 
 def yaml_to_colors(in_yaml: dict, is_light_theme: bool) -> dict:
-    # Base-16 encoding, alacritty flavour if you will
+    # Base-16 encoding
     out_col_dict = {};
+    in_col_dict = in_yaml.copy();
 
-    # Parent nodes
-    in_col_dict = in_yaml['colors'].copy();
-    primary_colors = in_col_dict['primary'];
-    normal_colors = in_col_dict['normal'];
-    accent_colors = in_col_dict['bright'];
+    for x in range(16):
+        colkey = "base{:02X}".format(x);
+        out_col_dict[colkey] = in_col_dict[colkey];
 
-    # Drop prefixes
-    def drop_hex_prefix_yml(in_dict: dict):
-        for k, v in in_dict.items():
-            in_dict[k] = v.replace("0x", "");
-
-    drop_hex_prefix_yml(primary_colors);
-    drop_hex_prefix_yml(normal_colors);
-    drop_hex_prefix_yml(accent_colors);
-
-    # Primaries
-    out_col_dict['background'] = primary_colors['background'];
-    out_col_dict['foreground'] = primary_colors['foreground'];
-    out_col_dict['cursor'] = col(primary_colors.get('cursor'), is_light_theme);
-
-    # Normal
-    color_id = 0;
-    for in_key in normal_colors: # First eight colors
-        out_key = "color" + str(color_id);
-        out_col_dict[out_key] = normal_colors[in_key];
-        color_id += 1;
-
-    # Accents
-    for in_key in accent_colors: # Next eight
-        out_key = "color" + str(color_id);
-        out_col_dict[out_key] = accent_colors[in_key];
-        color_id += 1;
-    
     return out_col_dict;
 
 def template_line_replace_token(line: str, in_colors: dict, out_prefix: str):
@@ -100,8 +72,6 @@ def template_file_export(in_colors: dict, in_template_file, output_directory):
 
     print(output_stream.getvalue(), file=open(output_file_path, "w"));
 
-
-
 def color_format_exchanger(theme_path: os.PathLike, template_dir: os.PathLike, output_dir: os.PathLike, is_light_theme : bool = False):
     # Ensure path to output exists
     if not os.path.exists(output_dir):
@@ -119,10 +89,6 @@ def color_format_exchanger(theme_path: os.PathLike, template_dir: os.PathLike, o
         if template.is_file():
             template_file_export(theme_colors, template, output_dir);
 
-    theme_copy_path = os.path.join(output_dir, "colors.yml");
-    shutil.copy(theme_path, theme_copy_path);
-
-
 def main():
     mainparser = argparse.ArgumentParser(description="Just a chirpy script");
     mainparser.add_argument("-t", "--theme", type=type_file_path, required=True, help="Theme specification file, see ./themes for predefined definitions.");
@@ -135,18 +101,19 @@ def main():
     light_theme_def = args['light'];
     output_directory = args['outdir'] if args['outdir'] else output_directory_default;
 
-    
     script_path = os.path.dirname(os.path.abspath(__file__));
     templates_def_dir = os.path.join(script_path, "templates");
     if not os.path.isdir(templates_def_dir):
         raise NotADirectoryError("Template directory could not be found, should be next to cfx.py file.")
 
     # Read dark theme
-    color_format_exchanger(dark_theme_def, templates_def_dir, output_directory + "dark");
+    out_dir_dark = os.path.join(output_directory, "dark");
+    color_format_exchanger(dark_theme_def, templates_def_dir, out_dir_dark);
 
     # Read light theme (if specified)
     if light_theme_def:
-        color_format_exchanger(light_theme_def, templates_def_dir, output_directory + "light", True);
+        out_dir_light = os.path.join(output_directory, "light");
+        color_format_exchanger(light_theme_def, templates_def_dir, out_dir_light, True);
 
 if __name__ == "__main__":
     main()
