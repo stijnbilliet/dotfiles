@@ -6,8 +6,8 @@
 }
 
 window#waybar {
-    background-color: @background;
-    color: @foreground;
+    background-color: @color0;
+    color: @color15;
     transition-property: background-color;
     transition-duration: .5s;
 }
@@ -25,13 +25,13 @@ button {
 /* https://github.com/Alexays/Waybar/wiki/FAQ#the-workspace-buttons-have-a-strange-hover-effect */
 button:hover {
     background: inherit;
-    box-shadow: inset 0 -3px @color15;
+    box-shadow: inset 0 -3px @color6;
 }
 
 #workspaces button {
     padding: 0 5px;
     background-color: transparent;
-    color: @color7;
+    color: @color4;
 }
 
 #workspaces button:hover {
@@ -39,19 +39,19 @@ button:hover {
 }
 
 #workspaces button.focused {
-    background-color: @color8;
-    color: @foreground;
-    box-shadow: inset 0 -3px @color3;
+    background-color: @color3;
+    color: @color15;
+    box-shadow: inset 0 -3px @color9;
 }
 
 #workspaces button.urgent {
-    box-shadow: inset 0 -3px @color1;
+    box-shadow: inset 0 -3px @color8;
 }
 
 #mode {
-    background-color: @color1;
+    background-color: @color8;
     color: @color0;
-    box-shadow: inset 0 -3px @color1;
+    box-shadow: inset 0 -3px @color8;
     animation-name: blink;
     animation-duration: 1.25s;
     animation-timing-function: linear;
@@ -85,24 +85,24 @@ button:hover {
 }
 
 #battery {
-    box-shadow: inset 0 -3px @color6;
+    box-shadow: inset 0 -3px @color12;
 }
 
 #battery.charging, #battery.plugged {
     color: @color0;
-    background-color: @color6;
+    background-color: @color12;
 }
 
 @keyframes blink {
     to {
         background-color: @transparent;
-	color: @foreground;
+	color: @color15;
     }
 }
 
 #battery.critical:not(.charging) {
-    background-color: @color1;
-    color: @foreground;
+    background-color: @color8;
+    color: @color15;
     animation-name: blink;
     animation-duration: 0.5s;
     animation-timing-function: linear;
@@ -111,33 +111,33 @@ button:hover {
 }
 
 label:focus {
-    background-color: @background;
+    background-color: @color0;
 }
 
 #backlight {
-    box-shadow: inset 0 -3px @color4;
+    box-shadow: inset 0 -3px @color13;
 }
 
 #network {
-    box-shadow: inset 0 -3px @color3;
+    box-shadow: inset 0 -3px @color9;
 }
 
 #network.disconnected {
-    background-color: @color3;
+    background-color: @color9;
     color: @color0;
 }
 
 #pulseaudio {
-    box-shadow: inset 0 -3px @color2;
+    box-shadow: inset 0 -3px @color11;
 }
 
 #pulseaudio.muted {
-    background-color: @color2;
-    color: @background;
+    background-color: @color11;
+    color: @color0;
 }
 
 #tray {
-    box-shadow: inset 0 -3px @color5;
+    box-shadow: inset 0 -3px @color14;
 }
 
 #tray > .passive {
@@ -146,5 +146,5 @@ label:focus {
 
 #tray > .needs-attention {
     -gtk-icon-effect: highlight;
-    background-color: @color6;
+    background-color: @color12;
 }
