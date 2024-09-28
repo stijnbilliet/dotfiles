@@ -1,13 +1,18 @@
 window {
 margin: 0px;
-border: 2px solid --wofi-color8;
+border: 2px solid --wofi-color6;
 background-color: --wofi-color0;
 }
 
 #input {
 margin: 5px;
-color: --wofi-color14;
-background-color: --wofi-color11;
+color: --wofi-color9;
+background-color: --wofi-color3;
+}
+
+#input:focus {
+    border-color: --wofi-color15;
+    box-shadow: none;
 }
 
 #inner-box {
@@ -29,15 +34,15 @@ border: none;
 
 #text {
 margin: 5px;
-color: --wofi-color8;
+color: --wofi-color3;
 }
 
 #text:selected {
-color: --wofi-color8;
+color: --wofi-color6;
 }
 
 #entry:selected {
-background-color: --wofi-color11;
-box-shadow: inset 0 -3px --wofi-color14;
+background-color: --wofi-color3;
+box-shadow: inset 0 -3px --wofi-color15;
 outline: none;
 }
