@@ -46,11 +46,11 @@ def yaml_to_colors(in_yaml: dict, is_light_theme: bool) -> dict:
 
     return out_col_dict;
 
-def template_line_replace_token(line: str, in_colors: dict, out_prefix: str):
+def template_line_replace_token(line: str, in_colors: dict):
     # Assume they are defined in order, but don't assert it
     for n, t in in_colors.items():
         needle = "{" + n + "}";
-        sub_result = re.subn(needle, out_prefix+t, line, 1);
+        sub_result = re.subn(needle, t, line, 1);
         if sub_result[1] != 0: # A replacement was made
             # TODO(stijn): in case I want to write out replacements found, print sub_results to the correct bus;
             return sub_result[0];
@@ -62,9 +62,8 @@ def template_file_export(in_colors: dict, in_template_file, output_directory):
         # Split to list based on line-ending
         lines = file.read().splitlines(True);
         colors_sewing_kit = in_colors.copy();
-        out_prefix = "#"; # NOTE(stijn): we can templatize the prefix if need be, not required for now
         for line in lines:
-            output_stream.write(template_line_replace_token(line, colors_sewing_kit, out_prefix));
+            output_stream.write(template_line_replace_token(line, colors_sewing_kit));
 
     # Export to output directory
     in_template_file_name = os.path.basename(in_template_file).split('/')[-1];

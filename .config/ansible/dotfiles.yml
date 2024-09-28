@@ -2,7 +2,13 @@
 # Install sway
 - name: Deploy dev environment
   hosts: local
+  vars:
+    the_user: "{{ ansible_user_id }}"
   tasks:
+    - name: Print username
+      ansible.builtin.debug:
+        msg: Setting up dev environement for {{ the_user }} 
+
     - name: Installing required packages
       become: true
       package:
@@ -29,19 +35,19 @@
     - name: Change default shell to fish
       become: yes
       user:
-        name: "{{ansible_user_id}}"
+        name: "{{ the_user }}"
         shell: /usr/bin/fish
 
     # Create symlink to prefered light mode wallpaper
     - name: Symlink current wallpaper
       file:
-        path: "~/.local/share/wallpapers/dusk_light.jpg"
-        src: "~/.wallpaper"
+        src: "~/.local/share/wallpapers/dusk_light.jpg"
+        path: "~/.wallpaper"
         state: link
 
     # Create symlink to prefered light mode colorscheme
     - name: Symlink current colors
       file:
-        path: "~/.config/cfx/light"
-        src: "~/.color.d"
+        src: "~/.config/cfx/light"
+        path: "~/.color.d"
         state: link

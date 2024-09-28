@@ -1,2 +1,2 @@
-import = ["/home/sbilliet/.color.d/colors.alacritty.toml"]
+import = ["~/.color.d/colors.alacritty.toml"]
 live_config_reload = true
