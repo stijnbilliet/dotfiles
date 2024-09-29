@@ -12,7 +12,9 @@ set $laptopscreen eDP-1
 set $exec exec --no-startup-id exec fish
 
 ### Output configuration
+#TODO(stijn): switch to kanshi for more auto behaviour
 output * bg ~/.wallpaper fill
+output DP-3 mode 2560x1440@170Hz adaptive_sync on
 output eDP-1 resolution 2560x1440 scale 1.25
 output HDMI-A-1 resolution 2560x1440
 
