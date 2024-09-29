@@ -15,6 +15,11 @@
         name: "{{packages}}"
         state: present
 
+    - name: Install required flatpaks
+      community.general.flatpak:
+        name: "{{flatpaks}}"
+        state: present
+
     # Set up dotfiles alias (git)
     # i.e. git df status
     - name: Set up git dotfiles alias
