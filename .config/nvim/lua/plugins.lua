@@ -15,7 +15,7 @@ vim.opt.rtp:prepend(lazypath)
 -- Include plugins directory and set up plugins within
 require('lazy').setup({
     spec = {
-        -- Include directory
+        { 'echasnovski/mini.base16' },
         { import = 'plugin' },
     },
     performance = {
