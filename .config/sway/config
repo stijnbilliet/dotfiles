@@ -6,7 +6,7 @@ set $up k
 set $right l
 set $term alacritty
 set $browser librewolf
-set $filemanager $term -e ranger
+set $filemanager caja
 set $menu wofi --show drun --allow-images --color ~/.color.d/colors.wofi
 set $laptopscreen eDP-1
 set $exec exec --no-startup-id exec fish

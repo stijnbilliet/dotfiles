@@ -6,6 +6,7 @@ ln -sf ~/.local/share/wallpapers/dark_cygnus.jpg ~/.wallpaper
 gsettings set org.gnome.desktop.interface color-scheme prefer-dark
 gsettings set org.gnome.desktop.interface gtk-theme Adwaita:dark
 
-for socket in $(find /run/user/1000/nvim* -type s)
+set nvim_sockets /run/user/1000/nvim*
+for socket in $(find $nvim_sockets -type s)
     nvim --server $socket --remote-send ':set bg=dark<CR>:<ESC>'
 end
