@@ -14,7 +14,7 @@
     },
     "clock": {
         "format": "{:%a %b %H:%M}",
-        "on-click": "alacritty -e khal list now 7days"
+        "on-click": "alacritty -e calcurse"
 	//"tooltip-format": "{:%A %b %Y}",
         //"tooltip-format": "<big>{:%Y %B}</big>\n<tt><small>{calendar}</small></tt>",
     },
@@ -64,7 +64,7 @@
             "headphone": "",
             "default": ["", "", ""]
         },
-        "on-click": "alacritty -e alsamixer"
+        "on-click": "flatpak run com.saivert.pwvucontrol"
     },
 }
 
