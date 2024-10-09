@@ -185,4 +185,12 @@ default_border none
 for_window [class=".*"] inhibit_idle fullscreen
 for_window [app_id=".*"] inhibit_idle fullscreen
 
+# apply configuration snippets from drop-in files
+# e.g. 50-systemd-user.conf drop-in file, which imports several environment variables into the systemd user session 
+# This is required for several applications such as xdg-desktop-portal-wlr.
+# see https://wiki.archlinux.org/title/Sway#Configuration
+# and https://wiki.archlinux.org/title/XDG_Desktop_Portal#Portal_does_not_start
+include /etc/sway/config.d/*
+
+# apply our own custom overrides (if any)
 include ~/.config/sway/config.d/*
