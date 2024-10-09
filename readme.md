@@ -19,3 +19,12 @@ Then proceed to run it
 ```
 
 The dependencies will be checked and the ansible playbook will be run to ensure the required packages are installed.
+
+# Interacting with the repo
+As we are using a bare repo cloned directly into the home directory, using standard git commands in the home directory will not work.
+One could continue to use `git --git-dir=$HOME/dotfiles.git/ --work-tree=$HOME` followed by the git command (e.g. status). The setup
+script has added a git alias that does this, so to interact with the dotfiles proceed to use the alias as follows:
+
+```
+git df status
+```
