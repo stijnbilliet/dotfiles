@@ -2,6 +2,7 @@
 
 ln -sfn ~/.config/cfx/dark ~/.color.d
 ln -sf ~/.local/share/wallpapers/dark_cygnus.jpg ~/.wallpaper
+touch ~/.config/alacritty/alacritty.toml
 
 gsettings set org.gnome.desktop.interface color-scheme prefer-dark
 gsettings set org.gnome.desktop.interface gtk-theme Adwaita:dark
