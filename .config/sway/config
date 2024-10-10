@@ -185,6 +185,17 @@ default_border none
 for_window [class=".*"] inhibit_idle fullscreen
 for_window [app_id=".*"] inhibit_idle fullscreen
 
+# gtk theming
+set $gnome-schema org.gnome.desktop.interface
+
+exec_always {
+    # these are gnome defaults, but adding this here for easy reference
+    gsettings set $gnome-schema gtk-theme 'Adwaita'
+    gsettings set $gnome-schema icon-theme 'Adwaita'
+    gsettings set $gnome-schema cursor-theme 'Adwaita'
+    gsettings set $gnome-schema font-name 'Cantarell 11'
+}
+
 # apply configuration snippets from drop-in files
 # e.g. 50-systemd-user.conf drop-in file, which imports several environment variables into the systemd user session 
 # This is required for several applications such as xdg-desktop-portal-wlr.
