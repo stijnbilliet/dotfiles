@@ -5,19 +5,16 @@
   vars:
     the_user: "{{ ansible_user_id }}"
   tasks:
+    # Inform which machine local user we're installing this for
     - name: Print username
       ansible.builtin.debug:
-        msg: Setting up dev environement for {{ the_user }} 
+        msg: Setting up the desktop environment for {{ the_user }} 
 
-    - name: Installing required packages
+    # Ensure the core packages are installed
+    - name: Installing core packages
       become: true
       package:
-        name: "{{packages}}"
-        state: present
-
-    - name: Install required flatpaks
-      community.general.flatpak:
-        name: "{{flatpaks}}"
+        name: "{{pkgs_core}}"
         state: present
 
     # Set up dotfiles alias (git)
@@ -56,3 +53,21 @@
         src: "~/.config/cfx/light"
         path: "~/.color.d"
         state: link
+
+    # Install rest of requested packages
+    - name: Installing desktop packages
+      become: true
+      package:
+        name: "{{pkgs_desktop}}"
+        state: present
+
+    - name: Installing extra packages
+      become: true
+      package:
+        name: "{{pkgs_extra}}"
+        state: present
+
+    - name: Install required flatpaks
+      community.general.flatpak:
+        name: "{{pkgs_flatpaks}}"
+        state: present
