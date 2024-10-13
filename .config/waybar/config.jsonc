@@ -4,9 +4,14 @@
     "spacing": 4, // Gaps between modules (4px)
     "modules-left": ["sway/workspaces", "sway/window"],
     "modules-center": ["clock"],
-    "modules-right": ["sway/mode", "pulseaudio", "network", "backlight", "battery", "tray"],
+    "modules-right": ["sway/mode", "custom/dandl", "pulseaudio", "network", "backlight", "battery", "tray"],
     "sway/mode": {
         "format": "{}"
+    },
+    "custom/dandl": {
+        "format": "",
+        "tooltip": false,
+        "on-click": "alacritty -e python3 ~/bin/dandl/dandl.py --toggle"
     },
     "tray": {
         // "icon-size": 21,

@@ -6,9 +6,9 @@ set -x VISUAL "nvim"
 set -x MANPAGER 'nvim +Man!'
 
 # Wrap sway to ensure correct env vars are set on login
-function sway
+function startw
     set -x XDG_CURRENT_DESKTOP sway
     set -x XDG_SESSION_DESKTOP sway
     set -x XDG_SESSION_TYPE wayland
-    sway $argv
+    sway
 end

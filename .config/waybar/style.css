@@ -59,6 +59,7 @@ button:hover {
     animation-direction: alternate;
 }
 
+#custom-dandl,
 #clock,
 #battery,
 #backlight,
@@ -112,6 +113,10 @@ button:hover {
 
 label:focus {
     background-color: @color0;
+}
+
+#custom-dandl {
+    box-shadow: inset 0 -3px @color7;
 }
 
 #backlight {
