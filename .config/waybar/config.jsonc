@@ -11,7 +11,7 @@
     "custom/dandl": {
         "format": "",
         "tooltip": false,
-        "on-click": "alacritty -e python3 ~/bin/dandl/dandl.py --toggle"
+        "on-click": "python3 ~/bin/dandl/dandl.py --toggle"
     },
     "tray": {
         // "icon-size": 21,
