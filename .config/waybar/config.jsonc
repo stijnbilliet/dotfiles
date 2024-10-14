@@ -10,7 +10,8 @@
     },
     "custom/dandl": {
         "format": "",
-        "tooltip": false,
+        "format-alt": "",
+        "tooltip-format": "Toggle dark/light mode",
         "on-click": "python3 ~/bin/dandl/dandl.py --toggle"
     },
     "tray": {

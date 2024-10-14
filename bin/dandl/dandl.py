@@ -6,6 +6,7 @@ import signal
 import configparser
 import sys
 import random
+import time
 from pathlib import Path
 
 def get_cur_mode():
@@ -26,7 +27,7 @@ group.add_argument('--mode', type=str, choices=['light', 'dark'], \
                    help='Set light or dark mode')
 group.add_argument('--toggle', action='store_true', \
                    help='Switch between dark and light mode')
-group.add_argument('--get', action='store_true', \
+group.add_argument('--get', choices=['simple', 'waybar'], const='simple', nargs='?', \
                    help='Get current system dark/light mode')
 
 parser.add_argument('--config', type=argparse.FileType('r', encoding='UTF-8'), \
@@ -36,8 +37,16 @@ args = parser.parse_args(None if sys.argv[1:] else ['-h'])
 
 # Main args
 if args.get:
-    print(get_cur_mode())
-    exit()
+    if args.get == 'waybar':
+        cur_mode = get_cur_mode()
+        waybar_tooltip = "Swap system dark/light mode"
+        waybar_percentage = 0 if cur_mode =="dark" else 100
+        waybar_return = '{' + f'"text": "Test", "alt": "Test", "tooltip": "{waybar_tooltip}", "class": "Test", "percentage": "{waybar_percentage}"' + '}'
+        print(waybar_return)
+        exit()
+    else:
+        print(get_cur_mode())
+        exit()
 elif args.toggle:
     if get_cur_mode() == "dark":
         args.mode = "light"
@@ -61,6 +70,9 @@ else:
     config_path = os.path.join(xdg_config_home, 'dandl', 'dandl.ini')
 config.read(config_path)
 
+# Set up org.freedesktop.appearance (through gnomes interface)
+subprocess.run(['gsettings', 'set', 'org.gnome.desktop.interface', 'color-scheme', f'prefer-{args.mode}'])
+
 # Swap over colors pointed to by .color.d so that clients who include via the color symlink get the correct variant
 os.unlink(f'{homedir}/.color.d')
 os.symlink(f'{homedir}/.config/cfx/{args.mode}', f'{homedir}/.color.d', target_is_directory=True)
@@ -81,9 +93,6 @@ if os.path.isfile(wallpaper_path):
     os.unlink(f'{homedir}/.wallpaper')
     os.symlink(wallpaper_path, f'{homedir}/.wallpaper')
 
-# Set up org.freedesktop.appearance (through gnomes interface)
-subprocess.run(['gsettings', 'set', 'org.gnome.desktop.interface', 'color-scheme', f'prefer-{args.mode}'])
-
 # Misc
 # Reload background
 shouldkill = True
@@ -93,6 +102,7 @@ except subprocess.CalledProcessError:
     shouldkill=False
 finally:
     subprocess.Popen(['swaybg', '-o', '*', '-i', f'{homedir}/.wallpaper', '-m', 'fill'], start_new_session=True)
+    time.sleep(0.5)
     if shouldkill:
         swaybgpids = swaybgpid_result.decode().strip().split()
         for proc in swaybgpids:
