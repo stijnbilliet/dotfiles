@@ -13,7 +13,8 @@ set $exec exec --no-startup-id exec fish
 
 ### Output configuration
 output * bg ~/.wallpaper fill
-exec_always pkill kanshi; exec kanshi
+exec kanshi
+exec wlsunset -l 51.5 -L -0.1
 #TODO(stijn): monitor this and possibly move this to a sysd service instead
 
 # Handle lid closed action
