@@ -89,39 +89,59 @@ function _G.cmp_try_confirm()
     end
 end
 
-vim.cmd([[
-  command! Todo lua create_todo_file()
-]])
+vim.api.nvim_create_user_command(
+    "Todo",
+    function(opts)
+        create_todo_file(opts.args or nil)
+    end,
+    { nargs='?' }
+)
 
-function prep_todo_path()
+function prep_user_path(foldername)
     -- Get home dir to get to todo path
     local homedir = os.getenv('HOME')
-    local todopath = homedir .. "/.todo/"
+    local userpath = homedir.."/"..foldername.."/"
 
     -- Create it if it doesn't exist already
-    if vim.fn.isdirectory(todopath) == false then
-        vim.fn.mkdir(todopath, "p")
+    if vim.fn.isdirectory(userpath) == 0 then
+        vim.fn.mkdir(userpath, "p")
     end
 
-    vim.api.nvim_set_current_dir(todopath)
+    vim.api.nvim_set_current_dir(userpath)
 
-    return todopath
+    return userpath
 end
 
-function _G.create_todo_file()
-    local todopath = prep_todo_path()
-    local date = os.date("%Y-%m-%d")
+function _G.create_todo_file(name)
+    local todopath = prep_user_path(".todo")
+
+    local dateformat = "%Y-%m-%d"
+    local date = os.date(dateformat)
     local time = os.date("%H:%M:%S")
+
     local newentry = "- [ ]  "
 
-    -- Edit todo if already exists, otherwise creates new buffer
-    local todofn = date..'.md'
+    -- Use provided name otherwise resort to todays date
+    local fname = date
+    if name ~= nil and name:len() > 0 then fname=name end
+    local todofn = fname..'.md'
+
+    -- Edit todo if already exists, otherwise create new buffer
     local todoexists = vim.fn.filereadable(todofn) 
     vim.api.nvim_command('edit '..todofn)
 
-    if todoexists == 0 then
+    local moddate = vim.fn.strftime(dateformat, vim.fn.getftime(todofn))
+    local isnewday = moddate ~= date
+    if todoexists == 0 or isnewday then
         -- Insert the date and time at the first two lines
-        vim.api.nvim_buf_set_lines(0, 0, -1, false, {date, time, "***", newentry})
+        local content = {date, time, "***", newentry}
+        local numlines = 0
+        if isnewday then
+            numlines = vim.api.nvim_buf_line_count(0)
+            table.insert(content, 1, "")
+        end
+
+        vim.api.nvim_buf_set_lines(0, numlines, -1, false, content)
         vim.api.nvim_command('normal! GA')
     else
         vim.api.nvim_command('normal! Go'..newentry)
@@ -131,7 +151,7 @@ function _G.create_todo_file()
 end
 
 vim.api.nvim_create_user_command(
-    'Lstodo',
+    "Lstodo",
     function(opts)
         list_todos(opts.args or nil)
     end,
@@ -148,7 +168,7 @@ local function is_file_loaded(filename)
 end
 
 function _G.list_todos(maxdays)
-    local todopath = prep_todo_path()
+    local todopath = prep_user_path(".todo")
     local files = vim.fn.globpath(todopath, '*.md', false, true)
 
     if maxdays then
@@ -166,6 +186,33 @@ function _G.list_todos(maxdays)
             end
         end
     end
+end
+
+vim.api.nvim_create_user_command(
+    "Note",
+    function(opts)
+        create_new_zettle(opts.args or nil)
+    end,
+    { nargs='?' }
+)
+
+function _G.create_new_zettle(name)
+    local zettlepath = prep_user_path(".zettlekasten")
+    local date = os.date("%Y-%m-%d")
+
+    -- Edit zettle if already exists, otherwise creates new buffer
+    if name==nil or name=="" then name=date end
+    local zettlefn = name..'.md'
+    local zettleexists = vim.fn.filereadable(zettlefn)
+    vim.api.nvim_command('edit '..zettlefn)
+
+    if zettleexists == 0 then
+        -- Insert the date and time at the first two lines
+        vim.api.nvim_buf_set_lines(0, 0, -1, false, {"#"..name, "***"})
+    end
+
+    vim.api.nvim_command('normal! Go')
+    vim.api.nvim_command('startinsert')
 end
 
 -- Change scale factor of editor
