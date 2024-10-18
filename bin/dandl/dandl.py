@@ -115,4 +115,4 @@ os.utime(f'{homedir}/.config/alacritty/alacritty.toml', None)
 socket_dir = '/run/user/1000/'
 nvim_sockets=[os.path.join(socket_dir, file) for file in os.listdir(socket_dir) if file.startswith('nvim.')]
 for socket in nvim_sockets:
-    subprocess.run(['nvim', '--server', socket, '--remote-send', f':set bg={args.mode}<CR>:<ESC>'])
+    subprocess.run(['nvim', '--server', socket, '--remote-send', f'<Esc><Cmd>set bg={args.mode}<CR>'])
