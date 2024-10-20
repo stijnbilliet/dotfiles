@@ -34,6 +34,15 @@
                     cmd = { "clangd", "--background-index", "--suggest-missing-includes", "--clang-tidy", "--header-insertion=iwyu" },
                 },
                 rust_analyzer = {},
+                pyright = {
+                    python = {
+                        analysis = {
+                            autoSearchPaths = true,
+                            diagnosticMode = "openFilesOnly",
+                            useLibraryCodeForTypes = true
+                        }
+                    }
+                },
                 lua_ls = {
                   Lua = {
                     workspace = { checkThirdParty = false },

@@ -6,18 +6,36 @@ import signal
 import configparser
 import sys
 import random
-import time
+import dbus
+import stat
+
 from pathlib import Path
+from gi.repository import Gio
 
 def get_cur_mode():
-    try:
-        output = subprocess.check_output(['gsettings', 'get', 'org.gnome.desktop.interface', 'color-scheme'])
-        color_scheme = output.decode('utf-8').strip()
-        mode = color_scheme.replace("'", "")
-        return mode.rsplit('-')[1]
-    except subprocess.CalledProcessError as e:
-        print(f"Error querying gsettings: {e}")
-        return None
+    # See following image for future reference on how to use dbus
+    # https://i.sstatic.net/lIAWr.png
+    # get_object(bus_name, object_path, introspect=True, follow_name_owner_changes=False, **kwargs)
+    bus = dbus.SessionBus()
+    proxy = bus.get_object('org.freedesktop.portal.Desktop', '/org/freedesktop/portal/desktop')
+    settings_iface = dbus.Interface(proxy, dbus_interface='org.freedesktop.portal.Settings')
+    color_scheme_val = settings_iface.ReadOne('org.freedesktop.appearance', 'color-scheme')
+    tlb = {
+        0: "unset",
+        1: "dark",
+        2: "light",
+    }
+    return tlb[color_scheme_val]
+
+def set_toolkit_mode(mode):
+    # In the future implementation for a dbus org.freedesktop path might get added
+    # However at the moment, we need to do this for each toolkit/DE individually.
+    # Regardless of this, desktops do tend to listen for the settings_changed signal
+    # on the org.freedesktop.appearance interface and should change their perferences accordingly
+
+    # Set gnomes color-scheme
+    de_iface_settings = Gio.Settings(schema='org.gnome.desktop.interface')
+    de_iface_settings.set_string('color-scheme', f'prefer-{mode}')
 
 # Parse args
 parser = argparse.ArgumentParser(description='DandL+ A system Dark AND Light theme switcher 🌼')
@@ -39,9 +57,8 @@ args = parser.parse_args(None if sys.argv[1:] else ['-h'])
 if args.get:
     if args.get == 'waybar':
         cur_mode = get_cur_mode()
-        waybar_tooltip = "Swap system dark/light mode"
         waybar_percentage = 0 if cur_mode =="dark" else 100
-        waybar_return = '{' + f'"text": "Test", "alt": "Test", "tooltip": "{waybar_tooltip}", "class": "Test", "percentage": "{waybar_percentage}"' + '}'
+        waybar_return = '{' + f'"percentage": "{waybar_percentage}"' + '}'
         print(waybar_return)
         exit()
     else:
@@ -71,7 +88,7 @@ else:
 config.read(config_path)
 
 # Set up org.freedesktop.appearance (through gnomes interface)
-subprocess.run(['gsettings', 'set', 'org.gnome.desktop.interface', 'color-scheme', f'prefer-{args.mode}'])
+set_toolkit_mode(args.mode)
 
 # Swap over colors pointed to by .color.d so that clients who include via the color symlink get the correct variant
 os.unlink(f'{homedir}/.color.d')
@@ -101,8 +118,7 @@ try:
 except subprocess.CalledProcessError:
     shouldkill=False
 finally:
-    subprocess.Popen(['swaybg', '-o', '*', '-i', f'{homedir}/.wallpaper', '-m', 'fill'], start_new_session=True)
-    time.sleep(0.5)
+    bgproc = subprocess.Popen(['swaybg', '-o', '*', '-i', f'{homedir}/.wallpaper', '-m', 'fill'], start_new_session=True)
     if shouldkill:
         swaybgpids = swaybgpid_result.decode().strip().split()
         for proc in swaybgpids:
@@ -111,8 +127,22 @@ finally:
 # Touch alacritty's config to trigger reload
 os.utime(f'{homedir}/.config/alacritty/alacritty.toml', None)
 
-# Poll nvim for opened listeners and propate bg change
-socket_dir = '/run/user/1000/'
-nvim_sockets=[os.path.join(socket_dir, file) for file in os.listdir(socket_dir) if file.startswith('nvim.')]
-for socket in nvim_sockets:
+# Check for open neovim sockets and propagate bg change
+def find_socket_files(socketkind):
+    xdg_runtime_dir = os.environ.get('XDG_RUNTIME_DIR')
+    tmpdir = os.environ.get('TMPDIR', '/tmp')
+    user = os.environ.get('USER')
+
+    search_dir = xdg_runtime_dir or os.path.join(tmpdir, f'{socketkind}.{user}')
+    socket_list = []
+    for endpoint in os.listdir(search_dir):
+        ep_path = os.path.join(search_dir, endpoint)
+        mode = os.stat(ep_path).st_mode
+        isSocket = stat.S_ISSOCK(mode)
+        if isSocket and endpoint.startswith(f'{socketkind}.'):
+            socket_list.append(ep_path)
+
+    return socket_list
+
+for socket in find_socket_files('nvim'):
     subprocess.run(['nvim', '--server', socket, '--remote-send', f'<Esc><Cmd>set bg={args.mode}<CR>'])

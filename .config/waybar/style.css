@@ -153,3 +153,9 @@ label:focus {
     -gtk-icon-effect: highlight;
     background-color: @color12;
 }
+
+#tray menu
+{
+    background-color: @color0;
+    color: @color6;
+}
