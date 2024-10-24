@@ -8,6 +8,7 @@ import sys
 import random
 import dbus
 import stat
+import time
 
 from pathlib import Path
 from gi.repository import Gio
@@ -111,19 +112,6 @@ if os.path.isfile(wallpaper_path):
     os.symlink(wallpaper_path, f'{homedir}/.wallpaper')
 
 # Misc
-# Reload background
-shouldkill = True
-try:
-    swaybgpid_result = subprocess.check_output(['pidof', 'swaybg'])
-except subprocess.CalledProcessError:
-    shouldkill=False
-finally:
-    bgproc = subprocess.Popen(['swaybg', '-o', '*', '-i', f'{homedir}/.wallpaper', '-m', 'fill'], start_new_session=True)
-    if shouldkill:
-        swaybgpids = swaybgpid_result.decode().strip().split()
-        for proc in swaybgpids:
-            os.kill(int(proc), signal.SIGKILL)
-
 # Touch alacritty's config to trigger reload
 os.utime(f'{homedir}/.config/alacritty/alacritty.toml', None)
 
@@ -146,3 +134,17 @@ def find_socket_files(socketkind):
 
 for socket in find_socket_files('nvim'):
     subprocess.run(['nvim', '--server', socket, '--remote-send', f'<Esc><Cmd>set bg={args.mode}<CR>'])
+
+# Reload background
+shouldkill = True
+try:
+    swaybgpid_result = subprocess.check_output(['pidof', 'swaybg'])
+except subprocess.CalledProcessError:
+    shouldkill=False
+finally:
+    bgproc = subprocess.Popen(['swaybg', '-o', '*', '-i', f'{homedir}/.wallpaper', '-m', 'fill'], start_new_session=True)
+    time.sleep(1)
+    if shouldkill:
+        swaybgpids = swaybgpid_result.decode().strip().split()
+        for proc in swaybgpids:
+            os.kill(int(proc), signal.SIGKILL)
