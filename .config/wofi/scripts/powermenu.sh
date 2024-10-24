@@ -1,6 +1,6 @@
 #!/bin/bash
 
-entries="\tLock\n\tLogout\n⏾\tSuspend\n\tReboot\n⏻\tShutdown"
+entries="\tLock\n\tLogout\n⏾\tSuspend\n\tReboot\n\tShutdown"
 selected=$(echo -e $entries|wofi --show dmenu -i --width 300 --height 275 --cache-file /dev/null --color ~/.color.d/colors.wofi | awk '{print tolower($2)}')
 
 case $selected in
