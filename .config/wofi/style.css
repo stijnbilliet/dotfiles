@@ -7,11 +7,12 @@ background-color: --wofi-color0;
 #input {
 margin: 5px;
 color: --wofi-color9;
-background-color: --wofi-color3;
+background-color: --wofi-color1;
 }
 
 #input:focus {
     border-color: --wofi-color15;
+    background-color: --wofi-color3;
     box-shadow: none;
 }
 
@@ -38,7 +39,7 @@ color: --wofi-color3;
 }
 
 #text:selected {
-color: --wofi-color6;
+color: --wofi-color5;
 }
 
 #entry:selected {

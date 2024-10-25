@@ -1,15 +1,16 @@
 @import "../../.color.d/colors.waybar.css";
 
 * {
-    font-family: Noto Sans, "Font Awesome 6 Free";
+    font-family: Cantarell, "Font Awesome 6 Free";
     font-size: 1rem;
+    font-weight: bold;
 }
 
 window#waybar {
     background-color: @color0;
-    color: @color6;
+    color: @color5;
     transition-property: background-color;
-    transition-duration: .5s;
+    transition-duration: 1s;
 }
 
 window#waybar.hidden {
@@ -40,7 +41,7 @@ button:hover {
 
 #workspaces button.focused {
     background-color: @color3;
-    color: @color6;
+    color: @color5;
     box-shadow: inset 0 -3px @color9;
 }
 
@@ -97,7 +98,7 @@ button:hover {
 @keyframes blink {
     to {
         background-color: @transparent;
-	color: @color6;
+	    color: @color5;
     }
 }
 
@@ -157,5 +158,5 @@ label:focus {
 #tray menu
 {
     background-color: @color0;
-    color: @color6;
+    color: @color5;
 }

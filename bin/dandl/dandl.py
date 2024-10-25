@@ -9,6 +9,7 @@ import random
 import dbus
 import stat
 import time
+import typing
 
 from pathlib import Path
 from gi.repository import Gio
@@ -133,18 +134,17 @@ def find_socket_files(socketkind):
     return socket_list
 
 for socket in find_socket_files('nvim'):
-    subprocess.run(['nvim', '--server', socket, '--remote-send', f'<Esc><Cmd>set bg={args.mode}<CR>'])
+    shell_cmd = f'nvim --server {socket} --remote-send "<Cmd>set bg={args.mode}<CR>"'
+    subprocess.run(['nvim', '--server', socket, '--remote-send', f'<Cmd>set bg={args.mode}<CR>'], start_new_session=True)
 
 # Reload background
-shouldkill = True
-try:
-    swaybgpid_result = subprocess.check_output(['pidof', 'swaybg'])
-except subprocess.CalledProcessError:
-    shouldkill=False
-finally:
-    bgproc = subprocess.Popen(['swaybg', '-o', '*', '-i', f'{homedir}/.wallpaper', '-m', 'fill'], start_new_session=True)
-    time.sleep(1)
-    if shouldkill:
-        swaybgpids = swaybgpid_result.decode().strip().split()
-        for proc in swaybgpids:
-            os.kill(int(proc), signal.SIGKILL)
+swaybgpid_proc = subprocess.run(['pidof', 'swaybg'], capture_output=True)
+shouldkill = True if swaybgpid_proc.returncode == 0 else False
+bgproc = subprocess.Popen(['swaybg', '-o', '*', '-i', f'{homedir}/.wallpaper', '-m', 'fill'], start_new_session=True)
+time.sleep(1)
+if shouldkill:
+    print(shouldkill)
+    swaybgpids = swaybgpid_proc.stdout.strip().split()
+    print(swaybgpids)
+    for proc in swaybgpids:
+        os.kill(int(proc), signal.SIGKILL)
