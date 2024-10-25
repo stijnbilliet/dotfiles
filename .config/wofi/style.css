@@ -40,6 +40,7 @@ color: --wofi-color3;
 
 #text:selected {
 color: --wofi-color5;
+font-weight: bold;
 }
 
 #entry:selected {

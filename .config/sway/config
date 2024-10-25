@@ -7,6 +7,7 @@ set $right l
 set $term alacritty
 set $browser firefox
 set $filemanager nautilus
+set $resourcemon gnome-system-monitor
 set $menu wofi --show drun --allow-images --color ~/.color.d/colors.wofi
 set $laptopscreen eDP-1
 set $exec exec --no-startup-id exec fish
@@ -15,7 +16,6 @@ set $exec exec --no-startup-id exec fish
 output * bg ~/.wallpaper fill
 exec kanshi
 exec wlsunset -l 51.5 -L -0.1
-#TODO(stijn): monitor this and possibly move this to a sysd service instead
 
 # Handle lid closed action
 bindswitch --reload --locked lid:on output $laptopscreen disable
@@ -35,6 +35,8 @@ exec swayidle -w \
     bindsym $mod+Return exec $term
     bindsym $mod+F2 exec $browser
     bindsym $mod+F3 exec $filemanager
+    bindsym $mod+F4 exec $term -e $EDITOR
+    bindsym Control+Shift+Escape exec $resourcemon
 
 # Kill focused window
     bindsym $mod+Shift+q kill
