@@ -4,9 +4,27 @@
     "spacing": 4, // Gaps between modules (4px)
     "modules-left": ["sway/workspaces", "sway/window"],
     "modules-center": ["clock"],
-    "modules-right": ["sway/mode", "custom/dandl", "pulseaudio", "network", "backlight", "battery", "tray"],
+    "modules-right": ["sway/mode", "custom/dandl", "pulseaudio", "network", "backlight", "battery", "custom/notifications", "tray"],
     "sway/mode": {
         "format": "{}"
+    },
+    "custom/notifications": {
+        "interval": "once",
+        "return-type": "json",
+        "format": "{icon}",
+        "format-icons": {
+            "default": "",
+            "dnd": ""
+        },
+        "on-click": "~/.config/waybar/scripts/makotogglednd.sh",
+        "exec": "~/.config/waybar/scripts/makogetmode.sh",
+        "signal": 11,
+        "menu": "on-click-right",
+        "menu-file": "~/.config/waybar/menus/notificationsmenu.xml",
+        "menu-actions": {
+            "notification-history": "~/.config/wofi/scripts/notifications.sh",
+            "toggle-dnd": "~/.config/waybar/scripts/makotogglednd.sh"
+        }
     },
     "custom/dandl": {
         "format": "",
@@ -15,14 +33,12 @@
         "on-click": "python3 ~/bin/dandl/dandl.py --toggle"
     },
     "tray": {
-        // "icon-size": 21,
         "spacing": 10
     },
     "clock": {
-        "format": "{:%a %b %H:%M}",
-        "on-click": "alacritty -e calcurse"
-	//"tooltip-format": "{:%A %b %Y}",
-        //"tooltip-format": "<big>{:%Y %B}</big>\n<tt><small>{calendar}</small></tt>",
+        "format": "{:%a %d %b %H:%M}",
+        "on-click": "alacritty -e calcurse",
+        "tooltip-format": "<big>{:%Y %B}</big>\n<tt><small>{calendar}</small></tt>"
     },
     "backlight": {
         "format": "{icon} ",
@@ -45,17 +61,20 @@
         // "format-plugged": "{capacity}% ",
     },
     "network": {
-        // "interface": "wlp2*", // (Optional) To force the use of this interface
         "format-wifi": "{icon}",
-        "format-icons": ["󰤯", "󰤟", "󰤢", "󰤥", "󰤨"],
-        // "format-ethernet": "{ipaddr}/{cidr} ",
         "format-ethernet": "",
-        "tooltip-format": "{ipaddr} via {gwaddr} using {ifname} ",
+        "tooltip-format": "Inferface:\n\t{ifname}\nIP Address:\n\t{ipaddr}\nGateway:\n\t{gwaddr}\nSubnet:\n\t{netmask}",
         "tooltip-format-wifi": "{essid} {signalStrength}%",
         "format-linked": "{ifname} (No IP) ",
         "format-disconnected": "",
-        // "format-alt": "{ifname}: {ipaddr}/{cidr}"
-        "on-click": "alacritty -e nmtui"
+        "menu": "on-click-right",
+        "menu-file": "~/.config/waybar/menus/networkmenu.xml",
+        "menu-actions": {
+            //TODO(stijn): continue adding ethernet-connections, vpn-connections, enable-wifi etc.
+            "wifi-networks": "~/.config/wofi/scripts/wifimenu.sh",
+            "enable-networking": "nmcli n on",
+            "edit-connection": "nm-connection-editor"
+        }
     },
     "pulseaudio": {
         // "scroll-step": 1, // %, can be a float
@@ -71,6 +90,6 @@
             "default": ["", "", ""]
         },
         "on-click": "flatpak run com.saivert.pwvucontrol"
-    },
+    }
 }
 

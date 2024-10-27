@@ -61,6 +61,7 @@ button:hover {
 }
 
 #custom-dandl,
+#custom-notifications,
 #clock,
 #battery,
 #backlight,
@@ -114,6 +115,15 @@ button:hover {
 
 label:focus {
     background-color: @color0;
+}
+
+#custom-notifications {
+    box-shadow: inset 0 -3px @color10;
+}
+
+#custom-notifications.dnd {
+    background-color: @color10;
+    color: @color0;
 }
 
 #custom-dandl {

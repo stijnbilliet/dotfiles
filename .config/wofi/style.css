@@ -1,3 +1,7 @@
+* {
+    font-family: Cantarell;
+    font-size: 1rem;
+}
 window {
 margin: 0px;
 border: 2px solid --wofi-color6;

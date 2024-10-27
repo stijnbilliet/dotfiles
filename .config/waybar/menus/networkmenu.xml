@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<interface>
+  <object class="GtkMenu" id="menu">
+    <child>
+		<object class="GtkMenuItem" id="ethernet-connections">
+			<property name="label">Ethernet Connections</property>
+        </object>
+	</child>
+	<child>
+        <object class="GtkMenuItem" id="wifi-networks">
+			<property name="label">Wifi Networks</property>
+        </object>
+	</child>
+	<child>
+        <object class="GtkMenuItem" id="vpn-connections">
+			<property name="label">VPN Connections</property>
+        </object>
+	</child>
+    <child>
+        <object class="GtkCheckMenuItem" id="enable-networking">
+			<property name="label">Enable Networking</property>
+			<property name="active">TRUE</property>
+        </object>
+    </child>
+    <child>
+        <object class="GtkCheckMenuItem" id="enable-wifi">
+			<property name="label">Enable Wifi</property>
+        </object>
+    </child>
+    <child>
+      <object class="GtkSeparatorMenuItem" id="delimiter1"/>
+    </child>
+    <child>
+		<object class="GtkMenuItem" id="edit-connection">
+			<property name="label">Edit Connections</property>
+		</object>
+    </child>
+  </object>
+</interface>
