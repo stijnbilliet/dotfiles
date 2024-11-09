@@ -10,5 +10,12 @@ function startw
     set -x XDG_CURRENT_DESKTOP sway
     set -x XDG_SESSION_DESKTOP sway
     set -x XDG_SESSION_TYPE wayland
-    sway
+
+    # Wayland stuff
+    set -x MOZ_ENABLE_WAYLAND 1
+    set -x QT_QPA_PLATFORM wayland
+    set -x SDL_VIDEODRIVER wayland
+    set -x _JAVA_AWT_WM_NONREPARENTING 1
+
+    exec sway $argv 
 end

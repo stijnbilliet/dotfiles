@@ -47,7 +47,6 @@
     },
     "battery": {
         "states": {
-            // "good": 95,
             "warning": 25,
             "critical": 15
         },
@@ -55,10 +54,6 @@
         "format-charging": "{capacity}% ",
         "tooltip-format": "{time} {capacity}%",
         "format-icons": ["", "", "", "", ""]
-        // "format-alt": "{time} {icon}",
-        // "format-good": "", // An empty format will hide the module
-        // "format-full": "",
-        // "format-plugged": "{capacity}% ",
     },
     "network": {
         "format-wifi": "{icon}",
@@ -90,6 +85,13 @@
             "default": ["", "", ""]
         },
         "on-click": "flatpak run com.saivert.pwvucontrol"
+    },
+    "idle_inhibitor": {
+        "format": "{icon}",
+        "format-icons": {
+            "activated": "",
+            "deactivated": ""
+        }
     }
 }
 
