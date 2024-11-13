@@ -37,7 +37,8 @@
     },
     "clock": {
         "format": "{:%a %d %b %H:%M}",
-        "on-click": "alacritty -e calcurse",
+        //"on-click": "alacritty -e calcurse",
+        "on-click": "gnome-calendar",
         "tooltip-format": "<big>{:%Y %B}</big>\n<tt><small>{calendar}</small></tt>"
     },
     "backlight": {
