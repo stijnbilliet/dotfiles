@@ -14,7 +14,6 @@ function startw
     # Wayland stuff
     set -x MOZ_ENABLE_WAYLAND 1
     set -x QT_QPA_PLATFORM wayland
-    set -x SDL_VIDEODRIVER wayland
     set -x _JAVA_AWT_WM_NONREPARENTING 1
 
     exec sway $argv 

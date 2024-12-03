@@ -14,10 +14,11 @@ local telescopekeys = {
     { key='<F1>',       mode='n',       func=tscope.help_tags,                     opts={desc='Search Help'}},
 }
 
+-- TODO(stijn): might want to swap tab to just do autocomplete as well
 local cmpkeys = {
     { key='<C-d>',      mode='i',       func=cmp.mapping.scroll_docs(-4),          opts={} },
     { key='<C-f>',      mode='i',       func=cmp.mapping.scroll_docs(4),           opts={} },
-    { key='<C-Space>',  mode={'i','v'}, func=cmp.mapping.complete,                 opts={} },
+    { key='<C-Space>',  mode={'i'},     func=cmp.mapping.complete,                 opts={} },
     { key='<CR>',       mode={'i','v'}, func=cmp_try_confirm,                      opts={} },
     { key='<Tab>',      mode={'i','v'}, func=cmp_luasnip_select_next_item,         opts={} },
     { key='<Down>',     mode={'i','v'}, func=cmp_luasnip_select_next_item,         opts={} },

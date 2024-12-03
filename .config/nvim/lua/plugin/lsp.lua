@@ -31,7 +31,7 @@
             -- Enable the following language servers
             local servers = {
                 clangd = {
-                    cmd = { "clangd", "--background-index", "--suggest-missing-includes", "--clang-tidy", "--header-insertion=iwyu" },
+                    cmd = { "clangd", "--background-index", "--suggest-missing-includes", "--clang-tidy", "--header-insertion=iwyu", "--ferror-limit=0" },
                 },
                 rust_analyzer = {},
                 pyright = {
@@ -49,6 +49,10 @@
                     telemetry = { enable = false },
                   },
                 },
+                openscad_lsp = {
+                    cmd = { "openscad-lsp", "--stdio" },
+                    filetypes = { "openscad" }
+                }
             }
 
             -- Ensure the servers above are installed

@@ -20,6 +20,12 @@ exec wlsunset -l 51.5 -L -0.1
 # Handle lid closed action
 bindswitch --reload --locked lid:on output $laptopscreen disable
 bindswitch --reload --locked lid:off output $laptopscreen enable
+# TODO(stijn): look into properly handing the cases (kanshi modes)
+# where the bindswitch action should differ
+# When lid is closed, lock screen and suspend
+# bindswitch --reload --locked lid:on exec swaylock && systemctl suspend
+# When lid is opened, just wake up (system resumes automatically)
+# bindswitch --reload --locked lid:off exec swaymsg output eDP-1 
 
 ### Idle configuration
 # This will lock your screen after 300 seconds of inactivity, then turn off

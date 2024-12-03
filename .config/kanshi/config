@@ -4,7 +4,7 @@ profile {
 
 profile {
 	output "GIGA-BYTE TECHNOLOGY CO., LTD. M27Q 20480B002546" mode 2560x1440@169.831Hz adaptive_sync on
-    output "TYT HDMI HDMI" mode 2048x1536@60.367Hz scale 2 position 1536,1440 transform 180
+    output "TYT HDMI HDMI" mode 2048x1536@60.367Hz scale 2 position 768,1440
     exec swaymsg focus output '"GIGA-BYTE TECHNOLOGY CO., LTD. M27Q 20480B002546"'
     exec swaymsg workspace 1, move workspace to '"GIGA-BYTE TECHNOLOGY CO., LTD. M27Q 20480B002546"'
 }
@@ -12,8 +12,13 @@ profile {
 profile {
 	output eDP-1 disable
 	output "GIGA-BYTE TECHNOLOGY CO., LTD. M27Q 20480B002546" mode 2560x1440@60Hz adaptive_sync on
+    exec swaymsg bindswitch lid:off output eDP-1 enable
 }
 
 profile {
     output eDP-1 mode 2560x1440 scale 1.25
+	output "GIGA-BYTE TECHNOLOGY CO., LTD. M27Q 20480B002546" mode 2560x1440@60Hz adaptive_sync on
+    exec swaymsg focus output '"GIGA-BYTE TECHNOLOGY CO., LTD. M27Q 20480B002546"'
+    exec swaymsg workspace 1, move workspace to '"GIGA-BYTE TECHNOLOGY CO., LTD. M27Q 20480B002546"'
+    exec swaymsg bindswitch lid:on output eDP-1 disable
 }
