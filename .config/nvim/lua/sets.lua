@@ -40,7 +40,9 @@ vim.o.smartcase = true
 vim.o.updatetime = 50
 
 -- Set completeopt to have a better completion experience
-vim.o.completeopt = 'menuone,noselect'
+-- menuone = also show menu even if there's only one option
+-- noselect = don't automatically select options, wait for user
+vim.o.completeopt = 'menu,menuone,noselect'
 
 -- Nice colors
 vim.o.termguicolors = true
