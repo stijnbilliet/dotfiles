@@ -52,6 +52,9 @@
                 openscad_lsp = {
                     cmd = { "openscad-lsp", "--stdio" },
                     filetypes = { "openscad" }
+                },
+                gdscript = {
+
                 }
             }
 
