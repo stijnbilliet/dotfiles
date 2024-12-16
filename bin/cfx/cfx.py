@@ -1,11 +1,9 @@
 import os
 import io
-import sys
 import argparse
-import inspect
 import re
 import yaml
-import shutil
+from pathlib import Path
 
 def type_dir_path(argstring):
     if os.path.isdir(argstring):
@@ -27,15 +25,7 @@ def type_file_path(argstring):
     else:
         raise argparse.ArgumentTypeError(f"{argstring} is not a file or doesn't exist")
 
-def col(key: str, is_light_theme: bool) -> str:
-    if key:
-        return key;
-    else:
-        if is_light_theme:
-            return "000000";
-    return "ffffff";
-
-def yaml_to_colors(in_yaml: dict, is_light_theme: bool) -> dict:
+def yaml_to_colors(in_yaml: dict) -> dict:
     # Base-16 encoding
     out_col_dict = {};
     in_col_dict = in_yaml.copy();
@@ -71,7 +61,7 @@ def template_file_export(in_colors: dict, in_template_file, output_directory):
 
     print(output_stream.getvalue(), file=open(output_file_path, "w"));
 
-def color_format_exchanger(theme_path: os.PathLike, template_dir: os.PathLike, output_dir: os.PathLike, is_light_theme : bool = False):
+def color_format_exchanger(theme_path: os.PathLike, template_dir: os.PathLike[str], output_dir: os.PathLike[str]):
     # Ensure path to output exists
     if not os.path.exists(output_dir):
         os.makedirs(output_dir);
@@ -81,7 +71,7 @@ def color_format_exchanger(theme_path: os.PathLike, template_dir: os.PathLike, o
         theme_yaml = yaml.safe_load(file);
     
     # Get theme colors from yaml dictionary
-    theme_colors = yaml_to_colors(theme_yaml, is_light_theme);
+    theme_colors = yaml_to_colors(theme_yaml);
 
     # Grep the templates for color tags and write them out
     for template in os.scandir(template_dir):
@@ -107,12 +97,12 @@ def main():
 
     # Read dark theme
     out_dir_dark = os.path.join(output_directory, "dark");
-    color_format_exchanger(dark_theme_def, templates_def_dir, out_dir_dark);
+    color_format_exchanger(dark_theme_def, Path(templates_def_dir), Path(out_dir_dark));
 
     # Read light theme (if specified)
     if light_theme_def:
         out_dir_light = os.path.join(output_directory, "light");
-        color_format_exchanger(light_theme_def, templates_def_dir, out_dir_light, True);
+        color_format_exchanger(light_theme_def, Path(templates_def_dir), Path(out_dir_light));
 
 if __name__ == "__main__":
     main()
