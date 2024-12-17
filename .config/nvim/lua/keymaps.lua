@@ -9,8 +9,8 @@ local dap_ui_widgets = require 'dap.ui.widgets'
 local telescopekeys = {
     { key='<C-F>',      mode='n',       func=tscope.live_grep,                     opts={desc='Search Files'}},
     { key='<C-;>',      mode='n',       func=quick_open,                           opts={desc='Quick Open'}},
-    { key='<C-Tab>',    mode='n',       func=tscope.oldfiles,                      opts={desc='Recently opened Files'}},
-    { key='<S-Tab>',    mode='n',       func=tscope.buffers,                       opts={desc='Existing buffers'}},
+    { key='<S-Tab>',    mode='n',       func=tscope.oldfiles,                      opts={desc='Recently opened Files'}},
+    { key='<C-Tab>',    mode='n',       func=tscope.buffers,                       opts={desc='Existing buffers'}},
     { key='<F1>',       mode='n',       func=tscope.help_tags,                     opts={desc='Search Help'}},
 }
 

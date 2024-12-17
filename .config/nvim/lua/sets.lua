@@ -56,6 +56,14 @@ vim.opt.colorcolumn = "120"
 -- Automatically change into the directory of the opened buffer
 vim.opt.autochdir = true
 
+-- Vim shada file
+-- !':      Save and restore global variables that start with an uppercase letter and contain at least one lowercase letter.
+-- '{{x}}:  Save the command-line history with a maximum of 100 entries.
+-- <{{x}}:  Save the contents of registers if they are less than 50 lines long.
+-- s{{x}}:  Save the search history with a maximum of 10 entries.
+-- h:       Save and restore the 'hlsearch' setting (highlight search).
+vim.opt.shada = "!,'20,<50,s10,h"
+
 -- Allow execution of !commands in shell (i.e. :!ls runs ls in shell)
 vim.cmd('set shellcmdflag="-c"')
 
