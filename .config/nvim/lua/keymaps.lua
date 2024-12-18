@@ -14,16 +14,16 @@ local telescopekeys = {
     { key='<F1>',       mode='n',       func=tscope.help_tags,                     opts={desc='Search Help'}},
 }
 
--- TODO(stijn): might want to swap tab to just do autocomplete as well
+local cmp_confirm = function() cmp_try_confirm('<Tab>') end
+local cmp_select_next = function() cmp_luasnip_select_next_item('<Down>') end
+local cmp_select_prev = function() cmp_luasnip_select_prev_item('<Up>') end
 local cmpkeys = {
-    { key='<C-d>',      mode='i',       func=cmp.mapping.scroll_docs(-4),          opts={} },
-    { key='<C-f>',      mode='i',       func=cmp.mapping.scroll_docs(4),           opts={} },
-    { key='<C-Space>',  mode={'i'},     func=cmp.mapping.complete,                 opts={} },
-    { key='<CR>',       mode={'i','v'}, func=cmp_try_confirm,                      opts={} },
-    { key='<Tab>',      mode={'i','v'}, func=cmp_luasnip_select_next_item,         opts={} },
-    { key='<Down>',     mode={'i','v'}, func=cmp_luasnip_select_next_item,         opts={} },
-    { key='<S-Tab>',    mode={'i','v'}, func=cmp_luasnip_select_prev_item,         opts={} },
-    { key='<Up>',       mode={'i','v'}, func=cmp_luasnip_select_prev_item,         opts={} },
+    { key='<C-d>',      mode={'i','c'}, func=cmp.mapping.scroll_docs(-4),          opts={} },
+    { key='<C-f>',      mode={'i','c'}, func=cmp.mapping.scroll_docs(4),           opts={} },
+    { key='<C-Space>',  mode={'i','c'}, func=cmp.mapping.complete,                 opts={desc='Trigger completion'} },
+    { key='<Tab>',      mode={'i','c'}, func=cmp_confirm,                          opts={} },
+    { key='<Down>',     mode={'i'},     func=cmp_select_next,                      opts={} },
+    { key='<Up>',       mode={'i'},     func=cmp_select_prev,                      opts={} },
 }
 
 local lspkeys = {

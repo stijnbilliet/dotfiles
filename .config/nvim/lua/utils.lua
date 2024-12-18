@@ -58,19 +58,19 @@ end
 
 -- completion engine interaction defintions
 -- cmp if visible with luasnip fallbacks otherwise
-function _G.cmp_luasnip_select_next_item()
+function _G.cmp_luasnip_select_next_item(fallback_key)
     local luasnip = require 'luasnip'
     local cmp = require 'cmp'
     if cmp.visible() then
-       cmp.select_next_item({ behavior = cmp.SelectBehavior.Select });
+       cmp.select_next_item();
     elseif luasnip.expand_or_locally_jumpable() then
        luasnip.expand_or_jump();
     else
-       feed_keys('<Tab>', 'ni');
+       feed_keys(fallback_key, 'ni');
     end
 end
 
-function _G.cmp_luasnip_select_prev_item()
+function _G.cmp_luasnip_select_prev_item(fallback_key)
     local luasnip = require 'luasnip'
     local cmp = require 'cmp'
     if cmp.visible() then
@@ -78,14 +78,16 @@ function _G.cmp_luasnip_select_prev_item()
     elseif luasnip.locally_jumpable(-1) then
         luasnip.jump(-1)
     else
-       feed_keys('<S-Tab>', 'ni');
+       feed_keys(fallback_key, 'ni');
     end
 end
 
-function _G.cmp_try_confirm()
+function _G.cmp_try_confirm(fallback_key)
     local cmp = require 'cmp'
-    if not cmp.confirm({ select = false }) then
-        feed_keys('<CR>', 'ni'); -- fallback
+    if cmp.visible() then
+        cmp.confirm({ select = true })
+    elseif not cmp.confirm({ select = true }) then
+        feed_keys(fallback_key, 'ni'); -- fallback
     end
 end
 
