@@ -43,7 +43,7 @@
     # Create symlink to prefered light mode wallpaper
     - name: Symlink current wallpaper
       file:
-        src: "~/.local/share/wallpapers/dusk_light.jpg"
+        src: "~/.local/share/wallpapers/light/light_mojave.jpg"
         path: "~/.wallpaper"
         state: link
 

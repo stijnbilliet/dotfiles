@@ -42,9 +42,9 @@
         "tooltip-format": "<big>{:%Y %B}</big>\n<tt><small>{calendar}</small></tt>"
     },
     "backlight": {
-        "format": "{icon} ",
+        "format": "<span>{icon}</span>",
         "tooltip-format": "{percent}%",
-        "format-icons": ["", "", "", "", "", "", "", "", ""]
+        "format-icons": ["&#xf111;", "&#xf042;", "<b>&#xf111;</b>"]
     },
     "battery": {
         "states": {
@@ -69,6 +69,7 @@
             //TODO(stijn): continue adding ethernet-connections, vpn-connections, enable-wifi etc.
             "wifi-networks": "~/.config/wofi/scripts/wifimenu.sh",
             "enable-networking": "nmcli n on",
+            "enable-wifi": "nmcli radio wifi on",
             "edit-connection": "nm-connection-editor"
         }
     },
