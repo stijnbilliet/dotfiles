@@ -54,7 +54,14 @@
         "format": "{icon}",
         "format-charging": "{capacity}% ",
         "tooltip-format": "{time} {capacity}%",
-        "format-icons": ["", "", "", "", ""]
+        "format-icons": ["", "", "", "", ""],
+        "menu": "on-click-right",
+        "menu-file": "~/.config/waybar/menus/power-profiles-menu.xml",
+        "menu-actions": {
+            "performance": "powerprofilesctl set performance",
+            "balanced": "powerprofilesctl set balanced",
+            "saver": "powerprofilesctl set power-saver"
+        }
     },
     "network": {
         "format-wifi": "{icon}",
