@@ -17,6 +17,12 @@ output * bg ~/.wallpaper fill
 exec kanshi
 exec wlsunset -l 51.5 -L -0.1
 
+### Input configuration
+input type:keyboard {
+    xkb_layout gb,us
+}
+bindsym $mod+space input type:keyboard xkb_switch_layout next
+
 # Handle lid closed action
 bindswitch --reload --locked lid:on output $laptopscreen disable
 bindswitch --reload --locked lid:off output $laptopscreen enable
@@ -111,7 +117,9 @@ exec swayidle -w \
     bindsym $mod+Shift+space floating toggle
 
 # Swap focus between the tiling area and the floating area
-    bindsym $mod+space focus mode_toggle
+## TODO(stijn): find a different mapping, uncommenting this for
+## now as I barely use this and I prefer a different action on this keybind
+    #bindsym $mod+space focus mode_toggle
 
 # Move focus to the parent container
     bindsym $mod+a focus parent

@@ -4,7 +4,7 @@
     "spacing": 4, // Gaps between modules (4px)
     "modules-left": ["sway/workspaces", "sway/window"],
     "modules-center": ["clock"],
-    "modules-right": ["sway/mode", "custom/dandl", "pulseaudio", "network", "backlight", "battery", "custom/notifications", "tray"],
+    "modules-right": ["sway/mode", "custom/dandl", "pulseaudio", "network", "battery", "custom/notifications", "tray"],
     "sway/mode": {
         "format": "{}"
     },
@@ -44,7 +44,7 @@
     "backlight": {
         "format": "<span>{icon}</span>",
         "tooltip-format": "{percent}%",
-        "format-icons": ["&#xf111;", "&#xf042;", "<b>&#xf111;</b>"]
+        "format-icons": ["&#xf111;", "&#xf042;", "<b>&#xf111;</b>", "&#xe4e9;"]
     },
     "battery": {
         "states": {
