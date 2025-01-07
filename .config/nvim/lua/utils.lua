@@ -3,6 +3,11 @@
 -- and creates a new terminal if there wasn't one
 vim.g.terminal_window = nil
 function _G.toggle_terminal()
+    attach_terminal = function()
+        vim.g.terminal_window = vim.api.nvim_get_current_win()
+        vim.api.nvim_command('startinsert')
+    end
+
     if vim.g.terminal_window and vim.api.nvim_win_is_valid(vim.g.terminal_window) then
         vim.api.nvim_win_close(vim.g.terminal_window, true)
         vim.g.terminal_window = nil
@@ -12,12 +17,12 @@ function _G.toggle_terminal()
         for _, buf in ipairs(term_bufs) do
             if vim.bo[buf].buftype == 'terminal' then
                 vim.api.nvim_win_set_buf(0, buf)
-                vim.g.terminal_window = vim.api.nvim_get_current_win()
+                attach_terminal()
                 return
             end
         end
         vim.api.nvim_command('terminal')
-        vim.g.terminal_window = vim.api.nvim_get_current_win()
+        attach_terminal()
     end
 end
 
