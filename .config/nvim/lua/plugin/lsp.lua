@@ -39,7 +39,7 @@
             -- Or leave the table blank for defaults
             local servers = {
                 clangd = {
-                    cmd = { "clangd", "--background-index", "--suggest-missing-includes", "--clang-tidy", "--header-insertion=iwyu", "--ferror-limit=0" },
+                    cmd = { "clangd", "--background-index", "--clang-tidy", "--header-insertion=iwyu" },
                 },
                 rust_analyzer = {},
                 pyright = {},
@@ -68,6 +68,9 @@
                     end,
                 },
             }
+
+            -- Other lsp configs that aren't present in mason
+            require('lspconfig').dartls.setup {}
         end
       }
   }
