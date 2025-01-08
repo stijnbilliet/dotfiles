@@ -5,7 +5,6 @@ vim.g.terminal_window = nil
 function _G.toggle_terminal()
     attach_terminal = function()
         vim.g.terminal_window = vim.api.nvim_get_current_win()
-        vim.api.nvim_command('startinsert')
     end
 
     if vim.g.terminal_window and vim.api.nvim_win_is_valid(vim.g.terminal_window) then
