@@ -6,6 +6,7 @@ return {
     -- fancy UI for the debugger
     {
       "rcarriga/nvim-dap-ui",
+      "nvim-neotest/nvim-nio",
       -- stylua: ignore
       opts = {},
       config = function(_, opts)
