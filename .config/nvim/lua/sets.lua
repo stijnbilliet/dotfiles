@@ -20,6 +20,25 @@ vim.opt.softtabstop = 4
 vim.opt.shiftwidth = 4
 vim.opt.expandtab = true
 
+-- Folds
+vim.opt.foldnestmax = 4 -- Only provide folds 4 levels deep
+vim.opt.foldlevelstart = 99 -- Don't collapse folds by default
+vim.api.nvim_create_autocmd(
+    "FileType",
+    {
+        callback = function()
+            if require("nvim-treesitter.parsers").has_parser() then
+                -- Use treesitter for main source of truth on folds
+                vim.opt.foldmethod = "expr"
+                vim.opt.foldexpr = "nvim_treesitter#foldexpr()"
+            else
+                -- Fallback to syntax files
+                vim.opt.foldmethod = "syntax"
+            end
+        end
+    }
+)
+
 -- Auto indent
 vim.opt.smartindent = true
 
@@ -63,6 +82,15 @@ vim.opt.autochdir = true
 -- s{{x}}:  Save the search history with a maximum of 10 entries.
 -- h:       Save and restore the 'hlsearch' setting (highlight search).
 vim.opt.shada = "!,'20,<50,s10,h"
+
+-- Start terminal in insert mode
+vim.api.nvim_create_autocmd(
+    'TermOpen',
+    {
+        pattern  = '*',
+        command  = 'startinsert | set winfixheight'
+    }
+)
 
 -- Allow execution of !commands in shell (i.e. :!ls runs ls in shell)
 vim.cmd('set shellcmdflag="-c"')
