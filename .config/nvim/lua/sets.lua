@@ -92,6 +92,35 @@ vim.api.nvim_create_autocmd(
     }
 )
 
+-- LSP
+-- Disable inline text that displays diagnostics (virtual text)
+vim.diagnostic.config({
+  virtual_text = false,
+})
+
+-- Show lsp diagnostics on hover
+vim.api.nvim_create_autocmd({ "CursorHold" }, {
+    pattern = "*",
+    callback = function()
+        for _, winid in pairs(vim.api.nvim_tabpage_list_wins(0)) do
+            if vim.api.nvim_win_get_config(winid).zindex then
+                return
+            end
+        end
+        vim.diagnostic.open_float({
+            scope = "cursor",
+            focusable = false,
+            close_events = {
+                "CursorMoved",
+                "CursorMovedI",
+                "BufHidden",
+                "InsertCharPre",
+                "WinLeave",
+            },
+        })
+    end
+})
+
 -- Allow execution of !commands in shell (i.e. :!ls runs ls in shell)
 vim.cmd('set shellcmdflag="-c"')
 

@@ -8,6 +8,7 @@ require('sets')
 -- Install plugins
 require('plugins')
 
+-- Set up our colorscheme
 vim.cmd([[colorscheme cfx16]])
 
 -- Enable utils
