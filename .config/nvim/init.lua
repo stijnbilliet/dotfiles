@@ -11,8 +11,11 @@ require('plugins')
 -- Set up our colorscheme
 vim.cmd([[colorscheme cfx16]])
 
--- Enable utils
+-- Util functions and callbacks
 require('utils')
+
+-- Custom (Auto)commands
+require('commands')
 
 -- Set up key binds
 require('keymaps')

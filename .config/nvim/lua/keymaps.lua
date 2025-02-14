@@ -4,8 +4,12 @@ local dap = require 'dap'
 local dap_ui = require 'dapui'
 local dap_ui_widgets = require 'dap.ui.widgets'
 
+-- Vars
+local cmp_confirm = function() cmp_try_confirm('<Tab>') end
+local cmp_select_next = function() cmp_luasnip_select_next_item('<Down>') end
+local cmp_select_prev = function() cmp_luasnip_select_prev_item('<Up>') end
+
 -- Lists of keys for all plugins that we're using
---
 local telescopekeys = {
     { key='<C-F>',      mode='n',       func=tscope.live_grep,                     opts={desc='Search Files'}},
     { key='<C-;>',      mode='n',       func=quick_open,                           opts={desc='Quick Open'}},
@@ -14,9 +18,6 @@ local telescopekeys = {
     { key='<F1>',       mode='n',       func=tscope.help_tags,                     opts={desc='Search Help'}},
 }
 
-local cmp_confirm = function() cmp_try_confirm('<Tab>') end
-local cmp_select_next = function() cmp_luasnip_select_next_item('<Down>') end
-local cmp_select_prev = function() cmp_luasnip_select_prev_item('<Up>') end
 local cmpkeys = {
     { key='<C-d>',      mode={'i','c'}, func=cmp.mapping.scroll_docs(-4),          opts={} },
     { key='<C-f>',      mode={'i','c'}, func=cmp.mapping.scroll_docs(4),           opts={} },
@@ -67,21 +68,6 @@ local nvidekeys = {
     { key='<C-=>',      mode={'n'},     func=scale_text_up,                       opts={desc="Scale text up"}},
     { key='<C-->',      mode={'n'},     func=scale_text_down,                     opts={desc="Scale text down"}},
 }
-
--- Helper functions for keyset (table of keys) bulk binding
-local function bind_keyset(keyset)
-    for _, entry in ipairs(keyset) do
-        vim.keymap.set(entry.mode, entry.key, entry.func, entry.opts)
-    end
-end
-
-local function bind_keyset_buffer(keyset, buffnr)
-    for _, entry in ipairs(keyset) do
-        local opts = entry.opts;
-        opts.buffer = buffnr;
-        vim.keymap.set(entry.mode, entry.key, entry.func, opts);
-    end
-end
 
 -- Auto bind lspkeys on lspattach
 vim.api.nvim_create_autocmd('LspAttach', {

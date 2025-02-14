@@ -95,14 +95,22 @@ function _G.cmp_try_confirm(fallback_key)
     end
 end
 
-vim.api.nvim_create_user_command(
-    "Todo",
-    function(opts)
-        create_todo_file(opts.args or nil)
-    end,
-    { nargs='?' }
-)
+-- Helper functions for keyset (table of keys) bulk binding
+function _G.bind_keyset(keyset)
+    for _, entry in ipairs(keyset) do
+        vim.keymap.set(entry.mode, entry.key, entry.func, entry.opts)
+    end
+end
 
+function _G.bind_keyset_buffer(keyset, buffnr)
+    for _, entry in ipairs(keyset) do
+        local opts = entry.opts;
+        opts.buffer = buffnr;
+        vim.keymap.set(entry.mode, entry.key, entry.func, opts);
+    end
+end
+
+-- Helper function to ensure given user path is present/created
 function prep_user_path(foldername)
     -- Get home dir to get to todo path
     local homedir = os.getenv('HOME')
@@ -118,6 +126,7 @@ function prep_user_path(foldername)
     return userpath
 end
 
+-- Handle creation of TODO file, used with :Todo user command
 function _G.create_todo_file(name)
     local todopath = prep_user_path(".todo")
 
@@ -156,23 +165,17 @@ function _G.create_todo_file(name)
     vim.api.nvim_command('startinsert')
 end
 
-vim.api.nvim_create_user_command(
-    "Lstodo",
-    function(opts)
-        list_todos(opts.args or nil)
-    end,
-    { nargs='?' }
-)
-
-local function is_file_loaded(filename)
-  for _, buf in ipairs(vim.api.nvim_list_bufs()) do
-    if vim.api.nvim_buf_is_loaded(buf) and vim.api.nvim_buf_get_name(buf) == filename then
-      return true
+-- Helper, check if file is already loaded as an open buffer
+function _G.is_file_loaded(filename)
+    for _, buf in ipairs(vim.api.nvim_list_bufs()) do
+        if vim.api.nvim_buf_is_loaded(buf) and vim.api.nvim_buf_get_name(buf) == filename then
+            return true
+        end
     end
-  end
-  return false
+    return false
 end
 
+-- Glob through todo directory and open buffer for each todo file
 function _G.list_todos(maxdays)
     local todopath = prep_user_path(".todo")
     local files = vim.fn.globpath(todopath, '*.md', false, true)
@@ -194,14 +197,7 @@ function _G.list_todos(maxdays)
     end
 end
 
-vim.api.nvim_create_user_command(
-    "Note",
-    function(opts)
-        create_new_zettle(opts.args or nil)
-    end,
-    { nargs='?' }
-)
-
+-- Create a new note on the given 'name' as topic
 function _G.create_new_zettle(name)
     local zettlepath = prep_user_path(".zettlekasten")
     local date = os.date("%Y-%m-%d")
@@ -224,7 +220,7 @@ end
 -- Change scale factor of editor
 -- Only used when running through neovide
 vim.g.neovide_scale_factor = 1.0
-local function change_scale_factor(delta)
+function _G.change_scale_factor(delta)
     if vim.g.neovide then
       vim.g.neovide_scale_factor = vim.g.neovide_scale_factor * delta
     end
