@@ -12,6 +12,9 @@ set $menu wofi --show drun --allow-images --color ~/.color.d/colors.wofi
 set $laptopscreen eDP-1
 set $exec exec --no-startup-id exec fish
 
+### Polkit
+exec /usr/libexec/polkit-gnome-authentication-agent-1
+
 ### Output configuration
 output * bg ~/.wallpaper fill
 exec kanshi
