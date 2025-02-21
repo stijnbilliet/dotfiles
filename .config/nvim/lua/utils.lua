@@ -95,6 +95,24 @@ function _G.cmp_try_confirm(fallback_key)
     end
 end
 
+-- LSP
+-- Helper function to request the LSP for a matching file. (i.e. source/header)
+function _G.switch_source_header()
+    local params = { uri = vim.uri_from_bufnr(0) }
+    vim.lsp.buf_request(0, 'textDocument/switchSourceHeader', params, function(err, result)
+        if err then
+            print('Error: ' .. err.message)
+            return
+        end
+        if not result then
+            print('No corresponding file found.')
+            return
+        end
+        vim.api.nvim_command('edit ' .. vim.uri_to_fname(result))
+    end)
+end
+
+
 -- Helper functions for keyset (table of keys) bulk binding
 function _G.bind_keyset(keyset)
     for _, entry in ipairs(keyset) do

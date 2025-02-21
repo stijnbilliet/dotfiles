@@ -11,7 +11,7 @@ local cmp_select_prev = function() cmp_luasnip_select_prev_item('<Up>') end
 
 -- Lists of keys for all plugins that we're using
 local telescopekeys = {
-    { key='<C-F>',      mode='n',       func=tscope.live_grep,                     opts={desc='Search Files'}},
+    { key='<CS-F>',     mode='n',       func=tscope.live_grep,                     opts={desc='Search Files'}},
     { key='<C-;>',      mode='n',       func=quick_open,                           opts={desc='Quick Open'}},
     { key='<S-Tab>',    mode='n',       func=tscope.oldfiles,                      opts={desc='Recently opened Files'}},
     { key='<C-Tab>',    mode='n',       func=tscope.buffers,                       opts={desc='Existing buffers'}},
@@ -37,6 +37,7 @@ local lspkeys = {
     { key='<C-,>',      mode='n',       func=tscope.lsp_dynamic_workspace_symbols, opts={desc='Search Symbols'}},
     { key='<F8>',       mode='n',       func=vim.diagnostic.goto_next,             opts={desc='Goto next error'}},
     { key='<S-F8>',     mode='n',       func=vim.diagnostic.goto_prev,             opts={desc='Goto prev error'}},
+    { key='<C-k><C-o>', mode='n',       func=switch_source_header,                 opts={desc='Toggle source/header'}},
 }
 
 local dapkeys = {
