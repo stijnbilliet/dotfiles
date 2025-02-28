@@ -1,3 +1,4 @@
+-- AutoCmds
 -- Set up source of truth for folds
 vim.api.nvim_create_autocmd(
     "FileType",
@@ -50,6 +51,70 @@ vim.api.nvim_create_autocmd(
     }
 )
 
+-- Change diagnostics error highlighting to be an undercurl instead of underline
+vim.api.nvim_create_autocmd(
+    {"VimEnter", "ColorScheme"},
+    {
+        pattern = "*",
+        callback = function()
+            vim.api.nvim_set_hl(0, "DiagnosticUnderlineError", { underline=false, undercurl = true })
+        end,
+    }
+)
+
+-- Highlight trailing whitespace
+vim.api.nvim_create_autocmd(
+    {"VimEnter", "ColorScheme"},
+    {
+        pattern = "*",
+        callback = function()
+            --Use the Beacon highlight group to denote extra trailing whitespace
+            vim.api.nvim_set_hl(0, "ExtraWhitespace", { link = "Beacon" })
+        end,
+    }
+)
+
+vim.api.nvim_create_autocmd(
+    "BufWinEnter",
+    {
+        pattern = "*",
+        callback = function()
+            vim.fn.matchadd("ExtraWhitespace", "\\s\\+$")
+        end,
+    }
+)
+
+vim.api.nvim_create_autocmd(
+    "InsertEnter",
+    {
+        pattern = "*",
+        callback = function()
+            vim.fn.matchadd("ExtraWhitespace", "\\s\\+\\%#\\@<!$")
+        end,
+    }
+)
+
+vim.api.nvim_create_autocmd(
+    "InsertLeave",
+    {
+        pattern = "*",
+        callback = function()
+            vim.fn.matchadd("ExtraWhitespace", "\\s\\+$")
+        end,
+    }
+)
+
+vim.api.nvim_create_autocmd(
+    "BufWinLeave",
+    {
+        pattern = "*",
+        callback = function()
+            vim.cmd("call clearmatches()")
+        end,
+    }
+)
+
+
 -- My TODO/Note list
 vim.api.nvim_create_user_command(
     "Todo",
@@ -75,3 +140,9 @@ vim.api.nvim_create_user_command(
     { nargs='?' }
 )
 
+-- Remove trailing whitespaces from buffer
+vim.api.nvim_create_user_command(
+    'Rt',
+    remove_trailing_whitespace,
+    {}
+)

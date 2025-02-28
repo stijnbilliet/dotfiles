@@ -39,6 +39,21 @@ function _G.quick_open()
     end
 end
 
+-- VS(code) like grep through all the files in a solution, from either
+-- the git directory or the current working directory 
+function _G.find_in_files()
+    local builtin = require('telescope.builtin')
+    local utils = require('telescope.utils')
+
+    local stdout, ret, _ = utils.get_os_command_output({ 'git', 'rev-parse', '--show-toplevel' })
+    local opts = {}
+    if ret == 0 then
+        local git_dir = stdout[1]
+        opts.cwd = git_dir
+    end
+    builtin.live_grep(opts)
+end
+
 -- Wrapper around nvim feedkeys but ensure termcodes aren't escaped
 function _G.feed_keys(keys, mode)
 	vim.api.nvim_feedkeys(
@@ -46,6 +61,15 @@ function _G.feed_keys(keys, mode)
 		mode,
 		false
 	);
+end
+
+-- Remove trailing whitespace from buffer
+function _G.remove_trailing_whitespace()
+    local current_view = vim.fn.winsaveview()
+    vim.cmd([[
+        %s/\s\+$//e
+    ]])
+    vim.fn.winrestview(current_view)
 end
 
 -- Open the debug adapter (and by extention the UI - see config)
