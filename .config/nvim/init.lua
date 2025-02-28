@@ -19,6 +19,3 @@ require('commands')
 
 -- Set up key binds
 require('keymaps')
-
--- Misc post setup
-require('after')
