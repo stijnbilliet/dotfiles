@@ -333,17 +333,17 @@ local nvimkeys = {
 
 local nvidekeys = {
     {
-        key='<CS-=>',
+        key={'<C-=>', '<C-kPlus>'},
         mode='n',
-        func=atu.scale_text_up,
+        func=function() atu.change_scale_factor(1.25) end,
         opts={
             desc="Scale text up",
         }
     },
     {
-        key='<CS-->',
+        key={'<C-->', '<C-kMinus>'},
         mode='n',
-        func=atu.scale_text_down,
+        func=function() atu.change_scale_factor(1/1.25) end,
         opts={
             desc="Scale text down",
         }

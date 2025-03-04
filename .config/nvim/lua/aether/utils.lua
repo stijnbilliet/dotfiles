@@ -1,10 +1,10 @@
-local sbu = {}
+local M = {}
 
 -- Toggle between terminal and currently opened buffer
 -- resumes terminal if already created one earlier
 -- and creates a new terminal if there wasn't one
 vim.g.terminal_window = nil
-function sbu.toggle_terminal()
+function M.toggle_terminal()
     attach_terminal = function()
         vim.g.terminal_window = vim.api.nvim_get_current_win()
     end
@@ -29,7 +29,7 @@ end
 
 -- VS(code) like functionality to quickly open a file from either
 -- the git directory or the current working directory
-function sbu.quick_open()
+function M.quick_open()
     local builtin = require('telescope.builtin')
     local utils = require('telescope.utils')
 
@@ -43,7 +43,7 @@ end
 
 -- VS(code) like grep through all the files in a solution, from either
 -- the git directory or the current working directory
-function sbu.find_in_files()
+function M.find_in_files()
     local builtin = require('telescope.builtin')
     local utils = require('telescope.utils')
 
@@ -57,7 +57,7 @@ function sbu.find_in_files()
 end
 
 -- Wrapper around nvim feedkeys but ensure termcodes aren't escaped
-function sbu.feed_keys(keys)
+function M.pass_keys_repl(keys)
 	vim.api.nvim_feedkeys(
 		vim.api.nvim_replace_termcodes(keys, true, false, true),
 		"n",
@@ -66,7 +66,7 @@ function sbu.feed_keys(keys)
 end
 
 -- Remove trailing whitespace from buffer
-function sbu.remove_trailing_whitespace()
+function M.remove_trailing_whitespace()
     local current_view = vim.fn.winsaveview()
     vim.cmd([[
         %s/\s\+$//e
@@ -78,7 +78,7 @@ end
 -- Checks and consults a launch.json if it is present
 -- launch.json will specify the path of the executeable to attach to
 -- if missing will fall back and spawn a user prompt requesting the path
-function sbu.dap_launch()
+function M.dap_launch()
     local dap = require('dap')
     if vim.fn.filereadable('.vscode/launch.json') then
         require('dap.ext.vscode').load_launchjs(nil, {});
@@ -86,9 +86,11 @@ function sbu.dap_launch()
     dap.continue();
 end
 
+--TODO(stijn): Again for all the cases with fallback keys, look into nvim-mapper
+
 -- completion engine interaction defintions
 -- cmp if visible with luasnip fallbacks otherwise
-function sbu.cmp_luasnip_select_next_item(args)
+function M.cmp_luasnip_select_next_item(args)
     local luasnip = require 'luasnip'
     local cmp = require 'cmp'
     if cmp.visible() then
@@ -96,11 +98,11 @@ function sbu.cmp_luasnip_select_next_item(args)
     elseif luasnip.expand_or_locally_jumpable() then
        luasnip.expand_or_jump();
     else
-       sbu.feed_keys(args.fbkey);
+       M.pass_keys_repl(args.fbkey);
     end
 end
 
-function sbu.cmp_luasnip_select_prev_item(args)
+function M.cmp_luasnip_select_prev_item(args)
     local luasnip = require 'luasnip'
     local cmp = require 'cmp'
     if cmp.visible() then
@@ -108,32 +110,32 @@ function sbu.cmp_luasnip_select_prev_item(args)
     elseif luasnip.locally_jumpable(-1) then
         luasnip.jump(-1)
     else
-       sbu.feed_keys(args.fbkey);
+       M.pass_keys_repl(args.fbkey);
     end
 end
 
-function sbu.cmp_try_abort(args)
+function M.cmp_try_abort(args)
     local cmp = require 'cmp'
     if cmp.visible() then
         cmp.abort()
     else
-        sbu.feed_keys(args.fbkey);
+        M.pass_keys_repl(args.fbkey);
     end
 end
 
-function sbu.cmp_confirm_selected(args)
+function M.cmp_confirm_selected(args)
     local cmp = require 'cmp'
     local select = args.cmpargs.select or false
     if cmp.visible() and (not select and cmp.get_selected_entry()) then
         cmp.confirm(args.cmpargs)
     else
-        sbu.feed_keys(args.fbkey); -- fallback
+        M.pass_keys_repl(args.fbkey); -- fallback
     end
 end
 
 -- LSP
 -- Helper function to request the LSP for a matching file. (i.e. source/header)
-function sbu.switch_source_header()
+function M.switch_source_header()
     local params = { uri = vim.uri_from_bufnr(0) }
     vim.lsp.buf_request(0, 'textDocument/switchSourceHeader', params, function(err, result)
         if err then
@@ -148,7 +150,7 @@ function sbu.switch_source_header()
     end)
 end
 
-function sbu._bind_keyset(entry)
+local function bind_key_or_multi(entry)
     if type(entry.key) == "string" then
         vim.keymap.set(entry.mode, entry.key, entry.func, entry.opts)
     elseif type(entry.key) == "table" then
@@ -159,22 +161,22 @@ function sbu._bind_keyset(entry)
 end
 
 -- Helper functions for keyset (table of keys) bulk binding
-function sbu.bind_keyset(keyset)
+function M.bind_keyset(keyset)
     for _, entry in ipairs(keyset) do
-        sbu._bind_keyset(entry)
+        bind_key_or_multi(entry)
     end
 end
 
-function sbu.bind_keyset_buffer(keyset, buffnr)
+function M.bind_keyset_buffer(keyset, buffnr)
     for _, entry in ipairs(keyset) do
         local opts = entry.opts;
         opts.buffer = buffnr;
-        sbu._bind_keyset(entry)
+        bind_key_or_multi(entry)
     end
 end
 
 -- Helper function to ensure given user path is present/created
-function prep_user_path(foldername)
+local function prep_user_path(foldername)
     -- Get home dir to get to todo path
     local homedir = os.getenv('HOME')
     local userpath = homedir.."/"..foldername.."/"
@@ -190,7 +192,7 @@ function prep_user_path(foldername)
 end
 
 -- Handle creation of TODO file, used with :Todo user command
-function sbu.create_todo_file(name)
+function M.create_todo_file(name)
     local todopath = prep_user_path(".todo")
 
     local dateformat = "%Y-%m-%d"
@@ -229,7 +231,7 @@ function sbu.create_todo_file(name)
 end
 
 -- Helper, check if file is already loaded as an open buffer
-function sbu.is_file_loaded(filename)
+function M.is_file_loaded(filename)
     for _, buf in ipairs(vim.api.nvim_list_bufs()) do
         if vim.api.nvim_buf_is_loaded(buf) and vim.api.nvim_buf_get_name(buf) == filename then
             return true
@@ -239,7 +241,7 @@ function sbu.is_file_loaded(filename)
 end
 
 -- Glob through todo directory and open buffer for each todo file
-function sbu.list_todos(maxdays)
+function M.list_todos(maxdays)
     local todopath = prep_user_path(".todo")
     local files = vim.fn.globpath(todopath, '*.md', false, true)
 
@@ -261,7 +263,7 @@ function sbu.list_todos(maxdays)
 end
 
 -- Create a new note on the given 'name' as topic
-function sbu.create_new_zettle(name)
+function M.create_new_zettle(name)
     local zettlepath = prep_user_path(".zettlekasten")
     local date = os.date("%Y-%m-%d")
 
@@ -283,18 +285,10 @@ end
 -- Change scale factor of editor
 -- Only used when running through neovide
 vim.g.neovide_scale_factor = 1.0
-function sbu.change_scale_factor(delta)
+function M.change_scale_factor(delta)
     if vim.g.neovide then
       vim.g.neovide_scale_factor = vim.g.neovide_scale_factor * delta
     end
 end
 
-function sbu.scale_text_up()
-    change_scale_factor(1.25)
-end
-
-function sbu.scale_text_down()
-    change_scale_factor(1/1.25)
-end
-
-return sbu;
+return M;
