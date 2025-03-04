@@ -1,3 +1,4 @@
+local sbu = require 'utils'
 -- AutoCmds
 -- Set up source of truth for folds
 vim.api.nvim_create_autocmd(
@@ -119,7 +120,7 @@ vim.api.nvim_create_autocmd(
 vim.api.nvim_create_user_command(
     "Todo",
     function(opts)
-        create_todo_file(opts.args or nil)
+        sbu.create_todo_file(opts.args or nil)
     end,
     { nargs='?' }
 )
@@ -127,7 +128,7 @@ vim.api.nvim_create_user_command(
 vim.api.nvim_create_user_command(
     "Lstodo",
     function(opts)
-        list_todos(opts.args or nil)
+        sbu.list_todos(opts.args or nil)
     end,
     { nargs='?' }
 )
@@ -135,7 +136,7 @@ vim.api.nvim_create_user_command(
 vim.api.nvim_create_user_command(
     "Note",
     function(opts)
-        create_new_zettle(opts.args or nil)
+        sbu.create_new_zettle(opts.args or nil)
     end,
     { nargs='?' }
 )
@@ -143,6 +144,6 @@ vim.api.nvim_create_user_command(
 -- Remove trailing whitespaces from buffer
 vim.api.nvim_create_user_command(
     'Rt',
-    remove_trailing_whitespace,
+    sbu.remove_trailing_whitespace,
     {}
 )

@@ -31,12 +31,11 @@ return {
                     { name = 'nvim_lsp_signature_help' },
                     { name = 'luasnip' },
                     { name = 'path' },
-                })
+                }),
             });
 
             -- Add autocompletion in command mode, for both paths and cmds
             cmp.setup.cmdline(':', {
-                mapping = cmp.mapping.preset.cmdline(),
                 sources = cmp.config.sources({
                     { name = 'path' },
                     {
@@ -46,6 +45,13 @@ return {
                         },
                     },
                 }),
+            })
+
+            -- Use buffer source for `/` and `?`
+            cmp.setup.cmdline({ '/', '?' }, {
+                sources = {
+                    { name = 'buffer' }
+                }
             })
         end
     },

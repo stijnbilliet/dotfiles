@@ -3,28 +3,24 @@ local tscope = require 'telescope.builtin'
 local dap = require 'dap'
 local dap_ui = require 'dapui'
 local dap_ui_widgets = require 'dap.ui.widgets'
-
--- Vars
-local cmp_confirm = function() cmp_try_confirm('<Tab>') end
-local cmp_select_next = function() cmp_luasnip_select_next_item('<Down>') end
-local cmp_select_prev = function() cmp_luasnip_select_prev_item('<Up>') end
+local sbu = require 'utils'
 
 -- Lists of keys for all plugins that we're using
 local telescopekeys = {
     {
         key='<CS-F>',
         mode='n',
-        func=find_in_files,
+        func=sbu.find_in_files,
         opts={
-            desc='Search Files'
+            desc='Search Files',
         }
     },
     {
         key='<C-;>',
         mode='n',
-        func=quick_open,
+        func=sbu.quick_open,
         opts={
-            desc='Quick Open'
+            desc='Quick Open',
         }
     },
     {
@@ -32,7 +28,7 @@ local telescopekeys = {
         mode='n',
         func=tscope.oldfiles,
         opts={
-            desc='Recently opened Files'
+            desc='Recently opened Files',
         }
     },
     {
@@ -40,7 +36,7 @@ local telescopekeys = {
         mode='n',
         func=tscope.buffers,
         opts={
-            desc='Existing buffers'
+            desc='Existing buffers',
         }
     },
     {
@@ -48,7 +44,7 @@ local telescopekeys = {
         mode='n',
         func=tscope.help_tags,
         opts={
-            desc='Search Help'
+            desc='Search Help',
         }
     },
 }
@@ -57,43 +53,58 @@ local cmpkeys = {
     {
         key='<C-d>',
         mode={'i', 'c'},
-        func=cmp.mapping.scroll_docs(-4),
+        func=function() cmp.scroll_docs(-4) end,
         opts={
         }
     },
     {
         key='<C-f>',
         mode={'i', 'c'},
-        func=cmp.mapping.scroll_docs(4),
+        func=function() cmp.scroll_docs(4) end,
         opts={
         }
     },
     {
         key='<C-Space>',
         mode={'i', 'c'},
-        func=cmp.mapping.complete,
+        func=cmp.complete,
         opts={
-            desc='Trigger completion'
+            desc='Trigger completion',
+        }
+    },
+    {
+        key='<C-e>',
+        mode={'i', 'c'},
+        func=function() sbu.cmp_try_abort({fbkey='<C-e>'}) end,
+        opts={
+            desc='Abort completion',
         }
     },
     {
         key='<Tab>',
         mode={'i', 'c'},
-        func=cmp_confirm,
+        func=function() sbu.cmp_confirm_selected({fbkey='<Tab>', cmpargs={select = true}}) end,
+        opts={
+        }
+    },
+    {
+        key='<Enter>',
+        mode='i',
+        func=function() sbu.cmp_confirm_selected({fbkey='<Enter>', cmpargs={select = false}}) end,
         opts={
         }
     },
     {
         key='<Down>',
-        mode='i',
-        func=cmp_select_next,
+        mode={'i', 'c'},
+        func=function() sbu.cmp_luasnip_select_next_item({fbkey='<Down>'}) end,
         opts={
         }
     },
     {
         key='<Up>',
-        mode='i',
-        func=cmp_select_prev,
+        mode={'i', 'c'},
+        func=function() sbu.cmp_luasnip_select_prev_item({fbkey='<Up>'}) end,
         opts={
         }
     },
@@ -105,7 +116,7 @@ local lspkeys = {
         mode='n',
         func=vim.lsp.buf.rename,
         opts={
-            desc='Rename'
+            desc='Rename',
         }
     },
     {
@@ -113,7 +124,7 @@ local lspkeys = {
         mode='n',
         func=vim.lsp.buf.declaration,
         opts={
-            desc='Goto declaration'
+            desc='Goto declaration',
         }
     },
     {
@@ -121,7 +132,7 @@ local lspkeys = {
         mode='n',
         func=vim.lsp.buf.hover,
         opts={
-            desc='Hover'
+            desc='Hover',
         }
     },
     {
@@ -129,7 +140,7 @@ local lspkeys = {
         mode='n',
         func=tscope.lsp_definitions,
         opts={
-            desc='Goto definition'
+            desc='Goto definition',
         }
     },
     {
@@ -137,7 +148,7 @@ local lspkeys = {
         mode='n',
         func=tscope.lsp_references,
         opts={
-            desc='Goto references'
+            desc='Goto references',
         }
     },
     {
@@ -145,7 +156,7 @@ local lspkeys = {
         mode='n',
         func=tscope.lsp_implementations,
         opts={
-            desc='Goto implementations'
+            desc='Goto implementations',
         }
     },
     {
@@ -153,7 +164,7 @@ local lspkeys = {
         mode='n',
         func=tscope.lsp_dynamic_workspace_symbols,
         opts={
-            desc='Search Symbols'
+            desc='Search Symbols',
         }
     },
     {
@@ -161,7 +172,7 @@ local lspkeys = {
         mode='n',
         func=vim.diagnostic.goto_next,
         opts={
-            desc='Goto next error'
+            desc='Goto next error',
         }
     },
     {
@@ -169,15 +180,15 @@ local lspkeys = {
         mode='n',
         func=vim.diagnostic.goto_prev,
         opts={
-            desc='Goto prev error'
+            desc='Goto prev error',
         }
     },
     {
         key='<C-k><C-o>',
         mode='n',
-        func=switch_source_header,
+        func=sbu.switch_source_header,
         opts={
-            desc='Toggle source/header'
+            desc='Toggle source/header',
         }
     },
 }
@@ -186,9 +197,9 @@ local dapkeys = {
     {
         key='<F5>',
         mode='n',
-        func=dap_launch,
+        func=sbu.dap_launch,
         opts={
-            desc="Continue"
+            desc="Continue",
         }
     },
     {
@@ -196,7 +207,7 @@ local dapkeys = {
         mode='n',
         func=dap.step_over,
         opts={
-            desc="Step Over"
+            desc="Step Over",
         }
     },
     {
@@ -204,7 +215,7 @@ local dapkeys = {
         mode='n',
         func=dap.step_into,
         opts={
-            desc="Step Into"
+            desc="Step Into",
         }
     },
     {
@@ -212,7 +223,7 @@ local dapkeys = {
         mode='n',
         func=dap.toggle_breakpoint,
         opts={
-            desc="Toggle Breakpoint"
+            desc="Toggle Breakpoint",
         }
     },
     {
@@ -220,7 +231,7 @@ local dapkeys = {
         mode='n',
         func=dap.run_to_cursor,
         opts={
-            desc="Run to Cursor"
+            desc="Run to Cursor",
         }
     },
     {
@@ -228,7 +239,7 @@ local dapkeys = {
         mode='n',
         func=dap.step_out,
         opts={
-            desc="Step Out"
+            desc="Step Out",
         }
     },
     {
@@ -236,7 +247,7 @@ local dapkeys = {
         mode='n',
         func=dap.terminate,
         opts={
-            desc="Terminate"
+            desc="Terminate",
         }
     },
     {
@@ -244,7 +255,7 @@ local dapkeys = {
         mode='n',
         func=dap.run_last,
         opts={
-            desc="Run Last"
+            desc="Run Last",
         }
     },
     {
@@ -252,7 +263,7 @@ local dapkeys = {
         mode='n',
         func=dap.pause,
         opts={
-            desc="Pause"
+            desc="Pause",
         }
     },
     {
@@ -260,7 +271,7 @@ local dapkeys = {
         mode='n',
         func=dap_ui_widgets.hover,
         opts={
-            desc="Widgets"
+            desc="Widgets",
         }
     },
 }
@@ -271,7 +282,7 @@ local dapuikeys = {
         mode='n',
         func=dap_ui.toggle,
         opts={
-            desc="Dap UI"
+            desc="Dap UI",
         }
     },
     {
@@ -279,7 +290,7 @@ local dapuikeys = {
         mode={'n','v'},
         func=dap_ui.eval,
         opts={
-            desc="Eval"
+            desc="Eval",
         }
     },
 }
@@ -288,9 +299,9 @@ local nvimkeys = {
     {
         key='<C-`>',
         mode={'n','t'},
-        func=toggle_terminal,
+        func=sbu.toggle_terminal,
         opts={
-            desc="Toggle terminal"
+            desc="Toggle terminal",
         }
     },
     {
@@ -298,7 +309,7 @@ local nvimkeys = {
         mode='n',
         func="nzz",
         opts={
-            desc="Goto next occurence"
+            desc="Goto next occurence",
         }
     },
     {
@@ -306,7 +317,7 @@ local nvimkeys = {
         mode='n',
         func="Nzz",
         opts={
-            desc="Goto prev occurence"
+            desc="Goto prev occurence",
         }
     },
     {
@@ -314,7 +325,7 @@ local nvimkeys = {
         mode='n',
         func="mzJ`z",
         opts={
-            desc="Join with line below"
+            desc="Join with line below",
         }
     },
 }
@@ -323,17 +334,17 @@ local nvidekeys = {
     {
         key='<C-=>',
         mode='n',
-        func=scale_text_up,
+        func=sbu.scale_text_up,
         opts={
-            desc="Scale text up"
+            desc="Scale text up",
         }
     },
     {
         key='<C-->',
         mode='n',
-        func=scale_text_down,
+        func=sbu.scale_text_down,
         opts={
-            desc="Scale text down"
+            desc="Scale text down",
         }
     },
 }
@@ -342,16 +353,16 @@ local nvidekeys = {
 vim.api.nvim_create_autocmd('LspAttach', {
     group = vim.api.nvim_create_augroup('UserLspConfig', {}),
     callback = function(ev)
-        bind_keyset_buffer(lspkeys, ev.buf);
+        sbu.bind_keyset_buffer(lspkeys, ev.buf);
     end,
 })
 
 -- Bind those keysets to vim.keymap
-bind_keyset(telescopekeys);
-bind_keyset(cmpkeys);
-bind_keyset(dapkeys);
-bind_keyset(dapuikeys);
-bind_keyset(nvimkeys);
+sbu.bind_keyset(telescopekeys);
+sbu.bind_keyset(cmpkeys);
+sbu.bind_keyset(dapkeys);
+sbu.bind_keyset(dapuikeys);
+sbu.bind_keyset(nvimkeys);
 if vim.g.neovide then
-    bind_keyset(nvidekeys);
+    sbu.bind_keyset(nvidekeys);
 end
