@@ -123,7 +123,8 @@ end
 
 function sbu.cmp_confirm_selected(args)
     local cmp = require 'cmp'
-    if cmp.visible() then
+    local select = args.cmpargs.select or false
+    if cmp.visible() and (not select and cmp.get_selected_entry()) then
         cmp.confirm(args.cmpargs)
     else
         sbu.feed_keys(args.fbkey); -- fallback

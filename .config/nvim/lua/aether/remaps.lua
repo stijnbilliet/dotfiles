@@ -33,7 +33,7 @@ local telescopekeys = {
     },
     {
         key='<C-Tab>',
-        mode='n',
+        mode={'n', 'c'},
         func=tscope.buffers,
         opts={
             desc='Existing buffers',
@@ -72,6 +72,7 @@ local cmpkeys = {
             desc='Trigger completion',
         }
     },
+    --TODO(stijn): Take a look at nvim-mapper to better handle forwarding of fallback keys
     {
         key='<C-e>',
         mode={'i', 'c'},
@@ -89,7 +90,7 @@ local cmpkeys = {
     },
     {
         key='<Enter>',
-        mode='i',
+        mode={'i', 'c'},
         func=function() atu.cmp_confirm_selected({fbkey='<Enter>', cmpargs={select = false}}) end,
         opts={
         }

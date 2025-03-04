@@ -11,6 +11,7 @@ return {
         config = function ()
             require('nvim-autopairs').setup{
                 enable_ts = true, --enable treesitter support
+                map_cr = false,
             }
 
             local cmp_autopairs = require 'nvim-autopairs.completion.cmp'

@@ -13,6 +13,7 @@ return {
             'hrsh7th/cmp-nvim-lsp',
             'hrsh7th/cmp-nvim-lsp-signature-help',
             'hrsh7th/cmp-cmdline',
+            'hrsh7th/cmp-buffer',
             'hrsh7th/cmp-path'
         },
         config = function()
@@ -36,6 +37,7 @@ return {
 
             -- Add autocompletion in command mode, for both paths and cmds
             cmp.setup.cmdline(':', {
+                completion = { autocomplete = false },
                 sources = cmp.config.sources({
                     { name = 'path' },
                     {
@@ -49,6 +51,7 @@ return {
 
             -- Use buffer source for `/` and `?`
             cmp.setup.cmdline({ '/', '?' }, {
+                completion = { autocomplete = false },
                 sources = {
                     { name = 'buffer' }
                 }
