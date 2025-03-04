@@ -122,7 +122,6 @@ function sbu.cmp_try_abort(args)
 end
 
 function sbu.cmp_confirm_selected(args)
-    assert(false)
     local cmp = require 'cmp'
     if cmp.visible() then
         cmp.confirm(args.cmpargs)

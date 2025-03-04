@@ -16,7 +16,7 @@ vim.opt.rtp:prepend(lazypath)
 require('lazy').setup({
     spec = {
         { 'echasnovski/mini.base16' },
-        { import = 'plugin' },
+        { import = 'aether.plugins' },
     },
     performance = {
         rtp = {

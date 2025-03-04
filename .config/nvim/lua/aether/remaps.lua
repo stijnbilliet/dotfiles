@@ -3,14 +3,14 @@ local tscope = require 'telescope.builtin'
 local dap = require 'dap'
 local dap_ui = require 'dapui'
 local dap_ui_widgets = require 'dap.ui.widgets'
-local sbu = require 'utils'
+local atu = require 'aether.utils'
 
 -- Lists of keys for all plugins that we're using
 local telescopekeys = {
     {
         key='<CS-F>',
         mode='n',
-        func=sbu.find_in_files,
+        func=atu.find_in_files,
         opts={
             desc='Search Files',
         }
@@ -18,7 +18,7 @@ local telescopekeys = {
     {
         key='<C-;>',
         mode='n',
-        func=sbu.quick_open,
+        func=atu.quick_open,
         opts={
             desc='Quick Open',
         }
@@ -75,7 +75,7 @@ local cmpkeys = {
     {
         key='<C-e>',
         mode={'i', 'c'},
-        func=function() sbu.cmp_try_abort({fbkey='<C-e>'}) end,
+        func=function() atu.cmp_try_abort({fbkey='<C-e>'}) end,
         opts={
             desc='Abort completion',
         }
@@ -83,28 +83,28 @@ local cmpkeys = {
     {
         key='<Tab>',
         mode={'i', 'c'},
-        func=function() sbu.cmp_confirm_selected({fbkey='<Tab>', cmpargs={select = true}}) end,
+        func=function() atu.cmp_confirm_selected({fbkey='<Tab>', cmpargs={select = true}}) end,
         opts={
         }
     },
     {
         key='<Enter>',
         mode='i',
-        func=function() sbu.cmp_confirm_selected({fbkey='<Enter>', cmpargs={select = false}}) end,
+        func=function() atu.cmp_confirm_selected({fbkey='<Enter>', cmpargs={select = false}}) end,
         opts={
         }
     },
     {
         key='<Down>',
         mode={'i', 'c'},
-        func=function() sbu.cmp_luasnip_select_next_item({fbkey='<Down>'}) end,
+        func=function() atu.cmp_luasnip_select_next_item({fbkey='<Down>'}) end,
         opts={
         }
     },
     {
         key='<Up>',
         mode={'i', 'c'},
-        func=function() sbu.cmp_luasnip_select_prev_item({fbkey='<Up>'}) end,
+        func=function() atu.cmp_luasnip_select_prev_item({fbkey='<Up>'}) end,
         opts={
         }
     },
@@ -186,7 +186,7 @@ local lspkeys = {
     {
         key='<C-k><C-o>',
         mode='n',
-        func=sbu.switch_source_header,
+        func=atu.switch_source_header,
         opts={
             desc='Toggle source/header',
         }
@@ -197,7 +197,7 @@ local dapkeys = {
     {
         key='<F5>',
         mode='n',
-        func=sbu.dap_launch,
+        func=atu.dap_launch,
         opts={
             desc="Continue",
         }
@@ -299,7 +299,7 @@ local nvimkeys = {
     {
         key='<C-`>',
         mode={'n','t'},
-        func=sbu.toggle_terminal,
+        func=atu.toggle_terminal,
         opts={
             desc="Toggle terminal",
         }
@@ -332,17 +332,17 @@ local nvimkeys = {
 
 local nvidekeys = {
     {
-        key='<C-=>',
+        key='<CS-=>',
         mode='n',
-        func=sbu.scale_text_up,
+        func=atu.scale_text_up,
         opts={
             desc="Scale text up",
         }
     },
     {
-        key='<C-->',
+        key='<CS-->',
         mode='n',
-        func=sbu.scale_text_down,
+        func=atu.scale_text_down,
         opts={
             desc="Scale text down",
         }
@@ -353,16 +353,16 @@ local nvidekeys = {
 vim.api.nvim_create_autocmd('LspAttach', {
     group = vim.api.nvim_create_augroup('UserLspConfig', {}),
     callback = function(ev)
-        sbu.bind_keyset_buffer(lspkeys, ev.buf);
+        atu.bind_keyset_buffer(lspkeys, ev.buf);
     end,
 })
 
 -- Bind those keysets to vim.keymap
-sbu.bind_keyset(telescopekeys);
-sbu.bind_keyset(cmpkeys);
-sbu.bind_keyset(dapkeys);
-sbu.bind_keyset(dapuikeys);
-sbu.bind_keyset(nvimkeys);
+atu.bind_keyset(telescopekeys);
+atu.bind_keyset(cmpkeys);
+atu.bind_keyset(dapkeys);
+atu.bind_keyset(dapuikeys);
+atu.bind_keyset(nvimkeys);
 if vim.g.neovide then
-    sbu.bind_keyset(nvidekeys);
+    atu.bind_keyset(nvidekeys);
 end
