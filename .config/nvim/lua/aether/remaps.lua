@@ -12,7 +12,7 @@ local telescopekeys = {
         mode='n',
         func=atu.find_in_files,
         opts={
-            desc='Search Files',
+            desc="Search Files",
         }
     },
     {
@@ -20,7 +20,7 @@ local telescopekeys = {
         mode='n',
         func=atu.quick_open,
         opts={
-            desc='Quick Open',
+            desc="Quick Open",
         }
     },
     {
@@ -28,7 +28,7 @@ local telescopekeys = {
         mode='n',
         func=tscope.oldfiles,
         opts={
-            desc='Recently opened Files',
+            desc="Recently opened Files",
         }
     },
     {
@@ -36,7 +36,7 @@ local telescopekeys = {
         mode={'n', 'c'},
         func=tscope.buffers,
         opts={
-            desc='Existing buffers',
+            desc="Existing buffers",
         }
     },
     {
@@ -44,7 +44,7 @@ local telescopekeys = {
         mode='n',
         func=tscope.help_tags,
         opts={
-            desc='Search Help',
+            desc="Search Help",
         }
     },
 }
@@ -55,6 +55,7 @@ local cmpkeys = {
         mode={'i', 'c'},
         func=function() cmp.scroll_docs(-4) end,
         opts={
+            desc="Scroll docs down",
         }
     },
     {
@@ -62,6 +63,7 @@ local cmpkeys = {
         mode={'i', 'c'},
         func=function() cmp.scroll_docs(4) end,
         opts={
+            desc="Scroll docs up",
         }
     },
     {
@@ -69,7 +71,7 @@ local cmpkeys = {
         mode={'i', 'c'},
         func=cmp.complete,
         opts={
-            desc='Trigger completion',
+            desc="Trigger completion",
         }
     },
     --TODO(stijn): Take a look at nvim-mapper to better handle forwarding of fallback keys
@@ -78,7 +80,7 @@ local cmpkeys = {
         mode={'i', 'c'},
         func=function() atu.cmp_try_abort({fbkey='<C-e>'}) end,
         opts={
-            desc='Abort completion',
+            desc="Abort completion",
         }
     },
     {
@@ -86,6 +88,7 @@ local cmpkeys = {
         mode={'i', 'c'},
         func=function() atu.cmp_confirm_selected({fbkey='<Tab>', cmpargs={select = true}}) end,
         opts={
+            desc="Autocomplete confirm selected",
         }
     },
     {
@@ -93,6 +96,7 @@ local cmpkeys = {
         mode={'i', 'c'},
         func=function() atu.cmp_confirm_selected({fbkey='<Enter>', cmpargs={select = false}}) end,
         opts={
+            desc="Autocomplete confirm selected",
         }
     },
     {
@@ -100,6 +104,7 @@ local cmpkeys = {
         mode={'i', 'c'},
         func=function() atu.cmp_luasnip_select_next_item({fbkey='<Down>'}) end,
         opts={
+            desc="Autocompletions select next item",
         }
     },
     {
@@ -107,6 +112,7 @@ local cmpkeys = {
         mode={'i', 'c'},
         func=function() atu.cmp_luasnip_select_prev_item({fbkey='<Up>'}) end,
         opts={
+            desc="Autocompletions select prev item",
         }
     },
 }
@@ -117,7 +123,7 @@ local lspkeys = {
         mode='n',
         func=vim.lsp.buf.rename,
         opts={
-            desc='Rename',
+            desc="Rename",
         }
     },
     {
@@ -125,7 +131,7 @@ local lspkeys = {
         mode='n',
         func=vim.lsp.buf.declaration,
         opts={
-            desc='Goto declaration',
+            desc="Goto declaration",
         }
     },
     {
@@ -133,7 +139,7 @@ local lspkeys = {
         mode='n',
         func=vim.lsp.buf.hover,
         opts={
-            desc='Hover',
+            desc="Hover",
         }
     },
     {
@@ -141,7 +147,7 @@ local lspkeys = {
         mode='n',
         func=tscope.lsp_definitions,
         opts={
-            desc='Goto definition',
+            desc="Goto definition",
         }
     },
     {
@@ -149,7 +155,7 @@ local lspkeys = {
         mode='n',
         func=tscope.lsp_references,
         opts={
-            desc='Goto references',
+            desc="Goto references",
         }
     },
     {
@@ -157,7 +163,7 @@ local lspkeys = {
         mode='n',
         func=tscope.lsp_implementations,
         opts={
-            desc='Goto implementations',
+            desc="Goto implementations",
         }
     },
     {
@@ -165,7 +171,7 @@ local lspkeys = {
         mode='n',
         func=tscope.lsp_dynamic_workspace_symbols,
         opts={
-            desc='Search Symbols',
+            desc="Search Symbols",
         }
     },
     {
@@ -173,7 +179,7 @@ local lspkeys = {
         mode='n',
         func=vim.diagnostic.goto_next,
         opts={
-            desc='Goto next error',
+            desc="Goto next error",
         }
     },
     {
@@ -181,7 +187,7 @@ local lspkeys = {
         mode='n',
         func=vim.diagnostic.goto_prev,
         opts={
-            desc='Goto prev error',
+            desc="Goto prev error",
         }
     },
     {
@@ -189,7 +195,7 @@ local lspkeys = {
         mode='n',
         func=atu.switch_source_header,
         opts={
-            desc='Toggle source/header',
+            desc="Toggle source/header",
         }
     },
 }
