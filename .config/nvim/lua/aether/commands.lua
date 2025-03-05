@@ -19,9 +19,9 @@ vim.api.nvim_create_autocmd(
 
 -- Start terminal in insert mode
 vim.api.nvim_create_autocmd(
-    'TermOpen',
+    {'TermOpen', 'BufEnter'},
     {
-        pattern  = '*',
+        pattern  = 'term://*',
         command  = 'startinsert | set winfixheight'
     }
 )
@@ -78,7 +78,8 @@ vim.api.nvim_create_autocmd(
 vim.api.nvim_create_autocmd(
     "BufWinEnter",
     {
-        pattern = "*",
+        --any buffer as long as it isn't a terminal
+        pattern = "!~^term:://*",
         callback = function()
             vim.fn.matchadd("ExtraWhitespace", "\\s\\+$")
         end,
@@ -114,7 +115,6 @@ vim.api.nvim_create_autocmd(
         end,
     }
 )
-
 
 -- My TODO/Note list
 vim.api.nvim_create_user_command(
