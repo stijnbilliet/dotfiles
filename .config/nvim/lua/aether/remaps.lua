@@ -123,7 +123,7 @@ local lspkeys = {
         mode='n',
         func=vim.lsp.buf.rename,
         opts={
-            desc="Rename",
+            desc="LSP: Rename",
         }
     },
     {
@@ -131,7 +131,7 @@ local lspkeys = {
         mode='n',
         func=vim.lsp.buf.declaration,
         opts={
-            desc="Goto declaration",
+            desc="LSP: Goto declaration",
         }
     },
     {
@@ -139,7 +139,15 @@ local lspkeys = {
         mode='n',
         func=vim.lsp.buf.hover,
         opts={
-            desc="Hover",
+            desc="LSP: Hover",
+        }
+    },
+    {
+        key='<C-.>',
+        mode='n',
+        func=vim.lsp.buf.code_action,
+        opts={
+            desc="LSP: Code action",
         }
     },
     {
@@ -147,7 +155,7 @@ local lspkeys = {
         mode='n',
         func=tscope.lsp_definitions,
         opts={
-            desc="Goto definition",
+            desc="LSP: Goto definition",
         }
     },
     {
@@ -155,7 +163,7 @@ local lspkeys = {
         mode='n',
         func=tscope.lsp_references,
         opts={
-            desc="Goto references",
+            desc="LSP: Goto references",
         }
     },
     {
@@ -163,7 +171,7 @@ local lspkeys = {
         mode='n',
         func=tscope.lsp_implementations,
         opts={
-            desc="Goto implementations",
+            desc="LSP: Goto implementations",
         }
     },
     {
@@ -171,7 +179,7 @@ local lspkeys = {
         mode='n',
         func=tscope.lsp_dynamic_workspace_symbols,
         opts={
-            desc="Search Symbols",
+            desc="LSP: Search Symbols",
         }
     },
     {
@@ -179,7 +187,7 @@ local lspkeys = {
         mode='n',
         func=vim.diagnostic.goto_next,
         opts={
-            desc="Goto next error",
+            desc="LSP: Goto next error",
         }
     },
     {
@@ -187,7 +195,7 @@ local lspkeys = {
         mode='n',
         func=vim.diagnostic.goto_prev,
         opts={
-            desc="Goto prev error",
+            desc="LSP: Goto prev error",
         }
     },
     {
@@ -195,7 +203,7 @@ local lspkeys = {
         mode='n',
         func=atu.switch_source_header,
         opts={
-            desc="Toggle source/header",
+            desc="LSP: Toggle source/header",
         }
     },
 }
