@@ -125,8 +125,7 @@ end
 
 function M.cmp_confirm_selected(args)
     local cmp = require 'cmp'
-    local select = args.cmpargs.select or false
-    if cmp.visible() and (not select and cmp.get_selected_entry()) then
+    if cmp.visible() then
         cmp.confirm(args.cmpargs)
     else
         M.pass_keys_repl(args.fbkey); -- fallback
