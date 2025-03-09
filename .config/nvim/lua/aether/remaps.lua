@@ -3,6 +3,7 @@ local tscope = require 'telescope.builtin'
 local dap = require 'dap'
 local dap_ui = require 'dapui'
 local dap_ui_widgets = require 'dap.ui.widgets'
+local gitsigns = require 'gitsigns'
 local atu = require 'aether.utils'
 
 -- Lists of keys for all plugins that we're using
@@ -310,6 +311,116 @@ local dapuikeys = {
     },
 }
 
+local gitkeys = {
+    --Navigation
+    {
+        key=']c',
+        mode='n',
+        func=atu.diff_nav_next,
+        opts={
+            desc="Git: Nav to next diff"
+        }
+    },
+    {
+        key='[c',
+        mode='n',
+        func=atu.diff_nav_prev,
+        opts={
+            desc="Git: Nav to prev diff"
+        }
+    },
+    --Actions
+    {
+        key='<leader>hs',
+        mode='n',
+        func=gitsigns.stage_hunk,
+        opts={
+            desc="Git: Toggle stage hunk",
+        }
+    },
+    {
+        key='<leader>hr',
+        mode='n',
+        func=gitsigns.reset_hunk,
+        opts={
+            desc="Git: Reset hunk",
+        }
+    },
+    {
+        key='<leader>hs',
+        mode='v',
+        func=function() gitsigns.stage_hunk({ vim.fn.line('.'), vim.fn.line('v') }) end,
+        opts={
+            desc="Git: Toggle stage v-selected hunk",
+        }
+    },
+    {
+        key='<leader>hr',
+        mode='v',
+        func=function() gitsigns.reset_hunk({ vim.fn.line('.'), vim.fn.line('v') }) end,
+        opts={
+            desc="Git: Reset v-selected hunk",
+        }
+    },
+    {
+        key='<leader>hS',
+        mode='n',
+        func=gitsigns.stage_buffer,
+        opts={
+            desc="Git: Toggle stage buffer"
+        }
+    },
+    {
+        key='<leader>hR',
+        mode='n',
+        func=gitsigns.reset_buffer,
+        opts={
+            desc="Git: Reset hunk"
+        }
+    },
+    {
+        key='<leader>hp',
+        mode='n',
+        func=gitsigns.preview_hunk,
+        opts={
+            desc="Git: Preview hunk"
+        }
+    },
+    {
+        key='<leader>hi',
+        mode='n',
+        func=gitsigns.preview_hunk_inline,
+        opts={
+            desc="Git: Preview hunk inline"
+        }
+    },
+    {
+        key='<leader>hb',
+        mode='n',
+        func=function() gitsigns.blame_line({ full = true }) end,
+        opts={
+            desc="Git: Blame line"
+        }
+    },
+    {
+        key='<leader>hd',
+        mode='n',
+        func=gitsigns.diffthis,
+        opts={
+            desc="Git: Diff this file"
+        }
+    },
+    --Text object
+    {
+        key='ih',
+        mode={'o', 'x'},
+        func=gitsigns.select_hunk,
+        opts={
+            desc="Git: Select inner hunk"
+        }
+    },
+}
+
 local nvimkeys = {
     {
         key='<C-`>',
@@ -377,6 +488,7 @@ atu.bind_keyset(telescopekeys);
 atu.bind_keyset(cmpkeys);
 atu.bind_keyset(dapkeys);
 atu.bind_keyset(dapuikeys);
+atu.bind_keyset(gitkeys);
 atu.bind_keyset(nvimkeys);
 if vim.g.neovide then
     atu.bind_keyset(nvidekeys);

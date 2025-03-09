@@ -149,6 +149,27 @@ function M.switch_source_header()
     end)
 end
 
+-- GITSIGNS
+-- Naviate to NEXT difference in file/buffer
+function M.diff_nav_next()
+    if vim.wo.diff then
+        vim.cmd.normal({']c', bang = true})
+    else
+        local gitsigns = require('gitsigns')
+        gitsigns.nav_hunk('next')
+    end
+end
+
+-- Naviate to PREV difference in file/buffer
+function M.diff_nav_prev()
+    if vim.wo.diff then
+        vim.cmd.normal({'[c', bang = true})
+    else
+        local gitsigns = require('gitsigns')
+        gitsigns.nav_hunk('prev')
+    end
+end
+
 local function bind_key_or_multi(entry)
     if type(entry.key) == "string" then
         vim.keymap.set(entry.mode, entry.key, entry.func, entry.opts)
