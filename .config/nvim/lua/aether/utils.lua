@@ -87,28 +87,19 @@ function M.dap_launch()
 end
 
 --TODO(stijn): Again for all the cases with fallback keys, look into nvim-mapper
-
--- completion engine interaction defintions
--- cmp if visible with luasnip fallbacks otherwise
-function M.cmp_luasnip_select_next_item(args)
-    local luasnip = require 'luasnip'
+function M.cmp_select_next_item(args)
     local cmp = require 'cmp'
     if cmp.visible() then
        cmp.select_next_item({behavior = cmp.SelectBehavior.Select });
-    elseif luasnip.expand_or_locally_jumpable() then
-       luasnip.expand_or_jump();
     else
        M.pass_keys_repl(args.fbkey);
     end
 end
 
-function M.cmp_luasnip_select_prev_item(args)
-    local luasnip = require 'luasnip'
+function M.cmp_select_prev_item(args)
     local cmp = require 'cmp'
     if cmp.visible() then
         cmp.select_prev_item({behavior = cmp.SelectBehavior.Select })
-    elseif luasnip.locally_jumpable(-1) then
-        luasnip.jump(-1)
     else
        M.pass_keys_repl(args.fbkey);
     end
@@ -170,6 +161,14 @@ function M.diff_nav_prev()
     end
 end
 
+-- Toggle 'inline' diff on current buffer
+function M.gitsigns_diff_inline()
+    local gitsigns = require('gitsigns')
+    gitsigns.toggle_word_diff()
+    gitsigns.toggle_deleted()
+    gitsigns.toggle_linehl()
+end
+
 local function bind_key_or_multi(entry)
     if type(entry.key) == "string" then
         vim.keymap.set(entry.mode, entry.key, entry.func, entry.opts)
@@ -189,8 +188,7 @@ end
 
 function M.bind_keyset_buffer(keyset, buffnr)
     for _, entry in ipairs(keyset) do
-        local opts = entry.opts;
-        opts.buffer = buffnr;
+        entry.opts.buffer = buffnr;
         bind_key_or_multi(entry)
     end
 end

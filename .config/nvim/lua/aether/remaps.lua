@@ -103,7 +103,7 @@ local cmpkeys = {
     {
         key='<Down>',
         mode={'i', 'c'},
-        func=function() atu.cmp_luasnip_select_next_item({fbkey='<Down>'}) end,
+        func=function() atu.cmp_select_next_item({fbkey='<Down>'}) end,
         opts={
             desc="Autocompletions select next item",
         }
@@ -111,7 +111,7 @@ local cmpkeys = {
     {
         key='<Up>',
         mode={'i', 'c'},
-        func=function() atu.cmp_luasnip_select_prev_item({fbkey='<Up>'}) end,
+        func=function() atu.cmp_select_prev_item({fbkey='<Up>'}) end,
         opts={
             desc="Autocompletions select prev item",
         }
@@ -403,11 +403,19 @@ local gitkeys = {
         }
     },
     {
-        key='<leader>hd',
+        key='<leader>hD',
         mode='n',
         func=gitsigns.diffthis,
         opts={
             desc="Git: Diff this file"
+        }
+    },
+    {
+        key='<leader>hd',
+        mode='n',
+        func=atu.gitsigns_diff_inline,
+        opts={
+            desc="Git: Diff this file inline"
         }
     },
     --Text object
@@ -478,8 +486,15 @@ local nvidekeys = {
 -- Auto bind lspkeys on lspattach
 vim.api.nvim_create_autocmd('LspAttach', {
     group = vim.api.nvim_create_augroup('UserLspConfig', {}),
-    callback = function(ev)
-        atu.bind_keyset_buffer(lspkeys, ev.buf);
+    callback = function(args)
+        atu.bind_keyset_buffer(lspkeys, args.buf);
+    end,
+})
+
+vim.api.nvim_create_autocmd('BufReadPost', {
+    group = vim.api.nvim_create_augroup('UserGitSigns', {}),
+    callback = function(args)
+        atu.bind_keyset_buffer(gitkeys, args.buf);
     end,
 })
 
@@ -488,7 +503,6 @@ atu.bind_keyset(telescopekeys);
 atu.bind_keyset(cmpkeys);
 atu.bind_keyset(dapkeys);
 atu.bind_keyset(dapuikeys);
-atu.bind_keyset(gitkeys);
 atu.bind_keyset(nvimkeys);
 if vim.g.neovide then
     atu.bind_keyset(nvidekeys);
