@@ -462,6 +462,25 @@ local nvimkeys = {
             desc="Join with line below",
         }
     },
+    --Navigate around in the quickfix list
+    --Try `lua: vim.diagnostic.setqflist()`
+    --Or with Telescope pickers <C-q> to add results to qflist
+    {
+        key='<M-j>',
+        mode='n',
+        func="<cmd>cnext<CR>",
+        opts={
+            desc="Goto next in quickfix list",
+        }
+    },
+    {
+        key='<M-k>',
+        mode='n',
+        func="<cmd>cprev<CR>",
+        opts={
+            desc="Goto prev in quickfix list",
+        }
+    },
 }
 
 local nvidekeys = {
