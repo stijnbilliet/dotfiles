@@ -22,7 +22,7 @@ exec wlsunset -l 51.5 -L -0.1
 
 ### Input configuration
 input type:keyboard {
-    xkb_layout gb,us
+    xkb_layout us,gb
 }
 bindsym $mod+space input type:keyboard xkb_switch_layout next
 
