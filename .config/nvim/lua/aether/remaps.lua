@@ -128,6 +128,14 @@ local lspkeys = {
         }
     },
     {
+        key='<F3>',
+        mode='n',
+        func=vim.lsp.buf.format,
+        opts={
+            desc="LSP: Buffer format",
+        }
+    },
+    {
         key='<C-F12>',
         mode='n',
         func=vim.lsp.buf.declaration,

@@ -1,16 +1,33 @@
 local atu = require 'aether.utils'
--- AutoCmds
--- Set up source of truth for folds
+
+--- AutoCmds
+-- Highlight when yanking (copying) text
+-- Try it with `yap` in normal mode
+-- See `:help vim.highlight.on_yank()`
+vim.api.nvim_create_autocmd(
+    'TextYankPost',
+    {
+        desc = 'Highlight when yanking (copying) text',
+        callback = function()
+            vim.highlight.on_yank()
+        end,
+    }
+)
+
+-- Set up source of truth for folds and indents
 vim.api.nvim_create_autocmd(
     "FileType",
     {
         callback = function()
             if require("nvim-treesitter.parsers").has_parser() then
                 -- Use treesitter for main source of truth on folds
+                vim.opt.indentexpr = "nvim_treesitter#indent()"
+
                 vim.opt.foldmethod = "expr"
                 vim.opt.foldexpr = "nvim_treesitter#foldexpr()"
             else
-                -- Fallback to syntax files
+                -- Fallback to vim indents
+                vim.opt.indentexpr = ""
                 vim.opt.foldmethod = "indent"
             end
         end
@@ -116,6 +133,7 @@ vim.api.nvim_create_autocmd(
     }
 )
 
+--- User commands
 -- My TODO/Note list
 vim.api.nvim_create_user_command(
     "Todo",

@@ -32,6 +32,10 @@ return {
                     enable = true,
                 },
 
+                indent = {
+                    enable = true,
+                },
+
                 modules = {},
             })
         end
