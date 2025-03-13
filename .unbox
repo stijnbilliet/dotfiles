@@ -8,9 +8,16 @@ if [ $? != 0 ]; then # Check return value of last statement
     dnf install python3
 fi
 
+echo -e "-- Checking if wget is installed \n"
+wget --version
+if [ $? != 0 ]; then
+    echo -e "-- wget was missing, installing it now"
+    dnf install wget
+fi
+
 echo -e "-- Checking if pip3 is installed \n"
 pip --version
-if [ $? != 0 ]; then # Check return value of last statement
+if [ $? != 0 ]; then
     echo -e "-- Pip was missing, installing it now"
     wget https://bootstrap.pypa.io/get-pip.py
     python3 ./get-pip.py
@@ -22,10 +29,6 @@ if [ $? != 0 ]; then
     echo -e "-- Ansible was missing, installing it now"
     pip3 install ansible
 fi
-
-# Note(stijn): no active requirements for now, reinstate this when we need it
-# echo -e "\n -- Installing ansible requirements \n"
-# ansible-galaxy install -r ~/.config/ansible/requirements.yml
 
 echo -e "\n -- Running ansible playbook for this user \n"
 ansible-playbook -i ~/.config/ansible/inventory.ini ~/.config/ansible/dotfiles.yml --ask-become-pass
