@@ -86,37 +86,32 @@ function M.dap_launch()
     dap.continue();
 end
 
---TODO(stijn): Again for all the cases with fallback keys, look into nvim-mapper
-function M.cmp_select_next_item(args)
+function M.cmp_select_next_item()
     local cmp = require 'cmp'
     if cmp.visible() then
        cmp.select_next_item({behavior = cmp.SelectBehavior.Select });
-    else
-       M.pass_keys_repl(args.fbkey);
     end
 end
 
-function M.cmp_select_prev_item(args)
+function M.cmp_select_prev_item()
     local cmp = require 'cmp'
     if cmp.visible() then
         cmp.select_prev_item({behavior = cmp.SelectBehavior.Select })
-    else
-       M.pass_keys_repl(args.fbkey);
     end
 end
 
-function M.cmp_try_abort(args)
+function M.cmp_try_abort()
     local cmp = require 'cmp'
     if cmp.visible() then
         cmp.abort()
-    else
-        M.pass_keys_repl(args.fbkey);
     end
 end
 
+-- only confirm when desired, check if we allow autoselect
 function M.cmp_confirm_selected(args)
     local cmp = require 'cmp'
-    if cmp.visible() then
+    local select = args.cmpargs.select
+    if (cmp.visible() and (select == true or cmp.get_selected_entry())) then
         cmp.confirm(args.cmpargs)
     else
         M.pass_keys_repl(args.fbkey); -- fallback
@@ -180,15 +175,17 @@ local function bind_key_or_multi(entry)
 end
 
 -- Helper functions for keyset (table of keys) bulk binding
-function M.bind_keyset(keyset)
-    for _, entry in ipairs(keyset) do
+function M.bind_keyset(keymap, index)
+    for _, entry in ipairs(keymap[index]) do
+        entry.opts.desc = index..": "..entry.opts.desc
         bind_key_or_multi(entry)
     end
 end
 
-function M.bind_keyset_buffer(keyset, buffnr)
-    for _, entry in ipairs(keyset) do
+function M.bind_keyset_buffer(keymap, index, buffnr)
+    for _, entry in ipairs(keymap[index]) do
         entry.opts.buffer = buffnr;
+        entry.opts.desc = index..": "..entry.opts.desc
         bind_key_or_multi(entry)
     end
 end
