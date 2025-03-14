@@ -110,7 +110,7 @@ end
 -- only confirm when desired, check if we allow autoselect
 function M.cmp_confirm_selected(args)
     local cmp = require 'cmp'
-    local select = args.cmpargs.select
+    local select = args.cmpargs.select or true
     if (cmp.visible() and (select == true or cmp.get_selected_entry())) then
         cmp.confirm(args.cmpargs)
     else
@@ -176,14 +176,16 @@ end
 
 -- Helper functions for keyset (table of keys) bulk binding
 function M.bind_keyset(keymap, index)
-    for _, entry in ipairs(keymap[index]) do
+    local keyset = keymap[index]
+    for _, entry in ipairs(keyset) do
         entry.opts.desc = index..": "..entry.opts.desc
         bind_key_or_multi(entry)
     end
 end
 
 function M.bind_keyset_buffer(keymap, index, buffnr)
-    for _, entry in ipairs(keymap[index]) do
+    local keyset = keymap[index]
+    for _, entry in ipairs(keyset) do
         entry.opts.buffer = buffnr;
         entry.opts.desc = index..": "..entry.opts.desc
         bind_key_or_multi(entry)
