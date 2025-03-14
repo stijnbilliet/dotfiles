@@ -9,43 +9,43 @@ local atu = require 'aether.utils'
 -- Lists of keys for all plugins that we're using
 local telescopekeys = {
     {
-        key='<CS-F>',
+        key={'<CS-F>', '<leader>sif'},
         mode='n',
         func=atu.find_in_files,
         opts={
-            desc="Search Files",
+            desc="[s]earch [i]n [f]iles",
         }
     },
     {
-        key='<C-;>',
+        key={'<C-;>', '<leader>sd'},
         mode='n',
         func=atu.quick_open,
         opts={
-            desc="Quick Open",
+            desc="[s]earch [d]ir",
         }
     },
     {
-        key='<S-Tab>',
+        key={'<S-Tab>', '<leader>so'},
         mode='n',
         func=tscope.oldfiles,
         opts={
-            desc="Recently opened Files",
+            desc="[s]earch [o]ld files",
         }
     },
     {
-        key='<C-Tab>',
-        mode={'n', 'c'},
+        key={'<C-Tab>', '<leader>sb'},
+        mode='n',
         func=tscope.buffers,
         opts={
-            desc="Existing buffers",
+            desc="[s]earch [b]uffers",
         }
     },
     {
-        key='<F1>',
+        key={'<F1>', '<leader>sh'},
         mode='n',
         func=tscope.help_tags,
         opts={
-            desc="Search Help",
+            desc="[s]earch [h]elp",
         }
     },
 }
