@@ -6,17 +6,14 @@ return {
         config = function()
             require('lualine').setup {
                 options = {
-                    icons_enabled = true,
-                    theme = 'auto',
-                    component_separators = '|',
-                    section_separators = '',
+                    section_separators = '', --override default of chevrons
                 },
                 sections = {
                     lualine_a = {'mode'},
                     lualine_b = {'filename'},
                     lualine_c = {'nvim_treesitter#statusline'},
-                    lualine_x = {'branch', 'diff'},
-                    lualine_y = {'diagnostics'},
+                    lualine_x = {'diagnostics'},
+                    lualine_y = {'branch', 'diff'},
                     lualine_z = {'progress', 'location'}
                 }
             }
