@@ -29,13 +29,12 @@ return {
             -- Or leave the table blank for defaults
             local servers = {
                 clangd = {
-                    cmd = { "clangd", "--background-index", "--clang-tidy", "--header-insertion=iwyu" },
+                    cmd = { "clangd", "-j=6" },
                 },
                 rust_analyzer = {},
                 pyright = {},
                 lua_ls = {},
                 openscad_lsp = {},
-                gdtoolkit = {}, --Godot gdscript
             }
 
             -- Ensure the servers above are installed
@@ -55,9 +54,6 @@ return {
                     end,
                 },
             }
-
-            -- Other lsp configs that aren't present in mason
-            require('lspconfig').dartls.setup {}
         end
     }
 }
