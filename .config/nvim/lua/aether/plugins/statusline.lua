@@ -13,10 +13,10 @@ return {
                 },
                 sections = {
                     lualine_a = {'mode'},
-                    lualine_b = {'branch', 'diff'},
-                    lualine_c = {'filename'},
-                    lualine_x = {'nvim_treesitter#statusline'},
-                    lualine_y = {'filetype'},
+                    lualine_b = {'filename'},
+                    lualine_c = {'nvim_treesitter#statusline'},
+                    lualine_x = {'branch', 'diff'},
+                    lualine_y = {'diagnostics'},
                     lualine_z = {'progress', 'location'}
                 }
             }
