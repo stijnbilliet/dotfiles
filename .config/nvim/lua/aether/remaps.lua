@@ -42,8 +42,15 @@ local keymap = {
             }
         },
         --Navigate around in the quickfix list
-        --Try `lua: vim.diagnostic.setqflist()`
-        --Or with Telescope pickers <C-q> to add results to qflist
+        --Usage: e.g. Telescope pickers <C-q> to add results to qflist
+        {
+            key='<leader>qd',
+            mode='n',
+            func=vim.diagnostic.setqflist,
+            opts={
+                desc="[Q]uickfix list - [D]iagnostics",
+            }
+        },
         {
             key='<M-j>',
             mode='n',
