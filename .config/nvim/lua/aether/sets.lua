@@ -60,6 +60,9 @@ vim.opt.colorcolumn = "120"
 -- Automatically change into the directory of the opened buffer
 vim.opt.autochdir = true
 
+-- Raise a dialog on operations that can fail due to unsaved changes (e.g. ':q')
+vim.opt.confirm = true
+
 -- Vim shada file
 -- !':      Save and restore global variables that start with an uppercase letter and contain at least one lowercase letter.
 -- '{{x}}:  Save the command-line history with a maximum of 100 entries.

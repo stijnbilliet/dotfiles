@@ -110,8 +110,7 @@ end
 -- only confirm when desired, check if we allow autoselect
 function M.cmp_confirm_selected(args)
     local cmp = require 'cmp'
-    local select = args.cmpargs.select or true
-    if (cmp.visible() and (select == true or cmp.get_selected_entry())) then
+    if cmp.visible() and args.cmpargs.select or cmp.get_selected_entry() then
         cmp.confirm(args.cmpargs)
     else
         M.pass_keys_repl(args.fbkey); -- fallback
