@@ -29,7 +29,7 @@ return {
             -- Or leave the table blank for defaults
             local servers = {
                 clangd = {
-                    cmd = { "clangd", "-j=6" },
+                    cmd = { "clangd", "-j=12" },
                 },
                 rust_analyzer = {},
                 pyright = {},

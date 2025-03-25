@@ -103,6 +103,14 @@ local keymap = {
             }
         },
         {
+            key={'<CS-Insert>', '<leader>sr'},
+            mode='n',
+            func=tscope.registers,
+            opts={
+                desc="[s]earch [r]egisters",
+            }
+        },
+        {
             key={'<F1>', '<leader>sh'},
             mode='n',
             func=tscope.help_tags,
@@ -230,6 +238,14 @@ local keymap = {
             }
         },
         {
+            key='<M-F12>',
+            mode='n',
+            func="<cmd>TSTextobjectPeekDefinitionCode @class.outer<CR>",
+            opts={
+                desc="Peek definition",
+            }
+        },
+        {
             key='<S-F12>',
             mode='n',
             func=tscope.lsp_references,
@@ -281,59 +297,67 @@ local keymap = {
 
     ['Dap'] = {
         {
-            key='<F5>',
+            key={'<F5>', "<leader>dc"},
             mode='n',
             func=atu.dap_launch,
             opts={
-                desc="Continue",
+                desc="[d]ebug [c]ontinue",
             }
         },
         {
-            key='<F10>',
+            key={'<F10>', "<leader>dO"},
             mode='n',
             func=dap.step_over,
             opts={
-                desc="Step Over",
+                desc="[d]ebug step [O]ver",
             }
         },
         {
-            key='<F11>',
+            key={'<F11>', "<leader>di"},
             mode='n',
             func=dap.step_into,
             opts={
-                desc="Step Into",
+                desc="[d]ebug step [i]nto",
             }
         },
         {
-            key='<F9>',
-            mode='n',
-            func=dap.toggle_breakpoint,
-            opts={
-                desc="Toggle Breakpoint",
-            }
-        },
-        {
-            key='<C-F10>',
-            mode='n',
-            func=dap.run_to_cursor,
-            opts={
-                desc="Run to Cursor",
-            }
-        },
-        {
-            key='<S-F11>',
+            key={'<S-F11>', "<leader>do"},
             mode='n',
             func=dap.step_out,
             opts={
-                desc="Step Out",
+                desc="[d]ebug step [o]ut",
             }
         },
         {
-            key='<S-F5>',
+            key={'<F9>', "<leader>db"},
+            mode='n',
+            func=dap.toggle_breakpoint,
+            opts={
+                desc="[d]ebug toggle [b]reakpoint",
+            }
+        },
+        {
+            key={'<M-F9>', "<leader>dB"},
+            mode='n',
+            func=function() dap.set_breakpoint(vim.fn.input('Breakpoint condition: ')) end,
+            opts={
+                desc="[d]ebug [B]reakpoint (conditional)",
+            }
+        },
+        {
+            key={'<C-F10>', '<leader>dC'},
+            mode='n',
+            func=dap.run_to_cursor,
+            opts={
+                desc="[d]ebug run to [C]ursor",
+            }
+        },
+        {
+            key={'<S-F5>', '<leader>dt'},
             mode='n',
             func=dap.terminate,
             opts={
-                desc="Terminate",
+                desc="[d]ebug [t]erminate",
             }
         },
         {
@@ -341,15 +365,15 @@ local keymap = {
             mode='n',
             func=dap.run_last,
             opts={
-                desc="Run Last",
+                desc="[d]ebug run [l]ast",
             }
         },
         {
-            key='<leader>dp',
+            key={'<CM-Break>','<leader>dp'},
             mode='n',
             func=dap.pause,
             opts={
-                desc="Pause",
+                desc="[d]ebug [p]ause",
             }
         },
         {
@@ -357,7 +381,7 @@ local keymap = {
             mode='n',
             func=dap_ui_widgets.hover,
             opts={
-                desc="Widgets",
+                desc="[d]ebug [w]idgets",
             }
         },
         {
@@ -365,15 +389,7 @@ local keymap = {
             mode='n',
             func=dap_ui.toggle,
             opts={
-                desc="Toggle ui",
-            }
-        },
-        {
-            key='<leader>de',
-            mode={'n','v'},
-            func=dap_ui.eval,
-            opts={
-                desc="Eval",
+                desc="[d]ebug toggle [u]i",
             }
         },
     },
@@ -483,6 +499,14 @@ local keymap = {
             func=atu.gitsigns_diff_inline,
             opts={
                 desc="[h]unk [d]iff"
+            }
+        },
+        {
+            key='<leader>gs',
+            mode='n',
+            func=tscope.git_status,
+            opts={
+                desc="[g]it [s]tatus"
             }
         },
         --Text object

@@ -8,7 +8,7 @@ return {
             { 'nvim-lua/plenary.nvim' },
             {
                 "nvim-telescope/telescope-fzf-native.nvim",
-                build = 'cmake',
+                build = "cmake -S. -B build -D CMAKE_BUILD_TYPE=Release && cmake --build build --config Release",
                 cond = function()
                     return vim.fn.executable("cmake") == 1
                 end,
