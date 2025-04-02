@@ -45,7 +45,7 @@ return {
             -- relevant adapters installed on your system.
             ensure_installed = {
                 "codelldb",
-                "python",
+                "debugpy",
             },
         },
     },

@@ -81,7 +81,7 @@ end
 function M.dap_launch()
     local dap = require('dap')
     if vim.fn.filereadable('.vscode/launch.json') then
-        require('dap.ext.vscode').load_launchjs(nil, {});
+        require('dap.ext.vscode').load_launchjs();
     end
     dap.continue();
 end

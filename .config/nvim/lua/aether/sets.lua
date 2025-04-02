@@ -57,9 +57,6 @@ vim.opt.scrolloff = 8
 -- Add horizontal line at 'x' characters
 vim.opt.colorcolumn = "120"
 
--- Automatically change into the directory of the opened buffer
-vim.opt.autochdir = true
-
 -- Raise a dialog on operations that can fail due to unsaved changes (e.g. ':q')
 vim.opt.confirm = true
 
