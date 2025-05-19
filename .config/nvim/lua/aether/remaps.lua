@@ -1,5 +1,6 @@
 local cmp = require 'cmp'
 local tscope = require 'telescope.builtin'
+local tscope_ext = require('telescope').extensions
 local dap = require 'dap'
 local dap_ui = require 'dapui'
 local dap_ui_widgets = require 'dap.ui.widgets'
@@ -65,6 +66,14 @@ local keymap = {
             func="<cmd>cprev<CR>",
             opts={
                 desc="Goto prev in quickfix list",
+            }
+        },
+        {
+            key='<CS-O>',
+            mode='n',
+            func=tscope_ext.projects.projects,
+            opts={
+                desc="Open project",
             }
         },
     },
