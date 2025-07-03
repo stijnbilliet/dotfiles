@@ -11,14 +11,15 @@ set $resourcemon gnome-system-monitor
 set $menu wofi --show drun --allow-images --color ~/.color.d/colors.wofi
 set $laptopscreen eDP-1
 set $exec exec --no-startup-id exec fish
+set $opacity 1
 
 ### Polkit
-exec /usr/libexec/polkit-gnome-authentication-agent-1
+exec /usr/libexec/xfce-polkit
 
 ### Output configuration
 output * bg ~/.wallpaper fill
 exec kanshi
-exec wlsunset -l 51.5 -L -0.1
+exec wlsunset -l 51.5 -L -0.1 -t 2000
 
 ### Input configuration
 input type:keyboard {
@@ -34,7 +35,7 @@ bindswitch --reload --locked lid:off output $laptopscreen enable
 # When lid is closed, lock screen and suspend
 # bindswitch --reload --locked lid:on exec swaylock && systemctl suspend
 # When lid is opened, just wake up (system resumes automatically)
-# bindswitch --reload --locked lid:off exec swaymsg output eDP-1 
+# bindswitch --reload --locked lid:off exec swaymsg output eDP-1
 
 ### Idle configuration
 # This will lock your screen after 300 seconds of inactivity, then turn off
@@ -188,7 +189,7 @@ bar swaybar_command waybar
 
 ### Misc:
 # gaps
-gaps inner 5
+gaps inner 10
 
 # Audio control
 bindsym XF86AudioRaiseVolume exec wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%+
@@ -210,11 +211,20 @@ default_border none
 for_window [class=".*"] inhibit_idle fullscreen
 for_window [app_id=".*"] inhibit_idle fullscreen
 
+for_window [class=".*"] opacity $opacity
+for_window [app_id=".*"] opacity $opacity
+
 # Make all Godot windows floating except the main window
 for_window [class="Godot"] floating enable
 
 # Ensure the main Godot window is not floating
 for_window [title="Godot"] floating disable
+
+# Ensure polkit window is floating
+for_window [app_id=".*-polkit"] floating enable
+
+# Ensure volumnecontrol window is floating
+for_window [app_id="com.saivert.pwvucontrol"] floating enable
 
 # gtk theming
 set $gnome-schema org.gnome.desktop.interface
@@ -228,7 +238,7 @@ exec_always {
 }
 
 # apply configuration snippets from drop-in files
-# e.g. 50-systemd-user.conf drop-in file, which imports several environment variables into the systemd user session 
+# e.g. 50-systemd-user.conf drop-in file, which imports several environment variables into the systemd user session
 # This is required for several applications such as xdg-desktop-portal-wlr.
 # see https://wiki.archlinux.org/title/Sway#Configuration
 # and https://wiki.archlinux.org/title/XDG_Desktop_Portal#Portal_does_not_start

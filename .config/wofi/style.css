@@ -5,8 +5,7 @@
 }
 window {
     margin: 0px;
-    border: 1px solid --wofi-color2;
-    background-color: --wofi-color0;
+    background-color: rgba(0, 0, 0, 0);
 }
 
 #input {
@@ -31,6 +30,7 @@ window {
     margin: 5px;
     border: none;
     background-color: --wofi-color0;
+    border: 1px solid --wofi-color2;
 }
 
 #scroll {

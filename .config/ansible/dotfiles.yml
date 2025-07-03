@@ -1,6 +1,5 @@
 ---
-# Install sway
-- name: Deploy dev environment
+- name: Deploy desktop environment
   hosts: local
   vars:
     the_user: "{{ ansible_user_id }}"
@@ -8,7 +7,7 @@
     # Inform which machine local user we're installing this for
     - name: Print username
       ansible.builtin.debug:
-        msg: Setting up the desktop environment for {{ the_user }} 
+        msg: Setting up the desktop environment for {{ the_user }}
 
     # Ensure the core packages are installed
     - name: Installing core packages
@@ -17,6 +16,15 @@
         name: "{{pkgs_core}}"
         state: present
 
+    # Set up greetd systemd service
+    - name: Configure greetd
+      become: true
+      systemd:
+        name: greetd.service
+        state: started      # ensure it's running
+        enabled: yes        # start on boot
+        daemon_reload: yes  #reload if config changes
+
     # Set up dotfiles alias (git)
     # i.e. git df status
     - name: Set up git dotfiles alias
@@ -24,7 +32,7 @@
         name: alias.df
         scope: global
         value: "!git --git-dir=$HOME/dotfiles.git/ --work-tree=$HOME"
-    
+
     # Set showUntrackedFiles to no
     - name: Set up showUntrackedFiles to false (git)
       git_config:
@@ -54,20 +62,23 @@
         path: "~/.color.d"
         state: link
 
-    # Install rest of requested packages
+    # Install required packages
     - name: Installing desktop packages
       become: true
       package:
-        name: "{{pkgs_desktop}}"
+        name: "{{item}}"
         state: present
+      loop: "{{pkgs_desktop}}"
+      register: pkg_install_results
 
-    - name: Installing extra packages
+    - name: Installing (fav) app packages
       become: true
       package:
-        name: "{{pkgs_extra}}"
+        name: "{{pkgs_applications}}"
         state: present
 
-    - name: Install required flatpaks
+    - name: Installing (fav) app flatpaks
       community.general.flatpak:
         name: "{{pkgs_flatpaks}}"
         state: present
+

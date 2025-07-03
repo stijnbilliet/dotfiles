@@ -1,9 +1,9 @@
 profile {
-	output "GIGA-BYTE TECHNOLOGY CO., LTD. M27Q 20480B002546" mode 2560x1440@169.831Hz adaptive_sync on
+	output "GIGA-BYTE TECHNOLOGY CO., LTD. M27Q 20480B002546" mode 2560x1440@169.831Hz position 0,0 adaptive_sync on
 }
 
 profile {
-	output "GIGA-BYTE TECHNOLOGY CO., LTD. M27Q 20480B002546" mode 2560x1440@169.831Hz adaptive_sync on
+	output "GIGA-BYTE TECHNOLOGY CO., LTD. M27Q 20480B002546" mode 2560x1440@169.831Hz position 0,0 adaptive_sync on
     output "TYT HDMI HDMI" mode 2048x1536@60.367Hz scale 2 position 768,1440
     exec swaymsg focus output '"GIGA-BYTE TECHNOLOGY CO., LTD. M27Q 20480B002546"'
     exec swaymsg workspace 1, move workspace to '"GIGA-BYTE TECHNOLOGY CO., LTD. M27Q 20480B002546"'
