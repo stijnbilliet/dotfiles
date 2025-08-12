@@ -19,11 +19,18 @@
     # Set up greetd systemd service
     - name: Configure greetd
       become: true
-      systemd:
-        name: greetd.service
-        state: started      # ensure it's running
-        enabled: yes        # start on boot
-        daemon_reload: yes  #reload if config changes
+      block:
+        - name: Enable and start greetd
+          systemd:
+            name: greetd.service
+            state: started      # ensure it's running
+            enabled: yes        # start on boot
+            daemon_reload: yes  # reload if config changes
+      rescue:
+        - name: Remove pre-existing display-manager symlink
+          file:
+            path: /etc/systemd/system/display-manager.service
+            state: absent
 
     # Set up dotfiles alias (git)
     # i.e. git df status
