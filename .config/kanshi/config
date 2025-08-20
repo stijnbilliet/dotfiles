@@ -3,8 +3,12 @@ profile {
 }
 
 profile {
+    output eDP-1 mode 2560x1440 scale 1.25
+}
+
+profile {
 	output "GIGA-BYTE TECHNOLOGY CO., LTD. M27Q 20480B002546" mode 2560x1440@169.831Hz position 0,0 adaptive_sync on
-    output "TYT HDMI HDMI" mode 2048x1536@60.367Hz scale 2 position 768,1440
+    output "TYT HDMI HDMI" mode 2048x1536@60.367Hz scale 1.5 position 768,1440 transform 90
     exec swaymsg focus output '"GIGA-BYTE TECHNOLOGY CO., LTD. M27Q 20480B002546"'
     exec swaymsg workspace 1, move workspace to '"GIGA-BYTE TECHNOLOGY CO., LTD. M27Q 20480B002546"'
     exec swaymsg workspace 2, move workspace to '"TYT HDMI HDMI"'
