@@ -3,7 +3,7 @@ profile {
 }
 
 profile {
-    output eDP-1 mode 2560x1440 scale 1.25
+    output eDP-1 mode 2560x1440 scale 1.15
 }
 
 profile {
