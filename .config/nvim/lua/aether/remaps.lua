@@ -566,10 +566,6 @@ vim.api.nvim_create_autocmd('BufReadPost', {
 })
 
 -- Bind those keysets to vim.keymap
-atu.bind_keyset(keymap, 'Nvim');
-atu.bind_keyset(keymap, 'TScope');
-atu.bind_keyset(keymap, 'Cmp');
-atu.bind_keyset(keymap, 'Dap');
-if vim.g.neovide then
-    atu.bind_keyset(keymap, 'Neovide');
+for k, v in pairs(keymap) do
+    atu.bind_keyset(v, k)
 end

@@ -174,16 +174,16 @@ local function bind_key_or_multi(entry)
 end
 
 -- Helper functions for keyset (table of keys) bulk binding
-function M.bind_keyset(keymap, index)
-    local keyset = keymap[index]
+function M.bind_keyset(keyset, _index)
+    index = _index or "Misc"
     for _, entry in ipairs(keyset) do
         entry.opts.desc = index..": "..entry.opts.desc
         bind_key_or_multi(entry)
     end
 end
 
-function M.bind_keyset_buffer(keymap, index, buffnr)
-    local keyset = keymap[index]
+function M.bind_keyset_buffer(keyset, buffnr, _index)
+    index = _index or "Misc"
     for _, entry in ipairs(keyset) do
         entry.opts.buffer = buffnr;
         entry.opts.desc = index..": "..entry.opts.desc
@@ -266,7 +266,7 @@ function M.list_todos(maxdays)
     end
 
     for _, file in ipairs(files) do
-        if not is_file_loaded(file) then
+        if not M.is_file_loaded(file) then
             -- Check if any open todos in file
             local file_contents = vim.fn.readfile(file)
             local match_results = vim.fn.match(table.concat(file_contents, "\n"), "\\[ \\]")

@@ -14,26 +14,6 @@ vim.api.nvim_create_autocmd(
     }
 )
 
--- Set up source of truth for folds and indents
-vim.api.nvim_create_autocmd(
-    "FileType",
-    {
-        callback = function()
-            if require("nvim-treesitter.parsers").has_parser() then
-                -- Use treesitter for main source of truth on folds
-                vim.opt.indentexpr = "nvim_treesitter#indent()"
-
-                vim.opt.foldmethod = "expr"
-                vim.opt.foldexpr = "nvim_treesitter#foldexpr()"
-            else
-                -- Fallback to vim indents
-                vim.opt.indentexpr = ""
-                vim.opt.foldmethod = "indent"
-            end
-        end
-    }
-)
-
 -- Start terminal in insert mode
 vim.api.nvim_create_autocmd(
     {'TermOpen', 'BufEnter'},
@@ -76,59 +56,6 @@ vim.api.nvim_create_autocmd(
         pattern = "*",
         callback = function()
             vim.api.nvim_set_hl(0, "DiagnosticUnderlineError", { underline=false, undercurl = true })
-        end,
-    }
-)
-
--- Highlight trailing whitespace
-vim.api.nvim_create_autocmd(
-    {"VimEnter", "ColorScheme"},
-    {
-        pattern = "*",
-        callback = function()
-            --Use the Beacon highlight group to denote extra trailing whitespace
-            vim.api.nvim_set_hl(0, "ExtraWhitespace", { link = "Beacon" })
-        end,
-    }
-)
-
-vim.api.nvim_create_autocmd(
-    "BufWinEnter",
-    {
-        --any buffer as long as it isn't a terminal
-        pattern = "!~^term:://*",
-        callback = function()
-            vim.fn.matchadd("ExtraWhitespace", "\\s\\+$")
-        end,
-    }
-)
-
-vim.api.nvim_create_autocmd(
-    "InsertEnter",
-    {
-        pattern = "*",
-        callback = function()
-            vim.fn.matchadd("ExtraWhitespace", "\\s\\+\\%#\\@<!$")
-        end,
-    }
-)
-
-vim.api.nvim_create_autocmd(
-    "InsertLeave",
-    {
-        pattern = "*",
-        callback = function()
-            vim.fn.matchadd("ExtraWhitespace", "\\s\\+$")
-        end,
-    }
-)
-
-vim.api.nvim_create_autocmd(
-    "BufWinLeave",
-    {
-        pattern = "*",
-        callback = function()
-            vim.cmd("call clearmatches()")
         end,
     }
 )
