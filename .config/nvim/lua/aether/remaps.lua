@@ -76,6 +76,14 @@ local keymap = {
                 desc="Open project",
             }
         },
+        {
+            key='<CS-E>',
+            mode='n',
+            func="<cmd>Lexplore<CR>",
+            opts={
+                desc="Toggle netrw explorer",
+            }
+        },
     },
 
     ["TScope"] = {

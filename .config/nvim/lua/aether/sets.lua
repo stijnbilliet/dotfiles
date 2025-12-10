@@ -68,6 +68,14 @@ vim.opt.confirm = true
 -- h:       Save and restore the 'hlsearch' setting (highlight search).
 vim.opt.shada = "!,'20,<50,s10,h"
 
+-- Make netrw a tad more usable
+-- Turn off banner at the top
+vim.g.netrw_banner = 0
+-- set the window size (vertical split)
+vim.g.netrw_winsize = 25
+-- Display files as tree structure
+vim.g.netrw_liststyle = 3
+
 -- LSP
 -- Disable inline text that displays diagnostics (virtual text)
 vim.diagnostic.config({
