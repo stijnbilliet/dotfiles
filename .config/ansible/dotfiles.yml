@@ -10,29 +10,6 @@
       ansible.builtin.debug:
         msg: "Setting up the desktop environment for {{ the_user }} and home dir {{user_home_dir}}"
 
-    # Set up greetd systemd service
-    - name: Setup greetd
-      become: true
-      block:
-        - name: Ensure greetd is installed
-          ansible.builtin.package:
-            name: greetd
-            state: present
-        - name: Disable current display manager
-          ansible.builtin.systemd:
-            name: display-manager
-            enabled: false
-          failed_when: false
-        - name: Copy greetd config
-          ansible.builtin.copy:
-            src: "{{user_home_dir}}/.config/greetd/config.toml.src"
-            dest: "/etc/greetd/config.toml"
-        - name: Enable and start greetd
-          ansible.builtin.systemd:
-            name: greetd.service
-            state: started
-            enabled: true
-
     # Set up dotfiles alias (git)
     # i.e. git df status
     - name: Set up git dotfiles alias
@@ -94,3 +71,28 @@
             state: present
           loop: "{{pkgs_flatpaks}}"
           register: pkgs_flatpaks_install_res
+
+    # Set up greetd systemd service
+    - name: Setup greetd
+      become: true
+      block:
+        - name: Ensure greetd is installed
+          ansible.builtin.package:
+            name: greetd
+            state: present
+        - name: Disable current display manager
+          ansible.builtin.systemd:
+            name: display-manager
+            enabled: false
+            state: started
+          failed_when: false
+        - name: Copy greetd config
+          ansible.builtin.copy:
+            src: "{{user_home_dir}}/.config/greetd/config.toml.src"
+            dest: "/etc/greetd/config.toml"
+        - name: Enable and start greetd
+          ansible.builtin.systemd:
+            name: greetd.service
+            state: stopped
+            enabled: true
+
