@@ -1,19 +1,19 @@
 ---
 - name: Deploy desktop environment
   hosts: local
-  become: true
   vars:
-    the_user: "{{ ansible_facts.user }}"
-    user_home_dir: "{{ ansible_env.HOME }}"
+    the_user: "{{ ansible_facts['env']['USER']}}"
+    user_home_dir: "{{ ansible_facts['env']['HOME']}}"
   tasks:
     # Inform which machine local user we're installing this for
     - name: Print username
       ansible.builtin.debug:
-        msg: Setting up the desktop environment for {{ the_user }} and home dir {{user_home_dir}}
+        msg: "Setting up the desktop environment for {{ the_user }} and home dir {{user_home_dir}}"
 
     # Set up greetd systemd service
-    - name: Configure greetd
-      tasks:
+    - name: Setup greetd
+      become: true
+      block:
         - name: Ensure greetd is installed
           ansible.builtin.package:
             name: greetd
@@ -22,16 +22,16 @@
           ansible.builtin.systemd:
             name: display-manager
             enabled: false
+          failed_when: false
         - name: Copy greetd config
           ansible.builtin.copy:
-            src: "{{user_home_dir}}/greetd/config.toml.src"
-            dst: /etc/greetd/config.toml
+            src: "{{user_home_dir}}/.config/greetd/config.toml.src"
+            dest: "/etc/greetd/config.toml"
         - name: Enable and start greetd
           ansible.builtin.systemd:
             name: greetd.service
             state: started
             enabled: true
-            daemon_reload: yes
 
     # Set up dotfiles alias (git)
     # i.e. git df status
@@ -40,10 +40,12 @@
         name: alias.df
         scope: global
         value: "!git --git-dir=$HOME/dotfiles.git/ --work-tree=$HOME"
+        state: present
 
     # Setup the fish shell
-    - name: Setup fish shell
-      tasks:
+    - name: Setup the fish shell
+      become: true
+      block:
         - name: Ensure fish is installed
           ansible.builtin.package:
             name: fish
@@ -56,28 +58,27 @@
     # Create symlink to prefered light mode wallpaper
     - name: Symlink current wallpaper
       ansible.builtin.file:
-        src: "{{user_home_dir}}/.local/share/wallpapers/light/light_mojave.jpg"
-        path: "{{user_home_dir}}/.wallpaper"
+        src: "$HOME/.local/share/wallpapers/light/light_mojave.jpg"
+        path: "$HOME/.wallpaper"
         state: link
 
     # Create symlink to prefered light mode colorscheme
     - name: Symlink current colors
       ansible.builtin.file:
-        src: "{{user_home_dir}}/.config/cfx/light"
-        path: "{{user_home_dir}}/.color.d"
+        src: "$HOME/.config/cfx/light"
+        path: "$HOME/.color.d"
         state: link
 
     # Install required packages
-    - name: Installing packages
+    - name: Install required packages
       become: true
-      ansible.builtin.package:
-        name: "{{item}}"
-        state: present
-      loop: "{{pkgs}}"
-      register: pkgs_install_res
-
-    - name: Setup flatpaks
-      tasks:
+      block:
+        - name: Installing system packages
+          ansible.builtin.package:
+            name: "{{item}}"
+            state: present
+          loop: "{{pkgs}}"
+          register: pkgs_install_res
         - name: Ensuring flatpak is installed
           ansible.builtin.package:
             name: flatpak
@@ -93,4 +94,3 @@
             state: present
           loop: "{{pkgs_flatpaks}}"
           register: pkgs_flatpaks_install_res
-
