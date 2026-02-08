@@ -1,0 +1,43 @@
+local: #name of the group
+  hosts:
+    localhost:
+  vars:
+    ansible_connection: local
+    pkgs:
+      - vim
+      - sway
+      - swaybg
+      - swayidle
+      - swaylock
+      - waybar
+      - pipewire
+      - blueman
+      - xdg-desktop-portal
+      - xdg-desktop-portal-wlr
+      - xdg-desktop-portal-gtk
+      - xfce-polkit
+      - gvfs-mtp
+      - wofi
+      - mako
+      - gtk4
+      - gtk3
+      - wlsunset
+      - grim
+      - slurp
+      - brightnessctl
+      - playerctl
+      - imv
+      - mpv
+      - alacritty
+      - neovim
+      - nautilus
+      - zathura
+      - zathura-pdf-mupdf
+      - firefox
+      - gnome-calendar
+      - gnome-system-monitor
+      - nm-connection-editor
+    pkgs_flatpaks:
+      - com.saivert.pwvucontrol
+      - com.discordapp.Discord
+      - com.spotify.Client

@@ -1,91 +1,96 @@
 ---
 - name: Deploy desktop environment
   hosts: local
+  become: true
   vars:
-    the_user: "{{ ansible_user_id }}"
+    the_user: "{{ ansible_facts.user }}"
+    user_home_dir: "{{ ansible_env.HOME }}"
   tasks:
     # Inform which machine local user we're installing this for
     - name: Print username
       ansible.builtin.debug:
-        msg: Setting up the desktop environment for {{ the_user }}
-
-    # Ensure the core packages are installed
-    - name: Installing core packages
-      become: true
-      package:
-        name: "{{pkgs_core}}"
-        state: present
+        msg: Setting up the desktop environment for {{ the_user }} and home dir {{user_home_dir}}
 
     # Set up greetd systemd service
     - name: Configure greetd
-      become: true
-      block:
+      tasks:
+        - name: Ensure greetd is installed
+          ansible.builtin.package:
+            name: greetd
+            state: present
+        - name: Disable current display manager
+          ansible.builtin.systemd:
+            name: display-manager
+            enabled: false
+        - name: Copy greetd config
+          ansible.builtin.copy:
+            src: "{{user_home_dir}}/greetd/config.toml.src"
+            dst: /etc/greetd/config.toml
         - name: Enable and start greetd
-          systemd:
+          ansible.builtin.systemd:
             name: greetd.service
-            state: started      # ensure it's running
-            enabled: yes        # start on boot
-            daemon_reload: yes  # reload if config changes
-      rescue:
-        - name: Remove pre-existing display-manager symlink
-          file:
-            path: /etc/systemd/system/display-manager.service
-            state: absent
+            state: started
+            enabled: true
+            daemon_reload: yes
 
     # Set up dotfiles alias (git)
     # i.e. git df status
     - name: Set up git dotfiles alias
-      git_config:
+      ansible.builtin.git_config:
         name: alias.df
         scope: global
         value: "!git --git-dir=$HOME/dotfiles.git/ --work-tree=$HOME"
 
-    # Set showUntrackedFiles to no
-    - name: Set up showUntrackedFiles to false (git)
-      git_config:
-        repo: $HOME/dotfiles.git/
-        name: status.showUntrackedFiles
-        scope: local
-        value: "no"
-
-    # Change to the fish shell by default
-    - name: Change default shell to fish
-      become: yes
-      user:
-        name: "{{ the_user }}"
-        shell: /usr/bin/fish
+    # Setup the fish shell
+    - name: Setup fish shell
+      tasks:
+        - name: Ensure fish is installed
+          ansible.builtin.package:
+            name: fish
+            state: present
+        - name: Change default shell to fish
+          ansible.builtin.user:
+            name: "{{ the_user }}"
+            shell: /bin/fish
 
     # Create symlink to prefered light mode wallpaper
     - name: Symlink current wallpaper
-      file:
-        src: "~/.local/share/wallpapers/light/light_mojave.jpg"
-        path: "~/.wallpaper"
+      ansible.builtin.file:
+        src: "{{user_home_dir}}/.local/share/wallpapers/light/light_mojave.jpg"
+        path: "{{user_home_dir}}/.wallpaper"
         state: link
 
     # Create symlink to prefered light mode colorscheme
     - name: Symlink current colors
-      file:
-        src: "~/.config/cfx/light"
-        path: "~/.color.d"
+      ansible.builtin.file:
+        src: "{{user_home_dir}}/.config/cfx/light"
+        path: "{{user_home_dir}}/.color.d"
         state: link
 
     # Install required packages
-    - name: Installing desktop packages
+    - name: Installing packages
       become: true
-      package:
+      ansible.builtin.package:
         name: "{{item}}"
         state: present
-      loop: "{{pkgs_desktop}}"
-      register: pkg_install_results
+      loop: "{{pkgs}}"
+      register: pkgs_install_res
 
-    - name: Installing (fav) app packages
-      become: true
-      package:
-        name: "{{pkgs_applications}}"
-        state: present
-
-    - name: Installing (fav) app flatpaks
-      community.general.flatpak:
-        name: "{{pkgs_flatpaks}}"
-        state: present
+    - name: Setup flatpaks
+      tasks:
+        - name: Ensuring flatpak is installed
+          ansible.builtin.package:
+            name: flatpak
+            state: present
+        - name: Add Flathub remote repository
+          community.general.flatpak_remote:
+            name: flathub
+            state: present
+            flatpakrepo_url: https://dl.flathub.org/repo/flathub.flatpakrepo
+        - name: Installing flatpak apps
+          community.general.flatpak:
+            name: "{{item}}"
+            state: present
+          loop: "{{pkgs_flatpaks}}"
+          register: pkgs_flatpaks_install_res
 

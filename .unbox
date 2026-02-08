@@ -31,7 +31,7 @@ if [ $? != 0 ]; then
 fi
 
 echo -e "\n -- Running ansible playbook for this user \n"
-ansible-playbook -i ~/.config/ansible/inventory.ini ~/.config/ansible/dotfiles.yml --ask-become-pass
+ansible-playbook -i ~/.config/ansible/inventory.yml ~/.config/ansible/dotfiles.yml --ask-become-pass
 
 echo -e "\n -- Done setting up your environment. Enjoy! \n"
 exit 0
