@@ -1,29 +1,40 @@
-profile {
-	output "GIGA-BYTE TECHNOLOGY CO., LTD. M27Q 20480B002546" mode 2560x1440@169.831Hz position 0,0 adaptive_sync on
+# Global scope: Monitor definition
+output "GIGA-BYTE TECHNOLOGY CO., LTD. M27Q 20480B002546" {
+    mode 2560x1440@169.831Hz
+    adaptive_sync on
+    scale 1
+    alias $MAIN_MONITOR
 }
 
-profile {
-    output eDP-1 mode 2560x1440 scale 1.15
+output "TYT HDMI HDMI" {
+    mode 2048x1536@60.367Hz
+    transform 90
+    scale 1.5
+    alias $AUX_MONITOR
 }
 
-profile {
-	output "GIGA-BYTE TECHNOLOGY CO., LTD. M27Q 20480B002546" mode 2560x1440@169.831Hz position 0,0 adaptive_sync on
-    output "TYT HDMI HDMI" mode 2048x1536@60.367Hz scale 1.5 position 768,1440 transform 90
-    exec swaymsg focus output '"GIGA-BYTE TECHNOLOGY CO., LTD. M27Q 20480B002546"'
-    exec swaymsg workspace 1, move workspace to '"GIGA-BYTE TECHNOLOGY CO., LTD. M27Q 20480B002546"'
-    exec swaymsg workspace 2, move workspace to '"TYT HDMI HDMI"'
+output eDP-1 {
+    mode 1920x1080@60Hz
+    alias $INT_MONITOR
 }
 
-profile {
-	output eDP-1 disable
-	output "GIGA-BYTE TECHNOLOGY CO., LTD. M27Q 20480B002546" mode 2560x1440@60Hz adaptive_sync on
-    exec swaymsg bindswitch lid:off output eDP-1 enable
+# Profile scope: Monitor configuration definition
+profile desktop_single {
+	output $MAIN_MONITOR enable
 }
 
-profile {
-    output eDP-1 mode 2560x1440 scale 1.25
-	output "GIGA-BYTE TECHNOLOGY CO., LTD. M27Q 20480B002546" mode 2560x1440@60Hz adaptive_sync on
-    exec swaymsg focus output '"GIGA-BYTE TECHNOLOGY CO., LTD. M27Q 20480B002546"'
-    exec swaymsg workspace 1, move workspace to '"GIGA-BYTE TECHNOLOGY CO., LTD. M27Q 20480B002546"'
-    exec swaymsg bindswitch lid:on output eDP-1 disable
+profile desktop_multi {
+	output $MAIN_MONITOR enable
+    output $AUX_MONITOR position 768,1440 enable
+    exec swaymsg focus output $MAIN_MONITOR
+}
+
+profile laptop_single {
+	output $INT_MONITOR enable
+}
+
+profile laptop_multi {
+	output $MAIN_MONITOR enable
+	output $INT_MONITOR enable
+    exec swaymsg focus output $MAIN_MONITOR
 }

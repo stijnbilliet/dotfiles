@@ -9,7 +9,6 @@ set $browser firefox
 set $filemanager nautilus
 set $resourcemon gnome-system-monitor
 set $menu wofi --show drun --allow-images --color ~/.color.d/colors.wofi
-set $laptopscreen eDP-1
 set $exec exec --no-startup-id exec fish
 set $opacity 1
 
@@ -30,12 +29,6 @@ bindsym $mod+space input type:keyboard xkb_switch_layout next
 # Handle lid closed action
 bindswitch --reload --locked lid:on output $laptopscreen disable
 bindswitch --reload --locked lid:off output $laptopscreen enable
-# TODO(stijn): look into properly handing the cases (kanshi modes)
-# where the bindswitch action should differ
-# When lid is closed, lock screen and suspend
-# bindswitch --reload --locked lid:on exec swaylock && systemctl suspend
-# When lid is opened, just wake up (system resumes automatically)
-# bindswitch --reload --locked lid:off exec swaymsg output eDP-1
 
 ### Idle configuration
 # This will lock your screen after 300 seconds of inactivity, then turn off
