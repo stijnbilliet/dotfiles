@@ -80,19 +80,18 @@
           ansible.builtin.package:
             name: greetd
             state: present
-        - name: Disable current display manager
-          ansible.builtin.systemd:
-            name: display-manager
-            enabled: false
-            state: started
-          failed_when: false
         - name: Copy greetd config
           ansible.builtin.copy:
             src: "{{user_home_dir}}/.config/greetd/config.toml.src"
             dest: "/etc/greetd/config.toml"
+        - name: Disable current display manager
+          ansible.builtin.systemd:
+            name: display-manager
+            enabled: false
+          failed_when: false
         - name: Enable and start greetd
           ansible.builtin.systemd:
             name: greetd.service
-            state: stopped
+            state: started
             enabled: true
 
