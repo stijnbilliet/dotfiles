@@ -1,5 +1,5 @@
 -- set up globals to detect operating system
-local uname = vim.loop.os_uname()
+local uname = vim.uv.os_uname()
 _G.OS = uname.sysname
 _G.IS_MAC = OS == 'Darwin'
 _G.IS_LINUX = OS == 'Linux'

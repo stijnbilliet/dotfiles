@@ -35,7 +35,6 @@ return {
             lua_ls = {
                 root_markers = { "init.lua", { '.luarc.json', '.luarc.jsonc' }, '.git' },
             },
-            openscad_lsp = {},
         }
 
         -- Ensure the servers above are installed

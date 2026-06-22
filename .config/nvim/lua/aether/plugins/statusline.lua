@@ -10,7 +10,12 @@ return {
             sections = {
                 lualine_a = {'mode'},
                 lualine_b = {'filename'},
-                lualine_c = {'nvim_treesitter#statusline'},
+                lualine_c = {
+                    function()
+                        local clients = vim.lsp.get_clients({ bufnr = 0 })
+                        return #clients > 0 and clients[1].name or ''
+                    end,
+                },
                 lualine_x = {'diagnostics'},
                 lualine_y = {'branch', 'diff'},
                 lualine_z = {'progress', 'location'}

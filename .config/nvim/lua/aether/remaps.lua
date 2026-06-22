@@ -69,14 +69,6 @@ local keymap = {
             }
         },
         {
-            key='<CS-O>',
-            mode='n',
-            func=tscope_ext.projects.projects,
-            opts={
-                desc="Open project",
-            }
-        },
-        {
             key='<CS-E>',
             mode='n',
             func="<cmd>Lexplore<CR>",

@@ -121,7 +121,7 @@ end
 -- Helper function to request the LSP for a matching file. (i.e. source/header)
 function M.switch_source_header()
     local params = { uri = vim.uri_from_bufnr(0) }
-    vim.lsp.buf_request(0, 'textDocument/switchSourceHeader', params, function(err, result)
+    vim.lsp.buf.request(0, 'textDocument/switchSourceHeader', params, function(err, result)
         if err then
             print('Error: ' .. err.message)
             return
