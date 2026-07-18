@@ -2,7 +2,7 @@
 return {
     'neovim/nvim-lspconfig',
     event = { "BufReadPost", "BufNewFile" },
-    cmd = { "LspInfo", "LspInstall", "LspUninstall" },
+    cmd = { "LspInstall", "LspUninstall" },
     dependencies = {
         -- Use mason to automically install LSPs
         {
@@ -43,15 +43,9 @@ return {
             ensure_installed = vim.tbl_keys(servers or {})
         })
 
-        -- Apply language server configs
-
-        -- nvim-cmp supports additional completion capabilities, so broadcast that to servers
-        local lsp_capabilities = vim.lsp.protocol.make_client_capabilities()
-        lsp_capabilities = require('cmp_nvim_lsp').default_capabilities(lsp_capabilities)
-
-        -- Set up global opts
+        -- Broadcast cmp-nvim-lsp completion capabilities to all servers
         vim.lsp.config('*', {
-            capabilities = lsp_capabilities
+            capabilities = require('cmp_nvim_lsp').default_capabilities()
         })
 
         -- Apply our overrides

@@ -108,6 +108,7 @@ function M.cmp_try_abort()
 end
 
 -- only confirm when desired, check if we allow autoselect
+-- TODO(stijn): implement a unified tab and unified CR handler.
 function M.cmp_confirm_selected(args)
     local cmp = require 'cmp'
     if cmp.visible() and args.cmpargs.select or cmp.get_selected_entry() then
@@ -175,19 +176,21 @@ end
 
 -- Helper functions for keyset (table of keys) bulk binding
 function M.bind_keyset(keyset, _index)
-    index = _index or "Misc"
+    local index = _index or "Misc"
     for _, entry in ipairs(keyset) do
-        entry.opts.desc = index..": "..entry.opts.desc
-        bind_key_or_multi(entry)
+        local opts = vim.deepcopy(entry.opts)
+        opts.desc = index..": "..opts.desc
+        bind_key_or_multi({ key = entry.key, mode = entry.mode, func = entry.func, opts = opts })
     end
 end
 
 function M.bind_keyset_buffer(keyset, buffnr, _index)
-    index = _index or "Misc"
+    local index = _index or "Misc"
     for _, entry in ipairs(keyset) do
-        entry.opts.buffer = buffnr;
-        entry.opts.desc = index..": "..entry.opts.desc
-        bind_key_or_multi(entry)
+        local opts = vim.deepcopy(entry.opts)
+        opts.buffer = buffnr
+        opts.desc = index..": "..opts.desc
+        bind_key_or_multi({ key = entry.key, mode = entry.mode, func = entry.func, opts = opts })
     end
 end
 

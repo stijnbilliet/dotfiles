@@ -1,6 +1,5 @@
 local cmp = require 'cmp'
 local tscope = require 'telescope.builtin'
-local tscope_ext = require('telescope').extensions
 local dap = require 'dap'
 local dap_ui = require 'dapui'
 local dap_ui_widgets = require 'dap.ui.widgets'
@@ -168,7 +167,7 @@ local keymap = {
             mode={'i', 'c'},
             func=function() atu.cmp_confirm_selected({fbkey='<Tab>', cmpargs={select = true}}) end,
             opts={
-                desc="Autocomplete confirm selected",
+                desc="Unified tab confirm",
             }
         },
         {
@@ -176,7 +175,7 @@ local keymap = {
             mode={'i', 'c'},
             func=function() atu.cmp_confirm_selected({fbkey='<Enter>', cmpargs={select = false}}) end,
             opts={
-                desc="Autocomplete confirm selected",
+                desc="Unified enter confirm",
             }
         },
         {
@@ -212,14 +211,6 @@ local keymap = {
             func=vim.lsp.buf.format,
             opts={
                 desc="Buffer format",
-            }
-        },
-        {
-            key='<C-F12>',
-            mode='n',
-            func=vim.lsp.buf.declaration,
-            opts={
-                desc="Goto declaration",
             }
         },
         {
@@ -265,7 +256,7 @@ local keymap = {
         {
             key='<C-F12>',
             mode='n',
-            func=tscope.lsp_implementations,
+            func=vim.lsp.buf.implementation,
             opts={
                 desc="Goto implementations",
             }
