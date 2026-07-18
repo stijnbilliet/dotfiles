@@ -8,7 +8,6 @@ output "GIGA-BYTE TECHNOLOGY CO., LTD. M27Q 20480B002546" {
 
 output "TYT HDMI HDMI" {
     mode 2048x1536@60.367Hz
-    transform 90
     scale 1.5
     alias $AUX_MONITOR
 }
@@ -24,9 +23,8 @@ profile desktop_single {
 }
 
 profile desktop_multi {
-	output $MAIN_MONITOR enable
-    output $AUX_MONITOR position 768,1440 enable
-    exec swaymsg focus output $MAIN_MONITOR
+	output $MAIN_MONITOR position 0,0 enable
+    output $AUX_MONITOR position 597,1440 enable
 }
 
 profile laptop_single {
@@ -34,7 +32,6 @@ profile laptop_single {
 }
 
 profile laptop_multi {
-	output $MAIN_MONITOR enable
+	output $MAIN_MONITOR position 0,0 enable
 	output $INT_MONITOR enable
-    exec swaymsg focus output $MAIN_MONITOR
 }
