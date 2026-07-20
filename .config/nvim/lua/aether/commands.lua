@@ -74,31 +74,6 @@ vim.api.nvim_create_autocmd(
 )
 
 --- User commands
--- My TODO/Note list
-vim.api.nvim_create_user_command(
-    "Todo",
-    function(opts)
-        atu.create_todo_file(opts.args or nil)
-    end,
-    { nargs='?' }
-)
-
-vim.api.nvim_create_user_command(
-    "Lstodo",
-    function(opts)
-        atu.list_todos(opts.args or nil)
-    end,
-    { nargs='?' }
-)
-
-vim.api.nvim_create_user_command(
-    "Note",
-    function(opts)
-        atu.create_new_zettle(opts.args or nil)
-    end,
-    { nargs='?' }
-)
-
 -- Remove trailing whitespaces from buffer
 vim.api.nvim_create_user_command(
     'Rt',
