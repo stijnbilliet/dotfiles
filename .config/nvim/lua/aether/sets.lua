@@ -48,6 +48,9 @@ vim.o.updatetime = 50
 -- noselect = don't automatically select options, wait for user
 vim.o.completeopt = 'menu,menuone,noselect'
 
+-- Disable autochdir (we do it ourselves via autocmd)
+vim.o.autochdir = false
+
 -- Nice colors
 vim.o.termguicolors = true
 

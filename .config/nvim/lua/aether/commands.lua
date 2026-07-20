@@ -60,6 +60,19 @@ vim.api.nvim_create_autocmd(
     }
 )
 
+-- Change current working directory to match the logical root directory (root of project)
+-- Makes telescope, terminal and other operations more natural
+vim.api.nvim_create_autocmd(
+    'BufEnter',
+    {
+        callback = function()
+            local root = atu.find_root_dir(vim.api.nvim_get_current_buf())
+            if root == nil then return end
+            vim.fn.chdir(root)
+        end
+    }
+)
+
 --- User commands
 -- My TODO/Note list
 vim.api.nvim_create_user_command(

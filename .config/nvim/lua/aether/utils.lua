@@ -1,5 +1,27 @@
 local M = {}
 
+function M.find_root_dir(buf_id)
+    local root_names = { '.git', 'Makefile' }
+    buf_id = buf_id or 0
+
+    if not vim.api.nvim_buf_is_valid(buf_id) then
+        vim.notify("buf_id "..buf_id.." is invalid.", vim.log.levels.ERROR)
+        return
+    end
+
+    local path = vim.api.nvim_buf_get_name(buf_id)
+    if path == '' then return end
+
+    local dir_path = vim.fs.dirname(path)
+    local root_file = vim.fs.find(root_names, { path = dir_path, upward = true })[1]
+    if root_file == nil then return end
+
+    local result = vim.fs.dirname(root_file)
+    result = vim.fs.normalize(vim.fn.fnamemodify(result, ':p')) --convert to full absolute "print path" and clean up
+
+    return result
+end
+
 -- Toggle between terminal and currently opened buffer
 -- resumes terminal if already created one earlier
 -- and creates a new terminal if there wasn't one
