@@ -12,7 +12,15 @@ return {
     config = function()
         local telescope = require("telescope");
 
-        telescope.setup({})
+        telescope.setup({
+            defaults = {
+                mappings = {
+                    i = {
+                        ['<C-j>'] = false,
+                    },
+                },
+            }
+        })
 
         -- Enable telescope fzf native, if installed
         telescope.load_extension('fzf')

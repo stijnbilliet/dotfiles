@@ -75,6 +75,22 @@ local keymap = {
                 desc="Toggle netrw explorer",
             }
         },
+        {
+            key='<C-j>',
+            mode='n',
+            func=atu.super_j,
+            opts={
+                desc="Super next",
+            }
+        },
+        {
+            key='<C-k>',
+            mode='n',
+            func=atu.super_k,
+            opts={
+                desc="Super prev",
+            }
+        },
     },
 
     ["TScope"] = {
@@ -271,22 +287,6 @@ local keymap = {
             }
         },
         {
-            key='<F8>',
-            mode='n',
-            func=vim.diagnostic.goto_next,
-            opts={
-                desc="Goto next error",
-            }
-        },
-        {
-            key='<S-F8>',
-            mode='n',
-            func=vim.diagnostic.goto_prev,
-            opts={
-                desc="Goto prev error",
-            }
-        },
-        {
             key='<C-k><C-o>',
             mode='n',
             func=atu.switch_source_header,
@@ -396,110 +396,93 @@ local keymap = {
     },
 
     ['Git'] = {
-        --Navigation
+        --Actions (prefix <leader>g = git, subkeys match git CLI verbs)
         {
-            key=']c',
-            mode='n',
-            func=atu.diff_nav_next,
-            opts={
-                desc="Nav to next diff"
-            }
-        },
-        {
-            key='[c',
-            mode='n',
-            func=atu.diff_nav_prev,
-            opts={
-                desc="Nav to prev diff"
-            }
-        },
-        --Actions
-        {
-            key='<leader>hs',
+            key='<leader>ga',
             mode='n',
             func=gitsigns.stage_hunk,
             opts={
-                desc="[h]unk [s]tage",
+                desc="[g]it [a]dd hunk",
             }
         },
         {
-            key='<leader>hs',
+            key='<leader>ga',
             mode='v',
             func=function() gitsigns.stage_hunk({ vim.fn.line('.'), vim.fn.line('v') }) end,
             opts={
-                desc="[h]unk [s]tage",
+                desc="[g]it [a]dd hunk",
             }
         },
         {
-            key='<leader>hr',
-            mode='n',
-            func=gitsigns.reset_hunk,
-            opts={
-                desc="[h]unk [r]eset",
-            }
-        },
-        {
-            key='<leader>hr',
-            mode='v',
-            func=function() gitsigns.reset_hunk({ vim.fn.line('.'), vim.fn.line('v') }) end,
-            opts={
-                desc="[h]unk [r]eset",
-            }
-        },
-        {
-            key='<leader>hsb',
+            key='<leader>gA',
             mode='n',
             func=gitsigns.stage_buffer,
             opts={
-                desc="[h]unk [s]tage [b]uffer"
+                desc="[g]it [A]dd buffer"
             }
         },
         {
-            key='<leader>hrb',
+            key='<leader>gr',
+            mode='n',
+            func=gitsigns.reset_hunk,
+            opts={
+                desc="[g]it [r]estore hunk",
+            }
+        },
+        {
+            key='<leader>gr',
+            mode='v',
+            func=function() gitsigns.reset_hunk({ vim.fn.line('.'), vim.fn.line('v') }) end,
+            opts={
+                desc="[g]it [r]estore hunk",
+            }
+        },
+        {
+            key='<leader>gR',
             mode='n',
             func=gitsigns.reset_buffer,
             opts={
-                desc="[h]unk [r]eset [b]uffer"
+                desc="[g]it [R]estore buffer"
             }
         },
         {
-            key='<leader>hp',
+            key='<leader>gp',
             mode='n',
             func=gitsigns.preview_hunk,
             opts={
-                desc="[h]unk [p]review"
+                desc="[g]it [p]review hunk"
             }
         },
         {
-            key='<leader>hpi',
+            key='<leader>gpi',
             mode='n',
             func=gitsigns.preview_hunk_inline,
             opts={
-                desc="[h]unk [p]review [i]nline"
+                desc="[g]it [p]review hunk [i]nline"
             }
         },
         {
-            key='<leader>hb',
+            key='<leader>gb',
             mode='n',
             func=function() gitsigns.blame_line({ full = true }) end,
             opts={
-                desc="[h]unk [b]lame"
+                desc="[g]it [b]lame"
             }
         },
         {
-            key='<leader>hds',
-            mode='n',
-            func=gitsigns.diffthis,
-            opts={
-                desc="[h]unk [d]iff [s]plit"
-            }
-        },
-        {
-            key='<leader>hd',
+            key='<leader>gd',
             mode='n',
             func=atu.gitsigns_diff_inline,
             opts={
-                desc="[h]unk [d]iff"
+                desc="[g]it [d]iff inline"
+            }
+        },
+        {
+            key='<leader>gD',
+            mode='n',
+            func=gitsigns.diffthis,
+            opts={
+                desc="[g]it [D]iff split"
             }
         },
         {
@@ -545,19 +528,13 @@ local keymap = {
 vim.api.nvim_create_autocmd('LspAttach', {
     group = vim.api.nvim_create_augroup('UserLspConfig', {}),
     callback = function(args)
-        atu.bind_keyset_buffer(keymap, 'Lsp', args.buf);
+        atu.bind_keyset_buffer(keymap['Lsp'], args.buf, 'Lsp');
     end,
 })
 
--- Auto bind gitsigns keys on buffer read
-vim.api.nvim_create_autocmd('BufReadPost', {
-    group = vim.api.nvim_create_augroup('UserGitKeys', {}),
-    callback = function(args)
-        atu.bind_keyset_buffer(keymap, 'Git', args.buf);
-    end,
-})
-
--- Bind those keysets to vim.keymap
+-- Bind global keysets explicitly
 for k, v in pairs(keymap) do
-    atu.bind_keyset(v, k)
+    if k ~= 'Lsp' then
+        atu.bind_keyset(keymap[k], k)
+    end
 end

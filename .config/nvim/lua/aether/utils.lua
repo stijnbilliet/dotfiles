@@ -100,6 +100,10 @@ function M.dap_launch()
 end
 
 function M.blink_select_next()
+    if vim.bo.filetype == 'TelescopePrompt' then
+        require('telescope.actions').move_selection_next(vim.api.nvim_get_current_buf())
+        return
+    end
     local blink = require('blink.cmp')
     if blink.is_visible() then
         blink.select_next()
@@ -107,6 +111,10 @@ function M.blink_select_next()
 end
 
 function M.blink_select_prev()
+    if vim.bo.filetype == 'TelescopePrompt' then
+        require('telescope.actions').move_selection_previous(vim.api.nvim_get_current_buf())
+        return
+    end
     local blink = require('blink.cmp')
     if blink.is_visible() then
         blink.select_prev()
@@ -160,7 +168,7 @@ end
 -- Helper function to request the LSP for a matching file. (i.e. source/header)
 function M.switch_source_header()
     local params = { uri = vim.uri_from_bufnr(0) }
-    vim.lsp.buf.request(0, 'textDocument/switchSourceHeader', params, function(err, result)
+    vim.lsp.buf_request(0, 'textDocument/switchSourceHeader', params, function(err, result)
         if err then
             print('Error: ' .. err.message)
             return
@@ -200,6 +208,48 @@ function M.gitsigns_diff_inline()
     gitsigns.toggle_word_diff()
     gitsigns.toggle_deleted()
     gitsigns.toggle_linehl()
+    vim.g.aether_gitsigns_inline = not vim.g.aether_gitsigns_inline
+end
+
+-- super_j/super_k: priority chain for navigating "next/prev thing" in normal mode.
+-- Both branches require explicitly-active state — nothing fires from ambient conditions.
+-- Hook: add further plugin checks here before the no-op fallback.
+function M.super_j()
+    if vim.bo.filetype == 'TelescopePrompt' then
+        require('telescope.actions').move_selection_next(vim.api.nvim_get_current_buf())
+        return
+    end
+    if vim.wo.diff then
+        vim.cmd.normal({']c', bang = true})
+        return
+    end
+    if vim.g.aether_gitsigns_inline then
+        require('gitsigns').nav_hunk('next')
+        return
+    end
+    if #vim.diagnostic.get(0) > 0 then
+        vim.diagnostic.jump({ count = 1 })
+        return
+    end
+end
+
+function M.super_k()
+    if vim.bo.filetype == 'TelescopePrompt' then
+        require('telescope.actions').move_selection_previous(vim.api.nvim_get_current_buf())
+        return
+    end
+    if vim.wo.diff then
+        vim.cmd.normal({'[c', bang = true})
+        return
+    end
+    if vim.g.aether_gitsigns_inline then
+        require('gitsigns').nav_hunk('prev')
+        return
+    end
+    if #vim.diagnostic.get(0) > 0 then
+        vim.diagnostic.jump({ count = -1 })
+        return
+    end
 end
 
 local function bind_key_or_multi(entry)
