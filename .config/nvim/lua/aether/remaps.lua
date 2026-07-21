@@ -1,10 +1,10 @@
-local cmp = require 'cmp'
 local tscope = require 'telescope.builtin'
 local dap = require 'dap'
 local dap_ui = require 'dapui'
 local dap_ui_widgets = require 'dap.ui.widgets'
 local gitsigns = require 'gitsigns'
 local atu = require 'aether.utils'
+local blink = require 'blink.cmp'
 
 -- Lists of keys for all plugins that we're using
 local keymap = {
@@ -132,23 +132,23 @@ local keymap = {
         {
             key='<C-d>',
             mode={'i', 'c'},
-            func=function() cmp.scroll_docs(-4) end,
-            opts={
-                desc="Scroll docs down",
-            }
-        },
-        {
-            key='<C-f>',
-            mode={'i', 'c'},
-            func=function() cmp.scroll_docs(4) end,
+            func=blink.scroll_documentation_up,
             opts={
                 desc="Scroll docs up",
             }
         },
         {
+            key='<C-f>',
+            mode={'i', 'c'},
+            func=blink.scroll_documentation_down,
+            opts={
+                desc="Scroll docs down",
+            }
+        },
+        {
             key='<C-Space>',
             mode={'i', 'c'},
-            func=cmp.complete,
+            func=blink.show,
             opts={
                 desc="Trigger completion",
             }
@@ -156,32 +156,33 @@ local keymap = {
         {
             key='<C-e>',
             mode={'i', 'c'},
-            func=function() atu.cmp_try_abort() end,
+            func=atu.blink_try_hide,
             opts={
                 desc="Abort completion",
             }
         },
-        --TODO(stijn): Take a look at nvim-mapper to better handle forwarding of fallback keys
         {
             key='<Tab>',
             mode={'i', 'c'},
-            func=function() atu.cmp_confirm_selected({fbkey='<Tab>', cmpargs={select = true}}) end,
+            func=function() return atu.super_tab() end,
             opts={
-                desc="Unified tab confirm",
+                desc="Super tab",
+                expr=true,
             }
         },
         {
             key='<Enter>',
             mode={'i', 'c'},
-            func=function() atu.cmp_confirm_selected({fbkey='<Enter>', cmpargs={select = false}}) end,
+            func=function() return atu.super_enter() end,
             opts={
-                desc="Unified enter confirm",
+                desc="Super enter",
+                expr=true,
             }
         },
         {
             key={'<C-j>'},
             mode={'i', 'c'},
-            func=atu.cmp_select_next_item,
+            func=atu.blink_select_next,
             opts={
                 desc="Autocompletions select next item",
             }
@@ -189,7 +190,7 @@ local keymap = {
         {
             key={'<C-k>'},
             mode={'i', 'c'},
-            func=atu.cmp_select_prev_item,
+            func=atu.blink_select_prev,
             opts={
                 desc="Autocompletions select prev item",
             }

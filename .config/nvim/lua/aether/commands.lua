@@ -55,7 +55,10 @@ vim.api.nvim_create_autocmd(
     {
         pattern = "*",
         callback = function()
-            vim.api.nvim_set_hl(0, "DiagnosticUnderlineError", { underline=false, undercurl = true })
+            local hl = vim.api.nvim_get_hl(0, { name = "DiagnosticUnderlineError", link = false })
+            hl.underline = false
+            hl.undercurl = true
+            vim.api.nvim_set_hl(0, "DiagnosticUnderlineError", hl)
         end,
     }
 )

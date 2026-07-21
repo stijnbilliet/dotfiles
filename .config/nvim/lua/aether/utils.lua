@@ -78,15 +78,6 @@ function M.find_in_files()
     builtin.live_grep(opts)
 end
 
--- Wrapper around nvim feedkeys but ensure termcodes aren't escaped
-function M.pass_keys_repl(keys)
-	vim.api.nvim_feedkeys(
-		vim.api.nvim_replace_termcodes(keys, true, false, true),
-		"n",
-		false
-	);
-end
-
 -- Remove trailing whitespace from buffer
 function M.remove_trailing_whitespace()
     local current_view = vim.fn.winsaveview()
@@ -108,36 +99,61 @@ function M.dap_launch()
     dap.continue();
 end
 
-function M.cmp_select_next_item()
-    local cmp = require 'cmp'
-    if cmp.visible() then
-       cmp.select_next_item({behavior = cmp.SelectBehavior.Select });
+function M.blink_select_next()
+    local blink = require('blink.cmp')
+    if blink.is_visible() then
+        blink.select_next()
     end
 end
 
-function M.cmp_select_prev_item()
-    local cmp = require 'cmp'
-    if cmp.visible() then
-        cmp.select_prev_item({behavior = cmp.SelectBehavior.Select })
+function M.blink_select_prev()
+    local blink = require('blink.cmp')
+    if blink.is_visible() then
+        blink.select_prev()
     end
 end
 
-function M.cmp_try_abort()
-    local cmp = require 'cmp'
-    if cmp.visible() then
-        cmp.abort()
+function M.blink_try_hide()
+    local blink = require('blink.cmp')
+    if blink.is_visible() then
+        blink.hide()
     end
 end
 
--- only confirm when desired, check if we allow autoselect
--- TODO(stijn): implement a unified tab and unified CR handler.
-function M.cmp_confirm_selected(args)
-    local cmp = require 'cmp'
-    if cmp.visible() and args.cmpargs.select or cmp.get_selected_entry() then
-        cmp.confirm(args.cmpargs)
-    else
-        M.pass_keys_repl(args.fbkey); -- fallback
+-- Super-tab: priority chain for <Tab> in insert/cmdline mode.
+-- Selects+accepts the first completion item if the menu is visible.
+-- Add further plugin checks here (e.g. snippet jumping) before the fallback.
+-- Must return a string: '' if a plugin handled the key, '\t' to insert a literal tab.
+function M.super_tab()
+    local blink = require('blink.cmp')
+    if blink.is_visible() then
+        blink.select_and_accept()
+        return ''
     end
+
+    -- Hook: add other plugin checks here, e.g.:
+    -- local ls = require('luasnip')
+    -- if ls.locally_jumpable(1) then ls.jump(1); return '' end
+
+    return '\t'
+end
+
+-- Super-enter: priority chain for <Enter> in insert/cmdline mode.
+-- Only confirms the completion if an item is already explicitly selected.
+-- Add further plugin checks here before the fallback.
+-- Must return a string: '' if a plugin handled the key, '\r' to insert a literal newline.
+function M.super_enter()
+    local blink = require('blink.cmp')
+    if blink.is_visible() and blink.get_selected_item() then
+        blink.accept()
+        return ''
+    end
+
+    -- Hook: add other plugin checks here, e.g.:
+    -- local ls = require('luasnip')
+    -- if ls.locally_jumpable(1) then ls.jump(1); return '' end
+
+    return '\r'
 end
 
 -- LSP

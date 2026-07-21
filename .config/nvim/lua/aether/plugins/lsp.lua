@@ -43,9 +43,8 @@ return {
             ensure_installed = vim.tbl_keys(servers or {})
         })
 
-        -- Broadcast cmp-nvim-lsp completion capabilities to all servers
         vim.lsp.config('*', {
-            capabilities = require('cmp_nvim_lsp').default_capabilities()
+            capabilities = require('blink.cmp').get_lsp_capabilities()
         })
 
         -- Apply our overrides
